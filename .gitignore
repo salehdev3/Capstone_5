@@ -1,0 +1,13 @@
+data/
+runs/
+wandb/
+submission/
+handoff/
+*.pt
+*.pth
+*.zip
+*.jpg
+*.jpeg
+.env
+__pycache__/
+.ipynb_checkpoints/

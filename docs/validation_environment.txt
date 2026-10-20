@@ -1,0 +1,19 @@
+# Local CPU validation environment only
+Python 3.12.14
+Linux-6.18.55-x86_64-with-glibc2.39
+torch==2.14.1+cpu
+torchvision==0.29.1+cpu
+numpy==2.3.5
+pandas==2.2.3
+scipy==1.17.0
+scikit-learn==1.8.0
+matplotlib==3.10.8
+Pillow==12.3.0
+opencv-python-headless==5.0.0.93
+ImageHash==4.3.2
+PyYAML==6.0.3
+ipywidgets==8.1.9
+tqdm==4.70.1
+wandb==0.31.0
+transformers==4.49.0
+nbformat==5.11.1

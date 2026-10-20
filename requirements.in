@@ -1,0 +1,19 @@
+# Dependency declarations, NOT an executed Colab lockfile.
+# Use a compatible torch/torchvision pair supplied by Colab for GPU training.
+torch
+torchvision
+numpy
+pandas
+scipy
+scikit-learn
+matplotlib
+Pillow
+opencv-python-headless
+ImageHash
+PyYAML
+ipywidgets
+tqdm
+wandb
+transformers==4.49.0
+# Local notebook validation only:
+nbformat
