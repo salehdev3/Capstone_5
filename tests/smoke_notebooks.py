@@ -34,8 +34,8 @@ with tempfile.TemporaryDirectory(prefix='phase1-smoke-') as tmp:
               boxes=[{'species':['fox','deer'][label],'xyxy':[.1,.1,.9,.9]}]))
     ns['write_json'](data/'manifest.json',rows);ns['write_json'](data/'species.json',['fox','deer'])
     cfg=dict(project='phase1-synthetic-validation',profile='smoke',seed=42,data_dir=str(data),image_size=32,
-      batch_size=4,epochs=2,patience=2,warmup_epochs=0,backbone='microsoft/resnet-50',optimizer='Adam',
-      lr_scratch=.001,lr_frozen=.001,lr_full=.0001,weight_decay=0.,label_smoothing=0.,class_weighted_loss=False,
+      batch_size=4,epochs=2,patience=2,warmup_epochs=2,backbone='microsoft/resnet-50',optimizer='Adam',
+      lr_scratch=.001,lr_frozen=.001,lr_full=.0001,weight_decay=0.,label_smoothing=.05,class_weighted_loss=True,
       target_animal_recall=.99,species_review_confidence=.6,bootstrap_repeats=20,
       preprocessing_sha256=hashlib.sha256(shared.encode()).hexdigest())
     ns.update(CFG=cfg,DATA=data,rows=rows,DATA_HASH=ns['digest'](data/'manifest.json'),DEVICE='cpu',WANDB_MODE='disabled',OUT=Path('runs/member2'))
@@ -54,6 +54,9 @@ with tempfile.TemporaryDirectory(prefix='phase1-smoke-') as tmp:
         result=ns['train_model'](task,'scratch')
         metric=ns['evaluate_model'](task,'scratch')
         assert metric['n']==8 and metric['unknown_count']==0
+        history=pd.read_csv(ns['OUT']/task/'scratch'/'history.csv')
+        assert np.allclose(history.learning_rate,[.0005,.001])
+        assert result['context']['training_implementation']==2
         assert ns['train_model'](task,'scratch')==result
         assert ns['evaluate_model'](task,'scratch')==metric
         ns['show_results'](task,'scratch')
