@@ -3,7 +3,7 @@ from PIL import Image
 from torchvision import transforms
 from torch.utils.data import DataLoader
 class Preprocessor:
-    """Lab 1 cell 72: prepare uint8 RGB, augment, finalize and CHW tensor."""
+    ""
     def __init__(self,size):
         self.size=size
         self.mean=np.array([.485,.456,.406],np.float32)
@@ -25,7 +25,7 @@ def load_rgb_sample(row):
     return im
 
 class FrameDataset(torch.utils.data.Dataset):
-    """Lab 1 cell 104 adapted to frame and human-box crop tasks."""
+    ""
     def __init__(self,samples,size,train=False):
         self.samples=samples;self.pre=Preprocessor(size)
         self.tf=transforms.Compose([transforms.RandomHorizontalFlip(),
