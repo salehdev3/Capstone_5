@@ -1,4 +1,4 @@
-"""Exercise merged presentation cells with the existing synthetic workflow."""
+""
 from pathlib import Path
 import ast
 import runpy

@@ -1,4 +1,4 @@
-"""Build the single-notebook Phase 1 presentation and its Python cell export."""
+""
 from pathlib import Path
 import ast
 import json
@@ -37,7 +37,7 @@ for member, path in enumerate(sorted((ROOT/'notebooks').glob('Phase1_Member_*.ip
             continue
         text = original.source
         if original.cell_type == 'markdown':
-            # Presentation headings replace operational handoff instructions.
+            
             text = text.splitlines()[0]
             text = re.sub(r' — .*Lab.*', '', text)
             text = text.replace('حفظ ملفات التسليم للعضوين 2 و3', 'تثبيت إصدار البيانات والإعداد المشترك')
@@ -53,7 +53,7 @@ for member, path in enumerate(sorted((ROOT/'notebooks').glob('Phase1_Member_*.ip
         cell.metadata['source_section'] = {'notebook': path.name, 'cell': index}
         cells.append(cell)
 
-# Preserve the actual merged source in the runtime workspace for the report export.
+
 payload = json.dumps([{'cell_type': c.cell_type, 'source': c.source, 'metadata': {}} for c in cells], ensure_ascii=False)
 bootstrap = '''from pathlib import Path
 import json
@@ -76,12 +76,10 @@ cells.insert(2, nbformat.v4.new_code_cell(bootstrap))
 notebook = nbformat.v4.new_notebook(cells=cells, metadata={'kernelspec': {'name':'python3','display_name':'Python 3','language':'python'}})
 nbformat.validate(notebook)
 nbformat.write(notebook, ROOT/'notebooks'/f'{NAME}.ipynb')
-export = '# -*- coding: utf-8 -*-\n'
+export = ''
 for cell in cells:
-    if cell.cell_type == 'markdown':
-        export += '\n# %% [markdown]\n' + '\n'.join('# '+line for line in cell.source.splitlines()) + '\n'
-    else:
-        export += '\n# %%\n' + cell.source + '\n'
+    if cell.cell_type == 'code':
+        export += '\n' + cell.source + '\n'
 ast.parse(export)
 (ROOT/f'{NAME}.py').write_text(export)
 print(f'Built {len(cells)} cells and Python export.')
