@@ -27,8 +27,8 @@ Source: supplied **Capstone_Project_Guidelines_UPDATED.pdf**, Phase 1 scope in T
 | W&B all runs | 2–4 | local/online training and locked-test logs; dashboard links after sync |
 | Common metric across runs | 4 | comparison.csv; selection from validation macro-F1 |
 | Predeclared acceptance criteria | 1,4 | frozen config targets and measured acceptance.csv; failures reported honestly |
-| Reproducible code and requirements | All | four notebooks, per-role actual environment snapshots, fresh-process check and actual replay evidence |
-| Report and repository | 4 | REPORT_DRAFT.md, source notebooks, selected results and weight hashes |
+| Reproducible code and requirements | All | unified notebook and Python export, per-section environment snapshots, fresh-process check and actual replay evidence |
+| Report and repository | 4 | REPORT_DRAFT.md, unified source notebook, selected results and weight hashes |
 
 Performance targets in the starter configuration are proposed team goals, not promised results. They must be agreed before training. A failed performance target does not mean the experiment failed to execute.
 

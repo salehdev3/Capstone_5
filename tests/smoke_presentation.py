@@ -27,17 +27,5 @@ try:
 finally:
     os.chdir(cwd)
 
-def presentation_read(path, *args, **kwargs):
-    source = read(path, *args, **kwargs)
-    for cell in merged.cells:
-        origin = cell.metadata.get('source_section', {})
-        if origin.get('notebook') == Path(path).name:
-            source.cells[origin['cell']] = cell
-    return source
-
-nbformat.read = presentation_read
-try:
-    runpy.run_path(str(ROOT/'tests/smoke_notebooks.py'), run_name='__main__')
-finally:
-    nbformat.read = read
+runpy.run_path(str(ROOT/'tests/smoke_notebooks.py'), run_name='__main__')
 print('PASS: merged presentation cells, source snapshot, and Python export')

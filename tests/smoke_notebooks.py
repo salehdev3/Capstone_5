@@ -3,13 +3,22 @@ from pathlib import Path
 import ast, json, os, tempfile, subprocess, sys, hashlib
 import nbformat
 ROOT = Path(__file__).resolve().parents[1]
-notebooks = {p.name: nbformat.read(p, as_version=4) for p in (ROOT/'notebooks').glob('*.ipynb')}
+presentation = nbformat.read(ROOT/'notebooks/Phase1_Final_Presentation.ipynb', as_version=4)
+notebooks = {}
+for cell in presentation.cells:
+    origin = cell.metadata.get('source_section')
+    if origin:
+        section = notebooks.setdefault(origin['notebook'], nbformat.v4.new_notebook())
+        while len(section.cells) <= origin['cell']:
+            section.cells.append(nbformat.v4.new_markdown_cell(''))
+        section.cells[origin['cell']] = cell
+notebooks['Phase1_Final_Presentation.ipynb'] = presentation
 for notebook in notebooks.values():
     nbformat.validate(notebook)
     for cell in notebook.cells:
         if cell.cell_type == 'code' and not cell.source.startswith('%'):
             ast.parse(cell.source)
-print('PASS: four notebook schemas and all Python cells')
+print('PASS: unified notebook schema and section code cells')
 n1=notebooks['Phase1_Member_1_Data.ipynb'];n2=notebooks['Phase1_Member_2_CNN.ipynb'];n3=notebooks['Phase1_Member_3_TransferLearning.ipynb']
 shared=(ROOT/'preprocessing.py').read_text()
 assert all(any(c.cell_type=='code' and c.source.startswith(shared) for c in n.cells) for n in [n1,n2,n3])
@@ -112,7 +121,7 @@ with tempfile.TemporaryDirectory(prefix='phase1-smoke-') as tmp:
         ns['write_json'](f'handoff/member{member}_release.json',{'schema':2,'dataset_hash':ns['DATA_HASH'],
           'output_dir':str(out),'files':{str(p):ns['digest'](p) for p in required}})
     for directory in ['review','submission','notebooks']:Path(directory).mkdir(exist_ok=True)
-    for name in notebooks:shutil.copy2(ROOT/'notebooks'/name,Path('notebooks')/name)
+    shutil.copy2(ROOT/'notebooks/Phase1_Final_Presentation.ipynb',Path('notebooks/Phase1_Final_Presentation.ipynb'))
     ns['release']={'dataset_card':'runs/data/DATASET_CARD.md'}
     qa_cell=next(c.source for c in n4.cells if c.cell_type=='code' and 'checks=[]' in c.source)
     exec(qa_cell,ns)
