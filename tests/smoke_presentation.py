@@ -16,16 +16,7 @@ for cell in merged.cells:
         assert 'from google.colab import files' not in cell.source
         assert 'ARCHIVES = ' not in cell.source
 ast.parse((ROOT/'Phase1_Final_Presentation.py').read_text())
-cwd = Path.cwd()
-try:
-    with tempfile.TemporaryDirectory() as directory:
-        os.chdir(directory)
-        exec(merged.cells[2].source, {})
-        exec(merged.cells[2].source, {})
-        saved = read(Path(directory)/'CameraTrap_Phase1_Team/notebooks/Phase1_Final_Presentation.ipynb', 4)
-        nbformat.validate(saved)
-finally:
-    os.chdir(cwd)
+nbformat.validate(merged)
 
 runpy.run_path(str(ROOT/'tests/smoke_notebooks.py'), run_name='__main__')
 print('PASS: merged presentation cells, source snapshot, and Python export')

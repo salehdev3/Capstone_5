@@ -4,15 +4,32 @@ import ast, json, os, tempfile, subprocess, sys, hashlib
 import nbformat
 ROOT = Path(__file__).resolve().parents[1]
 presentation = nbformat.read(ROOT/'notebooks/Phase1_Final_Presentation.ipynb', as_version=4)
-notebooks = {}
-for cell in presentation.cells:
-    origin = cell.metadata.get('source_section')
-    if origin:
-        section = notebooks.setdefault(origin['notebook'], nbformat.v4.new_notebook())
-        while len(section.cells) <= origin['cell']:
-            section.cells.append(nbformat.v4.new_markdown_cell(''))
-        section.cells[origin['cell']] = cell
-notebooks['Phase1_Final_Presentation.ipynb'] = presentation
+def section(title):
+    start = next(i for i,c in enumerate(presentation.cells) if c.cell_type == 'markdown' and title in ''.join(c.source))
+    end = next((i for i in range(start+1,len(presentation.cells)) if presentation.cells[i].cell_type == 'markdown' and ''.join(presentation.cells[i].source).startswith('# Member')), len(presentation.cells))
+    return [c for c in presentation.cells[start:end] if c.cell_type == 'code']
+def virtual(cells, slots=None):
+    out = nbformat.v4.new_notebook(cells=[nbformat.v4.new_markdown_cell('') for _ in range((max(slots) + 1) if slots else len(cells))])
+    for i, cell in enumerate(cells):
+        out.cells[slots[i] if slots else i] = cell
+    return out
+data_cells = section('Member 1 — Data Foundations')
+cnn_cells = section('Member 2 — CNN Classification')
+transfer_cells = section('Member 3 — Transfer Learning')
+report_cells = section('Member 4 — Comparison')
+n1 = nbformat.v4.new_notebook(cells=data_cells)
+n3 = nbformat.v4.new_notebook(cells=transfer_cells)
+n2 = virtual([
+    next(c for c in cnn_cells if 'def read_json' in c.source and 'ROOT=' in c.source),
+    next(c for c in cnn_cells if 'FrameDataset' in c.source and 'class Preprocessor' in c.source),
+    next(c for c in cnn_cells if 'def seed_everything' in c.source),
+    next(c for c in cnn_cells if 'class ConvNN' in c.source),
+    next(c for c in cnn_cells if 'def ece' in c.source),
+    next(c for c in cnn_cells if 'def train_model' in c.source),
+    next(c for c in cnn_cells if 'def evaluate_model' in c.source),
+], [3,6,7,11,14,16,24])
+n4 = nbformat.v4.new_notebook(cells=report_cells)
+notebooks = {'Phase1_Member_1_Data.ipynb':n1,'Phase1_Member_2_CNN.ipynb':n2,'Phase1_Member_3_TransferLearning.ipynb':n3,'Phase1_Member_4_Report.ipynb':n4,'Phase1_Final_Presentation.ipynb':presentation}
 for notebook in notebooks.values():
     nbformat.validate(notebook)
     for cell in notebook.cells:
