@@ -1,5 +1,9 @@
 # Project 5 — Automated Triage of Camera-Trap Imagery
 
+The consolidated Phase 1 presentation is [Phase1_Final_Presentation.ipynb](notebooks/Phase1_Final_Presentation.ipynb), with a matching [Python cell export](Phase1_Final_Presentation.py). It runs data preparation, scratch training, transfer learning and reporting in one workspace. Human audit gates remain interactive; execute on real data before presenting project results. The original role notebooks remain available for individual work.
+
+Rebuild the consolidated files with `python tools/build_presentation.py`. Validate their actual cells with `python tests/smoke_presentation.py` in the prepared CPU environment. This validates synthetic execution, not a completed CCT20 experiment.
+
 **Phase 1: M1–M3 only.** This is the implementation package, not a claim that training or human review has finished. Begin with [START_HERE_AR.md](START_HERE_AR.md).
 
 | Member | Notebook | Responsibility |
