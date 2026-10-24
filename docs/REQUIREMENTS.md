@@ -2,7 +2,7 @@
 
 CCT20 is the curated, annotated subset of Caltech Camera Traps used here; it is not the entire 243,100-image collection described in the project example. The metadata summary and Dataset Card record actual downloaded and retained counts.
 
-Source: supplied **Capstone_Project_Guidelines_UPDATED(1).pdf**, Phase 1 scope in Table 4, M1–M3 deliverables in Table 5, and Project 5. The original four workstreams describe the whole project; this team's four-person split is adapted to Phase 1.
+Source: supplied **Capstone_Project_Guidelines_UPDATED.pdf**, Phase 1 scope in Tables 1–2, M1–M3 deliverables in Table 5, and Project 5. The original four workstreams describe the whole project; this team's four-person split is adapted to Phase 1.
 
 | Requirement | Owner | Produced evidence |
 | --- | --- | --- |
