@@ -3,13 +3,39 @@ from pathlib import Path
 import ast, json, os, tempfile, subprocess, sys, hashlib
 import nbformat
 ROOT = Path(__file__).resolve().parents[1]
-notebooks = {p.name: nbformat.read(p, as_version=4) for p in (ROOT/'notebooks').glob('*.ipynb')}
+presentation = nbformat.read(ROOT/'notebooks/Phase1_Final_Presentation.ipynb', as_version=4)
+def section(title):
+    start = next(i for i,c in enumerate(presentation.cells) if c.cell_type == 'markdown' and title in ''.join(c.source))
+    end = next((i for i in range(start+1,len(presentation.cells)) if presentation.cells[i].cell_type == 'markdown' and ''.join(presentation.cells[i].source).startswith('# Member')), len(presentation.cells))
+    return [c for c in presentation.cells[start:end] if c.cell_type == 'code']
+def virtual(cells, slots=None):
+    out = nbformat.v4.new_notebook(cells=[nbformat.v4.new_markdown_cell('') for _ in range((max(slots) + 1) if slots else len(cells))])
+    for i, cell in enumerate(cells):
+        out.cells[slots[i] if slots else i] = cell
+    return out
+data_cells = section('Member 1 — Data Foundations')
+cnn_cells = section('Member 2 — CNN Classification')
+transfer_cells = section('Member 3 — Transfer Learning')
+report_cells = section('Member 4 — Comparison')
+n1 = nbformat.v4.new_notebook(cells=data_cells)
+n3 = nbformat.v4.new_notebook(cells=transfer_cells)
+n2 = virtual([
+    next(c for c in cnn_cells if 'def read_json' in c.source and 'ROOT=' in c.source),
+    next(c for c in cnn_cells if 'FrameDataset' in c.source and 'class Preprocessor' in c.source),
+    next(c for c in cnn_cells if 'def seed_everything' in c.source),
+    next(c for c in cnn_cells if 'class ConvNN' in c.source),
+    next(c for c in cnn_cells if 'def ece' in c.source),
+    next(c for c in cnn_cells if 'def train_model' in c.source),
+    next(c for c in cnn_cells if 'def evaluate_model' in c.source),
+], [3,6,7,11,14,16,24])
+n4 = nbformat.v4.new_notebook(cells=report_cells)
+notebooks = {'Phase1_Member_1_Data.ipynb':n1,'Phase1_Member_2_CNN.ipynb':n2,'Phase1_Member_3_TransferLearning.ipynb':n3,'Phase1_Member_4_Report.ipynb':n4,'Phase1_Final_Presentation.ipynb':presentation}
 for notebook in notebooks.values():
     nbformat.validate(notebook)
     for cell in notebook.cells:
         if cell.cell_type == 'code' and not cell.source.startswith('%'):
             ast.parse(cell.source)
-print('PASS: four notebook schemas and all Python cells')
+print('PASS: unified notebook schema and section code cells')
 n1=notebooks['Phase1_Member_1_Data.ipynb'];n2=notebooks['Phase1_Member_2_CNN.ipynb'];n3=notebooks['Phase1_Member_3_TransferLearning.ipynb']
 shared=(ROOT/'preprocessing.py').read_text()
 assert all(any(c.cell_type=='code' and c.source.startswith(shared) for c in n.cells) for n in [n1,n2,n3])
@@ -112,7 +138,7 @@ with tempfile.TemporaryDirectory(prefix='phase1-smoke-') as tmp:
         ns['write_json'](f'handoff/member{member}_release.json',{'schema':2,'dataset_hash':ns['DATA_HASH'],
           'output_dir':str(out),'files':{str(p):ns['digest'](p) for p in required}})
     for directory in ['review','submission','notebooks']:Path(directory).mkdir(exist_ok=True)
-    for name in notebooks:shutil.copy2(ROOT/'notebooks'/name,Path('notebooks')/name)
+    shutil.copy2(ROOT/'notebooks/Phase1_Final_Presentation.ipynb',Path('notebooks/Phase1_Final_Presentation.ipynb'))
     ns['release']={'dataset_card':'runs/data/DATASET_CARD.md'}
     qa_cell=next(c.source for c in n4.cells if c.cell_type=='code' and 'checks=[]' in c.source)
     exec(qa_cell,ns)
