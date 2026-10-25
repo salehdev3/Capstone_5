@@ -3,6 +3,37 @@ import subprocess, sys
 subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'ImageHash', 'pandas', 'scipy', 'matplotlib', 'Pillow', 'PyYAML', 'ipywidgets', 'scikit-learn', 'opencv-python-headless', 'tqdm', 'wandb', 'transformers==4.49.0'])
 
 from pathlib import Path
+import hashlib
+import sys
+import urllib.request
+import importlib
+
+module_candidates = [Path.cwd(), *Path.cwd().parents]
+if '__file__' in globals():
+    module_candidates.insert(0, Path(__file__).resolve().parent)
+module_root = next((p for p in module_candidates if (p/'preprocessing.py').is_file()), None)
+if module_root is None:
+    module_root = Path.cwd()/'project_modules'
+    module_root.mkdir(exist_ok=True)
+    module_path = module_root/'preprocessing.py'
+    source_url = 'https://raw.githubusercontent.com/salehdev3/Capstone_5/ed75540a1f57ad08d0300480f2ea922e136c5cda/preprocessing.py'
+    expected_sha256 = '87e3366dd7946e566c3a9238095748eb698ed0b57e2a9a5699d49817c440a5eb'
+    if not module_path.exists():
+        with urllib.request.urlopen(source_url, timeout=60) as response:
+            module_bytes = response.read()
+        assert hashlib.sha256(module_bytes).hexdigest() == expected_sha256, 'Preprocessing download checksum mismatch'
+        module_path.write_bytes(module_bytes)
+    assert hashlib.sha256(module_path.read_bytes()).hexdigest() == expected_sha256, 'Cached preprocessing checksum mismatch'
+module_root = module_root.resolve()
+sys.path.insert(0, str(module_root))
+if 'preprocessing' in sys.modules:
+    assert Path(sys.modules['preprocessing'].__file__).resolve() == module_root/'preprocessing.py', 'Restart the runtime to load the selected preprocessing module'
+import preprocessing
+importlib.reload(preprocessing)
+print('Preprocessing module:', preprocessing.__file__)
+
+
+from pathlib import Path
 import os, sys, subprocess
 import matplotlib.pyplot as plt
 from IPython.display import display, Markdown
@@ -507,40 +538,9 @@ import cv2, numpy as np, torch
 from PIL import Image
 from torchvision import transforms
 from torch.utils.data import DataLoader
-class Preprocessor:
-    ""
-    def __init__(self,size):
-        self.size=size
-        self.mean=np.array([.485,.456,.406],np.float32)
-        self.std=np.array([.229,.224,.225],np.float32)
-    def prepare(self,bgr):
-        rgb=cv2.cvtColor(bgr,cv2.COLOR_BGR2RGB);h,w=rgb.shape[:2]
-        interp=cv2.INTER_AREA if h>self.size or w>self.size else cv2.INTER_LINEAR
-        return cv2.resize(rgb,(self.size,self.size),interpolation=interp)
-    def finalize(self,rgb):return (rgb.astype(np.float32)/255.-self.mean)/self.std
+import preprocessing
+from preprocessing import Preprocessor, FrameDataset, load_rgb_sample
 
-def load_rgb_sample(row):
-    im=cv2.imread(row['path'])
-    if im is None:raise ValueError('Unreadable image: '+row['path'])
-    if row.get('crop') is not None:
-        x1,y1,x2,y2=row['crop'];h,w=im.shape[:2];dx=(x2-x1)*.05;dy=(y2-y1)*.05
-        left,top=max(0,int((x1-dx)*w)),max(0,int((y1-dy)*h))
-        right,bottom=min(w,max(left+1,int((x2+dx)*w))),min(h,max(top+1,int((y2+dy)*h)))
-        im=im[top:bottom,left:right].copy()
-    return im
-
-class FrameDataset(torch.utils.data.Dataset):
-    ""
-    def __init__(self,samples,size,train=False):
-        self.samples=samples;self.pre=Preprocessor(size)
-        self.tf=transforms.Compose([transforms.RandomHorizontalFlip(),
-                  transforms.ColorJitter(brightness=.15,contrast=.15)]) if train else None
-    def __len__(self):return len(self.samples)
-    def __getitem__(self,i):
-        row=self.samples[i];img=self.pre.prepare(load_rgb_sample(row))
-        if self.tf:img=np.array(self.tf(Image.fromarray(img)))
-        x=torch.from_numpy(np.ascontiguousarray(self.pre.finalize(img))).permute(2,0,1).float()
-        return x,int(row['label']),i
 
 train_rows=[dict(r,label=r['animal'],crop=None) for r in rows if r['split']=='train']
 train_dataset=FrameDataset(train_rows,224,train=True)
@@ -623,7 +623,7 @@ Flagged training events are quarantined; original audit decisions remain recorde
 
 ## Preprocessing
 RGB, resize 224, ImageNet normalization. Random flip and brightness/contrast changes on train only.
-The identical OpenCV Preprocessor and augmentation code is embedded in Members 1, 2 and 3.
+All sections import image preprocessing and augmentation from preprocessing.py.
 
 ## Limitations and privacy
 Curated US wildlife data; no claim of Saudi generalisation. The empty fraction must be measured on this subset.
@@ -642,8 +642,8 @@ assert len(blur_check) and blur_check['reviewer'].str.strip().ne('').all() and b
 assert TEAM_NOTES.strip(), 'Complete the dataset observations before continuing.'
 training_defaults = {'project': 'camera-trap-phase1', 'backbone': 'microsoft/resnet-50', 'seed': 42, 'profile': 'full', 'data_dir': 'data/cct20_v1', 'output_dir': 'runs/data', 'max_images': 6000, 'download_workers': 12, 'max_image_side': 1024, 'image_size': 224, 'batch_size': 32, 'workers': 2, 'epochs': 12, 'patience': 4, 'warmup_epochs': 2, 'lr_scratch': 0.001, 'lr_frozen': 0.001, 'lr_full': 0.0001, 'weight_decay': 0.0001, 'label_smoothing': 0.05, 'class_weighted_loss': True, 'wandb_mode': 'offline', 'target_animal_recall': 0.99, 'species_review_confidence': 0.6, 'bootstrap_repeats': 1000, 'audit_events': 100, 'acceptance': {'animal_recall_min': 0.99, 'empty_removal_min': 0.2, 'species_macro_f1_min': 0.65, 'species_ece_max': 0.1}}
 training_defaults.update(cfg)
-training_defaults.update(contract_version=2,preprocessing_sha256='87e3366dd7946e566c3a9238095748eb698ed0b57e2a9a5699d49817c440a5eb',warmup_epochs=0,weight_decay=0.0,label_smoothing=0.0,class_weighted_loss=False,optimizer='Adam',wandb_mode='offline')
-write_json('handoff/preprocessing.json',{'sha256':'87e3366dd7946e566c3a9238095748eb698ed0b57e2a9a5699d49817c440a5eb','input_size':224,'library':'OpenCV + torchvision','train_only':['horizontal_flip','brightness_contrast']})
+training_defaults.update(contract_version=2,preprocessing_sha256=digest(Path(preprocessing.__file__)),warmup_epochs=0,weight_decay=0.0,label_smoothing=0.0,class_weighted_loss=False,optimizer='Adam',wandb_mode='offline')
+write_json('handoff/preprocessing.json',{'sha256':digest(Path(preprocessing.__file__)),'input_size':224,'library':'OpenCV + torchvision','train_only':['horizontal_flip','brightness_contrast']})
 write_json('handoff/data_config.json', training_defaults)
 write_json(DATA/'preparation_config.json', training_defaults)
 Path('handoff/requirements_member1.txt').write_text(subprocess.check_output([sys.executable,'-m','pip','freeze'],text=True))
@@ -686,7 +686,7 @@ DATA=Path(release['data_dir']);rows=read_json(DATA/'manifest.json')
 assert rows and all(Path(r['path']).exists() for r in rows)
 DATA_HASH=digest(DATA/'manifest.json')
 CFG=read_json('handoff/data_config.json')
-assert CFG['preprocessing_sha256']=='87e3366dd7946e566c3a9238095748eb698ed0b57e2a9a5699d49817c440a5eb'
+assert CFG['preprocessing_sha256']==digest(Path(preprocessing.__file__))
 print('Frames:',len(rows),'| split sizes:',pd.Series([r['split'] for r in rows]).value_counts().to_dict())
 
 
@@ -694,40 +694,9 @@ import cv2, numpy as np, torch
 from PIL import Image
 from torchvision import transforms
 from torch.utils.data import DataLoader
-class Preprocessor:
-    ""
-    def __init__(self,size):
-        self.size=size
-        self.mean=np.array([.485,.456,.406],np.float32)
-        self.std=np.array([.229,.224,.225],np.float32)
-    def prepare(self,bgr):
-        rgb=cv2.cvtColor(bgr,cv2.COLOR_BGR2RGB);h,w=rgb.shape[:2]
-        interp=cv2.INTER_AREA if h>self.size or w>self.size else cv2.INTER_LINEAR
-        return cv2.resize(rgb,(self.size,self.size),interpolation=interp)
-    def finalize(self,rgb):return (rgb.astype(np.float32)/255.-self.mean)/self.std
+import preprocessing
+from preprocessing import Preprocessor, FrameDataset, load_rgb_sample
 
-def load_rgb_sample(row):
-    im=cv2.imread(row['path'])
-    if im is None:raise ValueError('Unreadable image: '+row['path'])
-    if row.get('crop') is not None:
-        x1,y1,x2,y2=row['crop'];h,w=im.shape[:2];dx=(x2-x1)*.05;dy=(y2-y1)*.05
-        left,top=max(0,int((x1-dx)*w)),max(0,int((y1-dy)*h))
-        right,bottom=min(w,max(left+1,int((x2+dx)*w))),min(h,max(top+1,int((y2+dy)*h)))
-        im=im[top:bottom,left:right].copy()
-    return im
-
-class FrameDataset(torch.utils.data.Dataset):
-    ""
-    def __init__(self,samples,size,train=False):
-        self.samples=samples;self.pre=Preprocessor(size)
-        self.tf=transforms.Compose([transforms.RandomHorizontalFlip(),
-                  transforms.ColorJitter(brightness=.15,contrast=.15)]) if train else None
-    def __len__(self):return len(self.samples)
-    def __getitem__(self,i):
-        row=self.samples[i];img=self.pre.prepare(load_rgb_sample(row))
-        if self.tf:img=np.array(self.tf(Image.fromarray(img)))
-        x=torch.from_numpy(np.ascontiguousarray(self.pre.finalize(img))).permute(2,0,1).float()
-        return x,int(row['label']),i
 
 def seed_everything(seed):
     random.seed(seed)
@@ -1144,7 +1113,7 @@ DATA=Path(release['data_dir']);rows=read_json(DATA/'manifest.json')
 assert rows and all(Path(r['path']).exists() for r in rows)
 DATA_HASH=digest(DATA/'manifest.json')
 CFG=read_json('handoff/data_config.json')
-assert CFG['preprocessing_sha256']=='87e3366dd7946e566c3a9238095748eb698ed0b57e2a9a5699d49817c440a5eb'
+assert CFG['preprocessing_sha256']==digest(Path(preprocessing.__file__))
 print('Frames:',len(rows),'| split sizes:',pd.Series([r['split'] for r in rows]).value_counts().to_dict())
 
 
@@ -1152,40 +1121,9 @@ import cv2, numpy as np, torch
 from PIL import Image
 from torchvision import transforms
 from torch.utils.data import DataLoader
-class Preprocessor:
-    ""
-    def __init__(self,size):
-        self.size=size
-        self.mean=np.array([.485,.456,.406],np.float32)
-        self.std=np.array([.229,.224,.225],np.float32)
-    def prepare(self,bgr):
-        rgb=cv2.cvtColor(bgr,cv2.COLOR_BGR2RGB);h,w=rgb.shape[:2]
-        interp=cv2.INTER_AREA if h>self.size or w>self.size else cv2.INTER_LINEAR
-        return cv2.resize(rgb,(self.size,self.size),interpolation=interp)
-    def finalize(self,rgb):return (rgb.astype(np.float32)/255.-self.mean)/self.std
+import preprocessing
+from preprocessing import Preprocessor, FrameDataset, load_rgb_sample
 
-def load_rgb_sample(row):
-    im=cv2.imread(row['path'])
-    if im is None:raise ValueError('Unreadable image: '+row['path'])
-    if row.get('crop') is not None:
-        x1,y1,x2,y2=row['crop'];h,w=im.shape[:2];dx=(x2-x1)*.05;dy=(y2-y1)*.05
-        left,top=max(0,int((x1-dx)*w)),max(0,int((y1-dy)*h))
-        right,bottom=min(w,max(left+1,int((x2+dx)*w))),min(h,max(top+1,int((y2+dy)*h)))
-        im=im[top:bottom,left:right].copy()
-    return im
-
-class FrameDataset(torch.utils.data.Dataset):
-    ""
-    def __init__(self,samples,size,train=False):
-        self.samples=samples;self.pre=Preprocessor(size)
-        self.tf=transforms.Compose([transforms.RandomHorizontalFlip(),
-                  transforms.ColorJitter(brightness=.15,contrast=.15)]) if train else None
-    def __len__(self):return len(self.samples)
-    def __getitem__(self,i):
-        row=self.samples[i];img=self.pre.prepare(load_rgb_sample(row))
-        if self.tf:img=np.array(self.tf(Image.fromarray(img)))
-        x=torch.from_numpy(np.ascontiguousarray(self.pre.finalize(img))).permute(2,0,1).float()
-        return x,int(row['label']),i
 
 def seed_everything(seed):
     random.seed(seed)
@@ -1602,7 +1540,7 @@ DATA=Path(release['data_dir']);rows=read_json(DATA/'manifest.json')
 assert rows and all(Path(r['path']).exists() for r in rows)
 DATA_HASH=digest(DATA/'manifest.json')
 CFG=read_json('handoff/data_config.json')
-assert CFG['preprocessing_sha256']=='87e3366dd7946e566c3a9238095748eb698ed0b57e2a9a5699d49817c440a5eb'
+assert CFG['preprocessing_sha256']==digest(Path(preprocessing.__file__))
 print('Frames:',len(rows),'| split sizes:',pd.Series([r['split'] for r in rows]).value_counts().to_dict())
 
 
@@ -1712,13 +1650,13 @@ if not issues.exists():pd.DataFrame(columns=['issue_id','owner','problem','statu
 print('CSV decisions: label_correct=yes/no, boxes_correct=yes/no/not applicable, person_visible=yes/no.')
 
 
-PROBE_SOURCE = 'import cv2, numpy as np, torch\nfrom PIL import Image\nfrom torchvision import transforms\nfrom torch.utils.data import DataLoader\nclass Preprocessor:\n    ""\n    def __init__(self,size):\n        self.size=size\n        self.mean=np.array([.485,.456,.406],np.float32)\n        self.std=np.array([.229,.224,.225],np.float32)\n    def prepare(self,bgr):\n        rgb=cv2.cvtColor(bgr,cv2.COLOR_BGR2RGB);h,w=rgb.shape[:2]\n        interp=cv2.INTER_AREA if h>self.size or w>self.size else cv2.INTER_LINEAR\n        return cv2.resize(rgb,(self.size,self.size),interpolation=interp)\n    def finalize(self,rgb):return (rgb.astype(np.float32)/255.-self.mean)/self.std\n\ndef load_rgb_sample(row):\n    im=cv2.imread(row[\'path\'])\n    if im is None:raise ValueError(\'Unreadable image: \'+row[\'path\'])\n    if row.get(\'crop\') is not None:\n        x1,y1,x2,y2=row[\'crop\'];h,w=im.shape[:2];dx=(x2-x1)*.05;dy=(y2-y1)*.05\n        left,top=max(0,int((x1-dx)*w)),max(0,int((y1-dy)*h))\n        right,bottom=min(w,max(left+1,int((x2+dx)*w))),min(h,max(top+1,int((y2+dy)*h)))\n        im=im[top:bottom,left:right].copy()\n    return im\n\nclass FrameDataset(torch.utils.data.Dataset):\n    ""\n    def __init__(self,samples,size,train=False):\n        self.samples=samples;self.pre=Preprocessor(size)\n        self.tf=transforms.Compose([transforms.RandomHorizontalFlip(),\n                  transforms.ColorJitter(brightness=.15,contrast=.15)]) if train else None\n    def __len__(self):return len(self.samples)\n    def __getitem__(self,i):\n        row=self.samples[i];img=self.pre.prepare(load_rgb_sample(row))\n        if self.tf:img=np.array(self.tf(Image.fromarray(img)))\n        x=torch.from_numpy(np.ascontiguousarray(self.pre.finalize(img))).permute(2,0,1).float()\n        return x,int(row[\'label\']),i\nfrom torch import nn\n\nclass ConvNN(nn.Module):\n    ""\n    def __init__(self,num_classes,size=224,num_filters=16,num_neurons=100):\n        super().__init__()\n        def block(a,b):return nn.Sequential(nn.Conv2d(a,b,3,padding=1),nn.BatchNorm2d(b),nn.ReLU())\n        self.block_1=block(3,num_filters)\n        self.block_2=block(num_filters,2*num_filters)\n        self.block_3=block(2*num_filters,4*num_filters)\n        self.maxpool=nn.MaxPool2d(kernel_size=3,stride=2)\n        self.dropout=nn.Dropout(.2);self.relu=nn.ReLU();self.flat=nn.Flatten()\n        h=size\n        for _ in range(3):h=(h-3)//2+1\n        self.fc1=nn.Linear(4*num_filters*h*h,num_neurons)\n        self.fc2=nn.Linear(num_neurons,num_neurons)\n        self.output=nn.Linear(num_neurons,num_classes)\n    def forward(self,x):\n        x=self.maxpool(self.block_1(x));x=self.maxpool(self.block_2(x));x=self.maxpool(self.block_3(x))\n        x=self.flat(self.dropout(x));x=self.relu(self.fc1(x));x=self.relu(self.fc2(x))\n        return self.output(x)\n\nclass TransferNet(nn.Module):\n    ""\n    def __init__(self,classes,pretrained=True):\n        super().__init__()\n        from transformers import AutoModelForImageClassification,ResNetConfig,ResNetForImageClassification\n        self.net=(AutoModelForImageClassification.from_pretrained(\'microsoft/resnet-50\') if pretrained\n                  else ResNetForImageClassification(ResNetConfig()))\n        self.net.classifier=nn.Sequential(nn.Flatten(start_dim=1),nn.Linear(self.net.config.hidden_sizes[-1],classes))\n        self.net.config.num_labels=classes\n    def forward(self,x):return self.net(x).logits\n    @property\n    def classifier(self):return self.net.classifier\n\ndef make_model(regime,classes,pretrained=True,size=224):\n    return ConvNN(classes,size) if regime==\'scratch\' else TransferNet(classes,pretrained)\n\ndef freeze_backbone(model,freeze):\n    for p in model.net.base_model.parameters():p.requires_grad=not freeze\n    for p in model.classifier.parameters():p.requires_grad=True\nif __name__==\'__main__\':\n    import sys,json\n    checkpoint,image=sys.argv[1:3]\n    torch.set_num_threads(2)\n    ckpt=torch.load(checkpoint,map_location=\'cpu\',weights_only=False)\n    model=make_model(ckpt[\'regime\'],len(ckpt[\'classes\']),pretrained=False,size=ckpt[\'image_size\']).eval()\n    model.load_state_dict(ckpt[\'state_dict\'])\n    x,_,_=FrameDataset([{\'path\':image,\'label\':0,\'crop\':None}],ckpt[\'image_size\'])[0]\n    with torch.no_grad():y=model(x.unsqueeze(0))\n    assert y.shape==(1,len(ckpt[\'classes\'])) and torch.isfinite(y).all()\n    print(json.dumps({\'shape\':list(y.shape),\'finite\':True}))\n'
+PROBE_SOURCE = 'import sys\nfrom pathlib import Path\nimport hashlib\nsys.path.insert(0, sys.argv[3])\nimport cv2, numpy as np, torch\nfrom PIL import Image\nfrom torchvision import transforms\nfrom torch.utils.data import DataLoader\nimport preprocessing\nfrom preprocessing import Preprocessor, FrameDataset, load_rgb_sample\n\nfrom torch import nn\n\nclass ConvNN(nn.Module):\n    ""\n    def __init__(self,num_classes,size=224,num_filters=16,num_neurons=100):\n        super().__init__()\n        def block(a,b):return nn.Sequential(nn.Conv2d(a,b,3,padding=1),nn.BatchNorm2d(b),nn.ReLU())\n        self.block_1=block(3,num_filters)\n        self.block_2=block(num_filters,2*num_filters)\n        self.block_3=block(2*num_filters,4*num_filters)\n        self.maxpool=nn.MaxPool2d(kernel_size=3,stride=2)\n        self.dropout=nn.Dropout(.2);self.relu=nn.ReLU();self.flat=nn.Flatten()\n        h=size\n        for _ in range(3):h=(h-3)//2+1\n        self.fc1=nn.Linear(4*num_filters*h*h,num_neurons)\n        self.fc2=nn.Linear(num_neurons,num_neurons)\n        self.output=nn.Linear(num_neurons,num_classes)\n    def forward(self,x):\n        x=self.maxpool(self.block_1(x));x=self.maxpool(self.block_2(x));x=self.maxpool(self.block_3(x))\n        x=self.flat(self.dropout(x));x=self.relu(self.fc1(x));x=self.relu(self.fc2(x))\n        return self.output(x)\n\nclass TransferNet(nn.Module):\n    ""\n    def __init__(self,classes,pretrained=True):\n        super().__init__()\n        from transformers import AutoModelForImageClassification,ResNetConfig,ResNetForImageClassification\n        self.net=(AutoModelForImageClassification.from_pretrained(\'microsoft/resnet-50\') if pretrained\n                  else ResNetForImageClassification(ResNetConfig()))\n        self.net.classifier=nn.Sequential(nn.Flatten(start_dim=1),nn.Linear(self.net.config.hidden_sizes[-1],classes))\n        self.net.config.num_labels=classes\n    def forward(self,x):return self.net(x).logits\n    @property\n    def classifier(self):return self.net.classifier\n\ndef make_model(regime,classes,pretrained=True,size=224):\n    return ConvNN(classes,size) if regime==\'scratch\' else TransferNet(classes,pretrained)\n\ndef freeze_backbone(model,freeze):\n    for p in model.net.base_model.parameters():p.requires_grad=not freeze\n    for p in model.classifier.parameters():p.requires_grad=True\nif __name__==\'__main__\':\n    import sys,json\n    checkpoint,image=sys.argv[1:3]\n    torch.set_num_threads(2)\n    ckpt=torch.load(checkpoint,map_location=\'cpu\',weights_only=False)\n    assert hashlib.sha256(Path(preprocessing.__file__).read_bytes()).hexdigest()==ckpt[\'config\'][\'preprocessing_sha256\']\n    model=make_model(ckpt[\'regime\'],len(ckpt[\'classes\']),pretrained=False,size=ckpt[\'image_size\']).eval()\n    model.load_state_dict(ckpt[\'state_dict\'])\n    x,_,_=FrameDataset([{\'path\':image,\'label\':0,\'crop\':None}],ckpt[\'image_size\'])[0]\n    with torch.no_grad():y=model(x.unsqueeze(0))\n    assert y.shape==(1,len(ckpt[\'classes\'])) and torch.isfinite(y).all()\n    print(json.dumps({\'shape\':list(y.shape),\'finite\':True}))\n'
 fresh=[]
 sample=next(r['path'] for r in rows if r['split']=='train')
 for row in comparison.to_dict('records'):
     checkpoint=Path(row['folder'])/'best.pt'
     try:
-        proc=subprocess.run([sys.executable,'-c',PROBE_SOURCE,str(checkpoint),sample],capture_output=True,text=True,timeout=180)
+        proc=subprocess.run([sys.executable,'-c',PROBE_SOURCE,str(checkpoint),sample,str(Path(preprocessing.__file__).resolve().parent)],capture_output=True,text=True,timeout=180)
         fresh.append({'checkpoint':str(checkpoint),'sha256':digest(checkpoint),'passed':proc.returncode==0,
                       'stdout':proc.stdout[-1000:],'stderr':proc.stderr[-2000:]})
     except subprocess.TimeoutExpired:
@@ -1809,6 +1747,7 @@ def collect(source,destination):
     source=Path(source)
     if source.exists():
         target=repo/destination;target.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(source,target)
+collect(preprocessing.__file__,'preprocessing.py')
 for name in NAMES:
     p=Path('notebooks')/name
     if p.exists():
@@ -1834,7 +1773,7 @@ for row in comparison.to_dict('records'):
     weights.append({'path':str(folder/'best.pt'),'sha256':digest(folder/'best.pt'),'access':'private team storage'})
 write_json(repo/'weights_manifest.json',weights)
 (repo/'.gitignore').write_text('data/\nruns/\nwandb/\n*.pt\n*.pth\n*.jpg\n*.jpeg\n.env\n__pycache__/\n.ipynb_checkpoints/\n')
-(repo/'README.md').write_text("# Project 5 — Phase 1\n\nRun Phase1_Final_Presentation.ipynb in section order. Use the same Member1 dataset release for both training notebooks. All sections run in the unified notebook workspace. Internet and Colab's torch/torchvision are required; use GPU for training.\n\nMember1 uses CCT20 from https://lila.science/datasets/caltech-camera-traps. Follow dataset licence and course non-redistribution policy. Do not commit images or raw archives. The Dataset Card records filtering and limitations.\n\nAll three notebooks embed identical OpenCV preprocessing. Split is stratified by camera groups; bursts stay together. One shared config defines all six experiments. Validation selects models; calibration chooses temperature/triage threshold; test is evaluated once.\n\nSee environments/ for the actual resolved package versions and Python/platform of each member. Install one role's environment in a compatible runtime. No single cross-platform lock is claimed. The initial install cells describe required packages; actual resolved pins are captured after installation.\n\nReport and metrics are from actual execution, with pending sections visible. Test accuracy intervals include camera bootstrap and Wilson (the latter assumes independent samples). Human audit, error discussion, clean replay and W&B sync require team action. Fresh-process inference alone is not full training reproduction.\n\nWeights remain private; weights_manifest.json provides hashes and paths. Repository notebooks have outputs stripped; keep executed copies privately for assessment. This repository covers M1–M3 only, without detector training or deployment.\n")
+(repo/'README.md').write_text("# Project 5 — Phase 1\n\nRun Phase1_Final_Presentation.ipynb in section order. Use the same Member1 dataset release for both training notebooks. All sections run in the unified notebook workspace. Internet and Colab's torch/torchvision are required; use GPU for training.\n\nMember1 uses CCT20 from https://lila.science/datasets/caltech-camera-traps. Follow dataset licence and course non-redistribution policy. Do not commit images or raw archives. The Dataset Card records filtering and limitations.\n\nAll sections import the shared preprocessing.py module. Split is stratified by camera groups; bursts stay together. One shared config defines all six experiments. Validation selects models; calibration chooses temperature/triage threshold; test is evaluated once.\n\nSee environments/ for the actual resolved package versions and Python/platform of each member. Install one role's environment in a compatible runtime. No single cross-platform lock is claimed. The initial install cells describe required packages; actual resolved pins are captured after installation.\n\nReport and metrics are from actual execution, with pending sections visible. Test accuracy intervals include camera bootstrap and Wilson (the latter assumes independent samples). Human audit, error discussion, clean replay and W&B sync require team action. Fresh-process inference alone is not full training reproduction.\n\nWeights remain private; weights_manifest.json provides hashes and paths. Repository notebooks have outputs stripped; keep executed copies privately for assessment. This repository covers M1–M3 only, without detector training or deployment.\n")
 assert not list(repo.rglob('*.pt')) and not list(repo.rglob('*.jpg'))
 write_json('handoff/integration_release.json',{'schema':2,'scope':'Phase 1','status':STATUS,'gaps':gaps,
  'dataset_hash':DATA_HASH,'report_sha256':digest(repo/'REPORT_DRAFT.md'),'repository':REPOSITORY_URL})

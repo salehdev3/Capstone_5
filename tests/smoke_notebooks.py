@@ -21,7 +21,7 @@ n1 = nbformat.v4.new_notebook(cells=data_cells)
 n3 = nbformat.v4.new_notebook(cells=transfer_cells)
 n2 = virtual([
     next(c for c in cnn_cells if 'def read_json' in c.source and 'ROOT=' in c.source),
-    next(c for c in cnn_cells if 'FrameDataset' in c.source and 'class Preprocessor' in c.source),
+    next(c for c in cnn_cells if 'from preprocessing import' in c.source),
     next(c for c in cnn_cells if 'def seed_everything' in c.source),
     next(c for c in cnn_cells if 'class ConvNN' in c.source),
     next(c for c in cnn_cells if 'def ece' in c.source),
@@ -38,12 +38,18 @@ for notebook in notebooks.values():
 print('PASS: unified notebook schema and section code cells')
 n1=notebooks['Phase1_Member_1_Data.ipynb'];n2=notebooks['Phase1_Member_2_CNN.ipynb'];n3=notebooks['Phase1_Member_3_TransferLearning.ipynb']
 shared=(ROOT/'preprocessing.py').read_text()
-assert all(any(c.cell_type=='code' and c.source.startswith(shared) for c in n.cells) for n in [n1,n2,n3])
-print('PASS: byte-identical preprocessing in Members 1, 2, 3')
+assert all(any(c.cell_type=='code' and 'from preprocessing import' in c.source for c in n.cells) for n in [n1,n2,n3])
+assert not any('class Preprocessor' in c.source or 'class FrameDataset' in c.source or 'def load_rgb_sample' in c.source for c in presentation.cells if c.cell_type=='code')
+setup = next(c.source for c in presentation.cells if 'preprocessing_setup' in c.metadata.get('tags', []))
+setup_ns = {}
+exec(setup, setup_ns)
+assert Path(setup_ns['preprocessing'].__file__).resolve() == ROOT/'preprocessing.py'
+print('PASS: all sections import the shared preprocessing module')
 with tempfile.TemporaryDirectory(prefix='phase1-smoke-') as tmp:
     os.chdir(tmp)
     ns={}
     for i in [3,6,7,11,14,16,24]:exec(n2.cells[i].source,ns)
+    assert ns['FrameDataset'] is setup_ns['preprocessing'].FrameDataset
     import torch,numpy as np,pandas as pd
     from PIL import Image
     torch.set_num_threads(2)
@@ -112,10 +118,16 @@ with tempfile.TemporaryDirectory(prefix='phase1-smoke-') as tmp:
     assign=next(n for n in tree.body if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='PROBE_SOURCE' for t in n.targets))
     probe=ast.literal_eval(assign.value)
     ckpt=ns['OUT']/'triage/scratch/best.pt'
-    p=subprocess.run([sys.executable,'-c',probe,str(ckpt),rows[0]['path']],text=True,capture_output=True,timeout=120)
+    p=subprocess.run([sys.executable,'-c',probe,str(ckpt),rows[0]['path'],str(ROOT)],text=True,capture_output=True,timeout=120)
     assert p.returncode==0,p.stderr
     assert json.loads(p.stdout)['finite']
     print('PASS: saved checkpoint loads and predicts in a fresh CPU process')
+    changed_module=Path('changed_preprocessing')
+    changed_module.mkdir()
+    (changed_module/'preprocessing.py').write_text(shared+'\n')
+    rejected=subprocess.run([sys.executable,'-c',probe,str(ckpt),rows[0]['path'],str(changed_module.resolve())],text=True,capture_output=True,timeout=120)
+    assert rejected.returncode != 0 and 'AssertionError' in rejected.stderr
+    print('PASS: checkpoint inference rejects a different preprocessing source')
     
     
     import shutil, types
@@ -158,6 +170,7 @@ with tempfile.TemporaryDirectory(prefix='phase1-smoke-') as tmp:
     package=next(c.source for c in n4.cells if c.cell_type=='code' and c.source.startswith('import shutil'))
     exec(package,ns)
     repo=Path('submission/repository')
+    assert (repo/'preprocessing.py').read_text()==shared
     assert not list(repo.rglob('*.pt')) and not list(repo.rglob('*.jpg'))
     assert len((repo/'.gitignore').read_text().splitlines())>5
     assert (repo/'acceptance.csv').exists()
