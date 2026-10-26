@@ -1817,6 +1817,113 @@ Path('submission/REPORT_DRAFT.md').write_text('\n\n'.join(sections))
 display(Markdown(Path('submission/REPORT_DRAFT.md').read_text()))
 
 
+LOCAL_DATA_ROOT = Path(preprocessing.__file__).resolve().parent / 'data/team_collected_riyadh'
+LOCAL_OUTPUT = Path('submission/local_riyadh')
+LOCAL_OUTPUT.mkdir(parents=True, exist_ok=True)
+
+def evaluate_local_riyadh(root):
+    from PIL import Image
+    import imagehash
+    metadata = pd.read_csv(root / 'metadata_review.csv').fillna('')
+    annotations = read_json(root / 'draft_boxes.json')['annotations']
+    required = ['site_id', 'session_id', 'reviewer']
+    ready = metadata.status.eq('verified')
+    for field in required:
+        ready &= metadata[field].astype(str).str.strip().ne('')
+    if not len(metadata) or not ready.all():
+        write_json(LOCAL_OUTPUT / 'status.json', {'status': 'PENDING_HUMAN_REVIEW',
+                   'pending_images': metadata.loc[~ready, 'image_id'].tolist()})
+        print('Local evaluation pending: verify labels and boxes, record reviewer, site and session in metadata_review.csv.')
+        return
+    assert all(a['status'] == 'verified' for a in annotations), 'Verify every animal box before evaluation.'
+    assert len(metadata.image_id.unique()) == len(metadata)
+    local_rows = []
+    excluded = []
+    seen = set()
+    reference_hashes = {r['pixel_sha256'] for r in rows if 'pixel_sha256' in r}
+    reference_phashes = [imagehash.hex_to_hash(r['phash']) for r in rows if r.get('phash')]
+    local_phashes = []
+    for row in metadata.to_dict('records'):
+        path = root / row['filename']
+        assert digest(path) == row['sha256'], 'Image changed after annotation: ' + row['image_id']
+        with Image.open(path) as im:
+            rgb = im.convert('RGB')
+            width, height = rgb.size
+            pixels = hashlib.sha256(rgb.tobytes()).hexdigest()
+            phash = imagehash.phash(rgb)
+        if pixels in seen or pixels in reference_hashes or any(phash - old <= 2 for old in reference_phashes + local_phashes):
+            excluded.append({'image_id': row['image_id'], 'reason': 'exact or near duplicate / potential overlap'})
+            continue
+        seen.add(pixels)
+        local_phashes.append(phash)
+        assert row['proposed_label'] in ['empty', 'animal']
+        boxes = []
+        for a in annotations:
+            if a['image_id'] != row['image_id']:
+                continue
+            x1,y1,x2,y2 = a['xyxy_pixels']
+            assert 0 <= x1 < x2 <= width and 0 <= y1 < y2 <= height
+            boxes.append({'species': a['species'], 'xyxy': [x1/width,y1/height,x2/width,y2/height]})
+        assert bool(boxes) == (row['proposed_label'] == 'animal'), 'Review missing or inconsistent boxes: ' + row['image_id']
+        local_rows.append({'id': row['image_id'], 'path': str(path), 'camera': row['site_id'],
+                           'event': row['site_id'] + '/' + row['session_id'], 'split': 'local_external_test',
+                           'animal': int(row['proposed_label'] == 'animal'), 'boxes': boxes})
+    write_json(LOCAL_OUTPUT / 'cleaning_report.json', {'submitted': len(metadata), 'retained': len(local_rows), 'excluded': excluded})
+    assert local_rows, 'No local images remain after cleaning.'
+    results = []
+    for selected in comparison[comparison.selected_on_validation].to_dict('records'):
+        folder = Path(selected['folder'])
+        checkpoint = torch.load(folder/'best.pt', map_location=DEVICE, weights_only=False)
+        assert checkpoint['config']['preprocessing_sha256'] == digest(preprocessing.__file__)
+        classes = checkpoint['classes']
+        task, regime = checkpoint['task'], checkpoint['regime']
+        samples = samples_for_task(local_rows, task, classes)
+        known = [r for r in samples if r['label'] >= 0]
+        unknown = [r for r in samples if r['label'] < 0]
+        policy = read_json(folder/'policy.json')
+        result = {'task': task, 'regime': regime, 'split': 'local_external_test',
+                  'input_resolution': checkpoint['image_size'], 'policy': policy,
+                  'known_count': len(known), 'unknown_count': len(unknown),
+                  'unknown_species': sorted({r['species'] for r in unknown}),
+                  'checkpoint_sha256': digest(folder/'best.pt')}
+        if known:
+            model = make_model(regime, len(classes), pretrained=False, size=checkpoint['image_size']).to(DEVICE)
+            model.load_state_dict(checkpoint['state_dict'])
+            batches = DataLoader(FrameDataset(known, checkpoint['image_size'], False), batch_size=32, shuffle=False)
+            logits, labels = predict(model, batches)
+            probabilities = softmax(logits/policy['temperature'], axis=1)
+            result['metrics_argmax'] = classification_metrics(labels, probabilities, classes)
+            if task == 'triage':
+                result['operating_point'] = triage_metrics(labels, probabilities[:,1], policy['threshold'])
+            pd.DataFrame([{'image_id': r['sample_id'], 'true': classes[labels[i]],
+                          'prediction': classes[probabilities[i].argmax()], 'confidence': float(probabilities[i].max())}
+                         for i,r in enumerate(known)]).to_csv(LOCAL_OUTPUT/(task+'_predictions.csv'), index=False)
+            del model
+        run = wandb.init(project=CFG['project'], name=f'{task}-{regime}-local-riyadh',
+                         mode=WANDB_MODE, dir=str(LOCAL_OUTPUT.resolve()),
+                         config={'split':'local_external_test','task':task,'regime':regime,
+                                 'input_resolution':checkpoint['image_size']}, reinit='finish_previous')
+        run.log({'local/known_count':len(known),'local/unknown_count':len(unknown)})
+        if known:
+            run.log({'local/accuracy':result['metrics_argmax']['accuracy'],
+                     'local/macro_f1':result['metrics_argmax']['macro_f1_all_training_classes']})
+        result['wandb_run_id'] = run.id
+        result['wandb_url'] = run.url if WANDB_MODE == 'online' else None
+        run.finish()
+        results.append(result)
+    write_json(LOCAL_OUTPUT/'metrics.json', results)
+    metadata.to_csv(LOCAL_OUTPUT/'collection_metadata.csv', index=False)
+    (LOCAL_OUTPUT/'DATASET_CARD.md').write_text('# Team-collected Riyadh images\n\nPurpose: separate exploratory external evaluation. Models and thresholds were selected using CCT20 validation only. No local image is used for training or model selection.\n\nSource: team-provided photographs from Riyadh. Capture dates/times and site/session codes are recorded in collection_metadata.csv; blank times are unknown. Labels and boxes were proposed with assistance and verified by the named human reviewers.\n\nSubmitted images: '+str(len(metadata))+'; retained after duplicate screening: '+str(len(local_rows))+'. Exact and perceptual duplicates are quarantined. See cleaning_report.json.\n\nAll local sites and sessions belong exclusively to local_external_test. Image groups are correlated; this small, cat-dominated convenience sample is not representative of wildlife or camera-trap deployment. Unknown species are reported separately and excluded from known-species metrics.\n\nImages remain in private team storage. Confirm permission and anonymize any identifiable people before sharing. Bonus credit is assessed by the instructor.\n')
+    write_json(LOCAL_OUTPUT/'status.json', {'status':'EVALUATED', 'split':'local_external_test'})
+    display(pd.DataFrame([{k:v for k,v in r.items() if k not in ['metrics_argmax','policy','operating_point']} for r in results]))
+
+if (LOCAL_DATA_ROOT/'metadata_review.csv').exists():
+    evaluate_local_riyadh(LOCAL_DATA_ROOT)
+else:
+    write_json(LOCAL_OUTPUT/'status.json', {'status':'DATA_NOT_AVAILABLE'})
+    print('Set LOCAL_DATA_ROOT to the private repository data/team_collected_riyadh folder, then rerun this cell.')
+
+
 import shutil
 repo=Path('submission/repository');repo.mkdir(exist_ok=True)
 def collect(source,destination):
@@ -1856,4 +1963,8 @@ write_json('handoff/integration_release.json',{'schema':2,'scope':'Phase 1','sta
 archive=shutil.make_archive(str(ROOT.parent/'Phase1_Submission'),'zip',root_dir=repo)
 print('Prepared:',repo.resolve(),'|',archive)
 print('Submission archive:', archive)
+
+for evidence in Path('submission/local_riyadh').glob('*'):
+    if evidence.is_file():collect(evidence,Path('local_riyadh')/evidence.name)
+archive=shutil.make_archive(str(ROOT.parent/'Phase1_Submission'),'zip',root_dir=repo)
 
