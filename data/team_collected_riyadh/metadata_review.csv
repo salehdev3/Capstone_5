@@ -1,0 +1,21 @@
+image_id,filename,width,height,city,timezone,capture_date,capture_time,site_id,session_id,proposed_label,proposed_species,status,reviewer,notes,sha256
+RYD_001,WhatsApp Image 2026-10-27 at 12.37.40 AM (1).jpeg,720,1280,Riyadh,Asia/Riyadh,,,,,empty,empty,pending_human_review,,,523e619ace0b4496c4fe6fbb5244ffeaed1455b0e9be99c44336317ba4f9ca5e
+RYD_002,WhatsApp Image 2026-10-27 at 12.37.40 AM.jpeg,708,1535,Riyadh,Asia/Riyadh,,,,,animal,dog,pending_human_review,,,7e899fc2f5c5c0f7e71206f8dce75766444c7cf5590359dcf22b7ac6c5b654d4
+RYD_003,WhatsApp Image 2026-10-27 at 12.37.41 AM (1).jpeg,912,1600,Riyadh,Asia/Riyadh,,,,,animal,bird,pending_human_review,,Multiple small birds; check all instances and species.,8fb960cdb462adde1f7235b729fe5e6abf81de85b6594b45e5491288663de3de
+RYD_004,WhatsApp Image 2026-10-27 at 12.37.41 AM (2).jpeg,856,1600,Riyadh,Asia/Riyadh,,,,,empty,empty,pending_human_review,,,faddeae91fe26a1170716c0e36f6a8c1e795cc95e1390cec08f5f5db5cb09607
+RYD_005,WhatsApp Image 2026-10-27 at 12.37.41 AM.jpeg,916,1600,Riyadh,Asia/Riyadh,,,,,empty,empty,pending_human_review,,,8974f1d359fac11a7b491fef276d4d92110d9f11e23b1f4dc37f8a3c89d3ba9b
+RYD_006,WhatsApp Image 2026-10-27 at 12.37.42 AM (1).jpeg,958,1600,Riyadh,Asia/Riyadh,,,,,animal,cat,pending_human_review,,,2ecb8dea808e795508ddc5984eb56ab851d0f5246ee9e1222144e2cf32b9530f
+RYD_007,WhatsApp Image 2026-10-27 at 12.37.42 AM (2).jpeg,878,1600,Riyadh,Asia/Riyadh,,,,,animal,cat,pending_human_review,,Animal is occluded by foliage; box needs close review.,b29911c4e95135e1640c57e91acc7fd45659ef2a13b23893374f526cab1422b9
+RYD_008,WhatsApp Image 2026-10-27 at 12.37.42 AM (3).jpeg,1200,1600,Riyadh,Asia/Riyadh,,,,,animal,cat,pending_human_review,,Three visible cats; review every instance.,185ba66f08ca93f3cd0f0a7e852c063816ebc6dd671fffdbbbda4339cbd96fe4
+RYD_009,WhatsApp Image 2026-10-27 at 12.37.42 AM (4).jpeg,1200,1600,Riyadh,Asia/Riyadh,,,,,animal,cat,pending_human_review,,,e68b6f48b05d7e3a24940d9b27bc8bff91842c017798699d5a0ef8278b39297e
+RYD_010,WhatsApp Image 2026-10-27 at 12.37.42 AM (5).jpeg,1535,1487,Riyadh,Asia/Riyadh,,,,,animal,cat,pending_human_review,,,5b21f429058da1f1d28e95b49e79ff4ea213330403d2872f505e37e48345d120
+RYD_011,WhatsApp Image 2026-10-27 at 12.37.42 AM.jpeg,900,1600,Riyadh,Asia/Riyadh,,,,,empty,empty,pending_human_review,,,8bd228933a6fb3fd2d717ab585a108b1817749a6f897e2d5bc37ce019a1f993f
+RYD_012,WhatsApp Image 2026-10-27 at 12.37.43 AM (1).jpeg,415,739,Riyadh,Asia/Riyadh,,,,,animal,cat,pending_human_review,,,eaa042dc7caad576e91ad4577e412879d7ca34ba0419b4396aa3322a031e482a
+RYD_013,WhatsApp Image 2026-10-27 at 12.37.43 AM (2).jpeg,1200,1600,Riyadh,Asia/Riyadh,,,,,animal,cat,pending_human_review,,,475116122fe24981ec50953b1aaa333f27793d99fb55f1059f78a4c4189991f8
+RYD_014,WhatsApp Image 2026-10-27 at 12.37.43 AM (3).jpeg,1600,900,Riyadh,Asia/Riyadh,,,,,animal,cat,pending_human_review,,,0cd68b5aec022cb2649217880708ecbe807aa6821f4615b3b86c46c7e7b775c2
+RYD_015,WhatsApp Image 2026-10-27 at 12.37.43 AM (4).jpeg,1600,998,Riyadh,Asia/Riyadh,,,,,animal,cat,pending_human_review,,Partial foreground object may be another animal; confirm identity and add box if applicable.,04adcf073bae7e45b8ca0284c1de2cc6d41833e74b643c98d779702179b73561
+RYD_016,WhatsApp Image 2026-10-27 at 12.37.43 AM.jpeg,870,1600,Riyadh,Asia/Riyadh,,,,,empty,empty,pending_human_review,,,2a4016b92cb7fe420cbb548be2ceb3a20490ba64fc31ade830590e473c72225e
+RYD_017,WhatsApp Image 2026-10-27 at 12.37.44 AM (1).jpeg,900,1600,Riyadh,Asia/Riyadh,,,,,animal,cat,pending_human_review,,Possibly same cat and location as image 20; confirm session.,cc6dd6988a3ee2f0da99f0c64dd5548f0c25ef7fc25d956d7039b5d18a997633
+RYD_018,WhatsApp Image 2026-10-27 at 12.37.44 AM (2).jpeg,1200,1600,Riyadh,Asia/Riyadh,,,,,animal,cat,pending_human_review,,,d4370ed80d0bc423eabc0c30e01286700365a7e6227f9659fba6a911b5688950
+RYD_019,WhatsApp Image 2026-10-27 at 12.37.44 AM (3).jpeg,1200,1600,Riyadh,Asia/Riyadh,,,,,animal,cat,pending_human_review,,,df09c73ffb82c9cbcebfb2e5fe6e592cde3050a676ea3b6128333a4b6a5a5f5d
+RYD_020,WhatsApp Image 2026-10-27 at 12.37.44 AM.jpeg,900,1600,Riyadh,Asia/Riyadh,,,,,animal,cat,pending_human_review,,Possibly same cat and location as image 17; confirm session.,45d6f7907d6cbfe934a55a937b10eda4936cd261c07d778e74f5caca1e106136

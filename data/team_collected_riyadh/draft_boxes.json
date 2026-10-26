@@ -1,0 +1,246 @@
+{
+  "coordinate_format": "xyxy pixels in original image",
+  "status": "AI-assisted proposals, not verified ground truth",
+  "annotations": [
+    {
+      "image_id": "RYD_002",
+      "object_id": 1,
+      "species": "dog",
+      "xyxy_pixels": [
+        163,
+        553,
+        581,
+        783
+      ],
+      "status": "draft_pending_human_review"
+    },
+    {
+      "image_id": "RYD_003",
+      "object_id": 1,
+      "species": "bird",
+      "xyxy_pixels": [
+        264,
+        608,
+        301,
+        672
+      ],
+      "status": "draft_pending_human_review"
+    },
+    {
+      "image_id": "RYD_003",
+      "object_id": 2,
+      "species": "bird",
+      "xyxy_pixels": [
+        547,
+        672,
+        593,
+        736
+      ],
+      "status": "draft_pending_human_review"
+    },
+    {
+      "image_id": "RYD_003",
+      "object_id": 3,
+      "species": "bird",
+      "xyxy_pixels": [
+        629,
+        704,
+        675,
+        768
+      ],
+      "status": "draft_pending_human_review"
+    },
+    {
+      "image_id": "RYD_003",
+      "object_id": 4,
+      "species": "bird",
+      "xyxy_pixels": [
+        793,
+        656,
+        821,
+        704
+      ],
+      "status": "draft_pending_human_review"
+    },
+    {
+      "image_id": "RYD_006",
+      "object_id": 1,
+      "species": "cat",
+      "xyxy_pixels": [
+        575,
+        784,
+        776,
+        1120
+      ],
+      "status": "draft_pending_human_review"
+    },
+    {
+      "image_id": "RYD_007",
+      "object_id": 1,
+      "species": "cat",
+      "xyxy_pixels": [
+        88,
+        512,
+        588,
+        896
+      ],
+      "status": "draft_pending_human_review"
+    },
+    {
+      "image_id": "RYD_008",
+      "object_id": 1,
+      "species": "cat",
+      "xyxy_pixels": [
+        360,
+        224,
+        660,
+        432
+      ],
+      "status": "draft_pending_human_review"
+    },
+    {
+      "image_id": "RYD_008",
+      "object_id": 2,
+      "species": "cat",
+      "xyxy_pixels": [
+        360,
+        592,
+        684,
+        832
+      ],
+      "status": "draft_pending_human_review"
+    },
+    {
+      "image_id": "RYD_008",
+      "object_id": 3,
+      "species": "cat",
+      "xyxy_pixels": [
+        312,
+        1024,
+        516,
+        1344
+      ],
+      "status": "draft_pending_human_review"
+    },
+    {
+      "image_id": "RYD_009",
+      "object_id": 1,
+      "species": "cat",
+      "xyxy_pixels": [
+        516,
+        720,
+        588,
+        880
+      ],
+      "status": "draft_pending_human_review"
+    },
+    {
+      "image_id": "RYD_010",
+      "object_id": 1,
+      "species": "cat",
+      "xyxy_pixels": [
+        353,
+        520,
+        875,
+        922
+      ],
+      "status": "draft_pending_human_review"
+    },
+    {
+      "image_id": "RYD_012",
+      "object_id": 1,
+      "species": "cat",
+      "xyxy_pixels": [
+        100,
+        207,
+        336,
+        451
+      ],
+      "status": "draft_pending_human_review"
+    },
+    {
+      "image_id": "RYD_013",
+      "object_id": 1,
+      "species": "cat",
+      "xyxy_pixels": [
+        588,
+        624,
+        732,
+        768
+      ],
+      "status": "draft_pending_human_review"
+    },
+    {
+      "image_id": "RYD_014",
+      "object_id": 1,
+      "species": "cat",
+      "xyxy_pixels": [
+        640,
+        603,
+        768,
+        720
+      ],
+      "status": "draft_pending_human_review"
+    },
+    {
+      "image_id": "RYD_015",
+      "object_id": 1,
+      "species": "cat",
+      "xyxy_pixels": [
+        0,
+        489,
+        576,
+        729
+      ],
+      "status": "draft_pending_human_review"
+    },
+    {
+      "image_id": "RYD_017",
+      "object_id": 1,
+      "species": "cat",
+      "xyxy_pixels": [
+        315,
+        688,
+        684,
+        944
+      ],
+      "status": "draft_pending_human_review"
+    },
+    {
+      "image_id": "RYD_018",
+      "object_id": 1,
+      "species": "cat",
+      "xyxy_pixels": [
+        372,
+        736,
+        720,
+        1120
+      ],
+      "status": "draft_pending_human_review"
+    },
+    {
+      "image_id": "RYD_019",
+      "object_id": 1,
+      "species": "cat",
+      "xyxy_pixels": [
+        360,
+        768,
+        780,
+        1120
+      ],
+      "status": "draft_pending_human_review"
+    },
+    {
+      "image_id": "RYD_020",
+      "object_id": 1,
+      "species": "cat",
+      "xyxy_pixels": [
+        216,
+        768,
+        684,
+        1168
+      ],
+      "status": "draft_pending_human_review"
+    }
+  ]
+}
