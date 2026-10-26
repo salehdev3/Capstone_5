@@ -12,7 +12,9 @@
         581,
         783
       ],
-      "status": "draft_pending_human_review"
+      "status": "draft_pending_human_review",
+      "assigned_reviewer": "Saleh",
+      "annotation_source": "assistant_visual_annotation"
     },
     {
       "image_id": "RYD_003",
@@ -24,7 +26,9 @@
         301,
         672
       ],
-      "status": "draft_pending_human_review"
+      "status": "draft_pending_human_review",
+      "assigned_reviewer": "Saleh",
+      "annotation_source": "assistant_visual_annotation"
     },
     {
       "image_id": "RYD_003",
@@ -36,7 +40,9 @@
         593,
         736
       ],
-      "status": "draft_pending_human_review"
+      "status": "draft_pending_human_review",
+      "assigned_reviewer": "Saleh",
+      "annotation_source": "assistant_visual_annotation"
     },
     {
       "image_id": "RYD_003",
@@ -48,7 +54,9 @@
         675,
         768
       ],
-      "status": "draft_pending_human_review"
+      "status": "draft_pending_human_review",
+      "assigned_reviewer": "Saleh",
+      "annotation_source": "assistant_visual_annotation"
     },
     {
       "image_id": "RYD_003",
@@ -60,7 +68,9 @@
         821,
         704
       ],
-      "status": "draft_pending_human_review"
+      "status": "draft_pending_human_review",
+      "assigned_reviewer": "Saleh",
+      "annotation_source": "assistant_visual_annotation"
     },
     {
       "image_id": "RYD_006",
@@ -72,7 +82,9 @@
         776,
         1120
       ],
-      "status": "draft_pending_human_review"
+      "status": "draft_pending_human_review",
+      "assigned_reviewer": "Saleh",
+      "annotation_source": "assistant_visual_annotation"
     },
     {
       "image_id": "RYD_007",
@@ -84,7 +96,9 @@
         588,
         896
       ],
-      "status": "draft_pending_human_review"
+      "status": "draft_pending_human_review",
+      "assigned_reviewer": "Saleh",
+      "annotation_source": "assistant_visual_annotation"
     },
     {
       "image_id": "RYD_008",
@@ -96,7 +110,9 @@
         660,
         432
       ],
-      "status": "draft_pending_human_review"
+      "status": "draft_pending_human_review",
+      "assigned_reviewer": "Saleh",
+      "annotation_source": "assistant_visual_annotation"
     },
     {
       "image_id": "RYD_008",
@@ -108,7 +124,9 @@
         684,
         832
       ],
-      "status": "draft_pending_human_review"
+      "status": "draft_pending_human_review",
+      "assigned_reviewer": "Saleh",
+      "annotation_source": "assistant_visual_annotation"
     },
     {
       "image_id": "RYD_008",
@@ -120,7 +138,9 @@
         516,
         1344
       ],
-      "status": "draft_pending_human_review"
+      "status": "draft_pending_human_review",
+      "assigned_reviewer": "Saleh",
+      "annotation_source": "assistant_visual_annotation"
     },
     {
       "image_id": "RYD_009",
@@ -132,7 +152,9 @@
         588,
         880
       ],
-      "status": "draft_pending_human_review"
+      "status": "draft_pending_human_review",
+      "assigned_reviewer": "Saleh",
+      "annotation_source": "assistant_visual_annotation"
     },
     {
       "image_id": "RYD_010",
@@ -144,7 +166,9 @@
         875,
         922
       ],
-      "status": "draft_pending_human_review"
+      "status": "draft_pending_human_review",
+      "assigned_reviewer": "Saleh",
+      "annotation_source": "assistant_visual_annotation"
     },
     {
       "image_id": "RYD_012",
@@ -156,7 +180,9 @@
         336,
         451
       ],
-      "status": "draft_pending_human_review"
+      "status": "draft_pending_human_review",
+      "assigned_reviewer": "Saleh",
+      "annotation_source": "assistant_visual_annotation"
     },
     {
       "image_id": "RYD_013",
@@ -168,7 +194,9 @@
         732,
         768
       ],
-      "status": "draft_pending_human_review"
+      "status": "draft_pending_human_review",
+      "assigned_reviewer": "Saleh",
+      "annotation_source": "assistant_visual_annotation"
     },
     {
       "image_id": "RYD_014",
@@ -180,7 +208,9 @@
         768,
         720
       ],
-      "status": "draft_pending_human_review"
+      "status": "draft_pending_human_review",
+      "assigned_reviewer": "Saleh",
+      "annotation_source": "assistant_visual_annotation"
     },
     {
       "image_id": "RYD_015",
@@ -192,7 +222,9 @@
         576,
         729
       ],
-      "status": "draft_pending_human_review"
+      "status": "draft_pending_human_review",
+      "assigned_reviewer": "Saleh",
+      "annotation_source": "assistant_visual_annotation"
     },
     {
       "image_id": "RYD_017",
@@ -204,7 +236,9 @@
         684,
         944
       ],
-      "status": "draft_pending_human_review"
+      "status": "draft_pending_human_review",
+      "assigned_reviewer": "Saleh",
+      "annotation_source": "assistant_visual_annotation"
     },
     {
       "image_id": "RYD_018",
@@ -216,7 +250,9 @@
         720,
         1120
       ],
-      "status": "draft_pending_human_review"
+      "status": "draft_pending_human_review",
+      "assigned_reviewer": "Saleh",
+      "annotation_source": "assistant_visual_annotation"
     },
     {
       "image_id": "RYD_019",
@@ -228,7 +264,9 @@
         780,
         1120
       ],
-      "status": "draft_pending_human_review"
+      "status": "draft_pending_human_review",
+      "assigned_reviewer": "Saleh",
+      "annotation_source": "assistant_visual_annotation"
     },
     {
       "image_id": "RYD_020",
@@ -240,7 +278,35 @@
         684,
         1168
       ],
-      "status": "draft_pending_human_review"
+      "status": "draft_pending_human_review",
+      "assigned_reviewer": "Saleh",
+      "annotation_source": "assistant_visual_annotation"
+    },
+    {
+      "image_id": "RYD_016",
+      "object_id": 1,
+      "species": "cat",
+      "xyxy_pixels": [
+        478,
+        877,
+        626,
+        965
+      ],
+      "status": "draft_pending_human_review",
+      "assigned_reviewer": "Saleh",
+      "annotation_source": "assistant_visual_annotation"
+    }
+  ],
+  "unresolved_instances": [
+    {
+      "image_id": "RYD_015",
+      "region": "bottom edge",
+      "reason": "partial animal; species and inclusion need human confirmation"
+    },
+    {
+      "image_id": "RYD_003",
+      "region": "distant birds",
+      "reason": "small background birds may require additional boxes"
     }
   ]
 }
