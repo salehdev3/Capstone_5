@@ -14,9 +14,9 @@ Project 5 — AI251P Applied Computer Vision. Phase 1: data preparation (M1), CN
 
 ## Execution
 
-[Open in Colab](https://colab.research.google.com/github/salehdev3/Capstone_5/blob/main/notebooks/Phase1_Final_Presentation.ipynb).
+[Open in Colab](https://colab.research.google.com/github/salehdev3/Capstone_5/blob/v1/notebooks/Phase1_Final_Presentation.ipynb).
 
-Select a GPU with compatible PyTorch and torchvision. Execute the four sections in order in the same session. The notebook downloads a CCT20 subset, requests label and blur reviews, freezes the dataset release, runs six classification experiments and assembles the report. No archive transfer between members is required.
+Select a GPU with compatible PyTorch and torchvision. Execute the four sections in order in the same session. The notebook downloads a CCT20 subset, requests label and blur reviews, freezes the dataset release, runs six classification experiments and assembles evidence for the report. No archive transfer between members is required.
 
 The setup cell loads `preprocessing.py` from the local repository. When opened alone in Colab, it downloads a pinned copy from this repository and verifies its SHA-256 before importing it. Checkpoints record the actual module hash; evaluation rejects a different preprocessing version. The submission package includes the module.
 
@@ -29,3 +29,15 @@ W&B defaults offline. Sync actual logs and record run links. Complete team obser
 After editing the notebook, run `python tools/build_presentation.py`, then `MPLBACKEND=Agg python tests/smoke_presentation.py` with the project dependencies installed.
 
 Validation exercises synthetic scratch training, calibration, evaluation, checkpoint reload, random-weight ResNet gradient paths and report packaging. CCT20 training, performance results and human review remain required for submission.
+
+## Phase 1 scope and submission
+
+Project 5, Section 8.5, page 19 of the updated guidelines explicitly requires: “Classify frames as empty or non-empty and classify species on crops.” Both tasks are retained. Human-annotated boxes supply the crops; detector training, segmentation, ONNX export and HTTP deployment are Phase 2 work and are not implemented here. `triage` is the name of the required empty/animal task, not a trial execution mode.
+
+The image-quality review includes editable reviewer, decision and observation fields. Saved entries reload on reopening the cell. `keep` records acceptable image quality; `flag` records a quality concern for discussion. A blur flag alone does not remove an image. The label audit remains a separate required review. Reviews cannot be changed after the dataset release is frozen.
+
+Submit one PDF per team, compiled from the official Overleaf template and named `TeamName_Phase1.pdf`. Complete every section and table, replace grey prompts and put figures in `figures/`. Section 1 must contain accessible repository, W&B project and Dataset Card links. Member 4 records these links in `report_inputs.json`. Every reported figure must identify its split, input resolution and threshold (or argmax / not applicable).
+
+The notebook generates `REPORT_DRAFT.md` and an evidence archive, not the completed Overleaf PDF. Publish the generated Dataset Card and sync offline W&B runs before checking instructor access. Complete the report with actual experiment results and team analysis. The grading allocation is M1: 12, M2–M3: 20, reproducibility: 8 points.
+
+Run `python tests/test_blur_review.py` to validate review persistence and frozen-release protection.

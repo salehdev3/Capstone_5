@@ -2,6 +2,7 @@
 import subprocess, sys
 subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'ImageHash', 'pandas', 'scipy', 'matplotlib', 'Pillow', 'PyYAML', 'ipywidgets', 'scikit-learn', 'opencv-python-headless', 'tqdm', 'wandb', 'transformers==4.49.0'])
 
+
 from pathlib import Path
 import hashlib
 import sys
@@ -37,7 +38,6 @@ from pathlib import Path
 import os, sys, subprocess
 import matplotlib.pyplot as plt
 from IPython.display import display, Markdown
-"""Download official CCT20 metadata; no predicted boxes are used as labels."""
 import collections
 import hashlib
 import html
@@ -118,7 +118,7 @@ def read_metadata(root):
         for member in tar.getmembers():
             if not member.name.endswith('.json') or not member.isfile():
                 continue
-            
+
             d = json.load(tar.extractfile(member))
             for c in d['categories']:
                 if c['id'] in categories and categories[c['id']] != c['name']:
@@ -183,10 +183,11 @@ rows = read_metadata(DATA)
 print("Eligible frames:", len(rows))
 display(pd.DataFrame(rows)[["id", "camera", "event", "animal", "labels"]].head())
 
+
 from sklearn.model_selection import StratifiedGroupKFold
 
 def assign_sites(rows, seed):
-    
+
     y=np.array(['|'.join(sorted(r['labels'])) or 'empty' for r in rows])
     groups=np.array([r['camera'] for r in rows])
     def first_fold(indices, folds):
@@ -222,7 +223,6 @@ display(pd.DataFrame(rows).groupby('split').agg(images=('id','count'),cameras=('
 
 
 def sample_events(rows, limit, seed):
-    ""
     if not limit or limit >= len(rows):
         return rows
     rng = random.Random(seed)
@@ -285,12 +285,12 @@ good, failures = [], []
 for row in tqdm(chosen):
     image_row, error = download_one(row, DATA, cfg['max_image_side'])
     if image_row is not None:
-        image_row['path'] = str(DATA/'images'/(image_row['id']+'.jpg'))  
+        image_row['path'] = str(DATA/'images'/(image_row['id']+'.jpg'))
         good.append(image_row)
     if error is not None: failures.append(error)
 write_json(DATA/'download_failures.json', failures)
 print('Readable:', len(good), '| Failed:', len(failures))
-assert len(failures) <= 0.02*len(chosen), 'review review review 2%review review review review review review'
+assert len(failures) <= 0.02*len(chosen), 'More than 2% of selected images failed to download or validate.'
 failed_events = {e['event'] for e in failures}
 good = sorted([r for r in good if r['event'] not in failed_events], key=lambda r:r['id'])
 
@@ -308,13 +308,69 @@ display(inventory.describe(include='all'))
 lowest=inventory.query("split == 'train'").nsmallest(8,'blur_score').copy()
 lowest['reviewer']='';lowest['decision']='';lowest['notes']=''
 if not (DATA/'blur_review.csv').exists():lowest.to_csv(DATA/'blur_review.csv',index=False)
-for r in lowest.to_dict('records'):
-    print(r['id'],'blur:',round(r['blur_score'],2));im=Image.open(r['path']);im.thumbnail((420,280));display(im)
-print('Complete the image-quality review.: reviewer = review decision = keep review flagreview notes = review. flag review review review review review.')
+
+
+import ipywidgets as widgets
+from IPython.display import display, clear_output
+from PIL import Image
+
+def blur_review_widget(data_dir):
+    data_dir = Path(data_dir)
+    review_path = data_dir / "blur_review.csv"
+    review_rows = pd.read_csv(review_path).fillna("")
+    if review_rows.empty:
+        raise ValueError("The image-quality review contains no images.")
+    reviewer = widgets.Text(description="Reviewer:", layout=widgets.Layout(width="75%"))
+    names = review_rows["reviewer"].astype(str).str.strip()
+    if names.ne("").all() and names.nunique() == 1:
+        reviewer.value = names.iloc[0]
+    display(reviewer)
+    review_widgets = []
+    for index, row in review_rows.iterrows():
+        with Image.open(row["path"]) as source:
+            image = source.convert("RGB")
+        image.thumbnail((500, 350))
+        decision = widgets.Dropdown(
+            options=[("Select decision", ""), ("keep", "keep"), ("flag", "flag")],
+            value=row["decision"] if row["decision"] in ("keep", "flag") else "",
+            description="Decision:")
+        notes = widgets.Text(value=str(row["notes"]), description="Observation:",
+                             layout=widgets.Layout(width="75%"))
+        print("Image:", row["id"], "| Blur score:", round(row["blur_score"], 2))
+        display(image, decision, notes)
+        review_widgets.append((index, decision, notes))
+    save_button = widgets.Button(description="Save review", button_style="success")
+    save_output = widgets.Output()
+    def save_review(_):
+        with save_output:
+            clear_output()
+            if Path("handoff/dataset_release.json").exists():
+                print("The dataset release is frozen. Create a new release before changing its review.")
+                return
+            if not reviewer.value.strip():
+                print("Enter the reviewer name before saving.")
+                return
+            if any(decision.value not in ("keep", "flag") or not notes.value.strip()
+                   for _, decision, notes in review_widgets):
+                print("Select a decision and add an observation for every image before saving.")
+                return
+            for index, decision, notes in review_widgets:
+                review_rows.loc[index, "reviewer"] = reviewer.value.strip()
+                review_rows.loc[index, "decision"] = decision.value
+                review_rows.loc[index, "notes"] = notes.value.strip()
+            temporary = review_path.with_suffix(".csv.tmp")
+            review_rows.to_csv(temporary, index=False)
+            temporary.replace(review_path)
+            print("Review saved to:", review_path)
+    save_button.on_click(save_review)
+    display(save_button, save_output)
+    return reviewer, review_widgets, save_button, save_output
+
+blur_review_controls = blur_review_widget(DATA)
 
 
 def near_duplicate_quarantine(rows, distance=2):
-    
+
     buckets = collections.defaultdict(list)
     bad, pairs = set(), []
     for r in rows:
@@ -333,6 +389,7 @@ def near_duplicate_quarantine(rows, distance=2):
         for part in range(4):
             buckets[(part,(h>>(part*16)) & 65535)].append(r)
     return [r for r in rows if r['event'] not in bad], pairs, sorted(bad)
+
 
 hashes=collections.defaultdict(list)
 for r in good:hashes[r['pixel_sha256']].append(r)
@@ -365,6 +422,7 @@ write_json(DATA/'cleaning_report.json',dict(selected=len(chosen),downloaded=len(
 
 print('Clean frames:', len(cleaned), '| Training species:', labels)
 
+
 def gallery(path, rows, draw_boxes=False, titles=None):
     path=Path(path);thumbs=path.parent/(path.stem+'_images');thumbs.mkdir(exist_ok=True)
     cards=[]
@@ -382,7 +440,7 @@ def gallery(path, rows, draw_boxes=False, titles=None):
 
 def audit_templates(cfg, rows):
     root=Path(cfg['data_dir'])
-    
+
     rng=random.Random(cfg['seed'])
     events=collections.defaultdict(list)
     for r in rows:
@@ -395,7 +453,7 @@ def audit_templates(cfg, rows):
           identifiable_person='',reviewer='',notes=''))
     pd.DataFrame(audit).to_csv(root/'label_audit.csv',index=False)
     gallery(root/'audit_gallery.html',[next(r for r in rows if r['id']==a['id']) for a in audit],draw_boxes=True)
-    
+
     count_rows=[dict(split=r['split'],label=s) for r in rows for s in (r['labels'] or ['empty'])]
     pd.crosstab(pd.DataFrame(count_rows).label,pd.DataFrame(count_rows).split).to_csv(root/'class_counts.csv')
     crop_rows=[dict(split=r['split'],label=b['species']) for r in rows for b in r['boxes']]
@@ -407,6 +465,7 @@ if not (DATA/'label_audit.csv').exists():
 counts = pd.read_csv(DATA/'class_counts.csv', index_col=0)
 display(counts)
 counts.plot.bar(stacked=True, figsize=(12,4))
+plt.title('Frame labels by split | source images, maximum side 1024 px | threshold N/A')
 plt.ylabel('Label occurrences'); plt.tight_layout(); plt.show()
 for row in [r for r in cleaned if r['split']=='train'][:4]:
     print(row['id'], row['labels'] or ['empty'])
@@ -452,6 +511,7 @@ def audit_widget(cfg):
 
 audit_widget(cfg)
 
+
 from scipy.stats import beta
 
 def audit_report(cfg):
@@ -476,7 +536,6 @@ def audit_report(cfg):
     write_json(root/'audit_report.json',result);return result
 
 def apply_audit(cfg):
-    ""
     root=Path(cfg['data_dir']);out=Path(cfg['output_dir'])
     df=pd.read_csv(root/'label_audit.csv').fillna('')
     reviewed=df[df.reviewer.astype(str).str.strip().ne('')]
@@ -552,6 +611,7 @@ fig,axes=plt.subplots(2,4,figsize=(12,6))
 for x,y,ax in zip(images,targets,axes.flat):
     rgb=x.permute(1,2,0).numpy()*[.229,.224,.225]+[.485,.456,.406]
     ax.imshow(np.clip(rgb,0,1));ax.set_title(['empty','animal'][int(y)]);ax.axis('off')
+fig.suptitle('Training augmentation | train | input 224 x 224 | threshold N/A')
 plt.tight_layout();plt.show()
 
 
@@ -562,10 +622,11 @@ augmented=np.array(train_dataset.tf(Image.fromarray(prepared)))
 fig,axes=plt.subplots(1,3,figsize=(12,4))
 for ax,img,title in zip(axes,[rgb,prepared,augmented],['Downloaded RGB','Resize 224','Train augmentation']):
     ax.imshow(img);ax.set_title(title);ax.axis('off')
+fig.suptitle('Preprocessing | train | input 224 x 224 | threshold N/A')
 plt.show()
 for ch,color in enumerate(['red','green','blue']):
     plt.hist(prepared[:,:,ch].ravel(),bins=32,alpha=.35,color=color,label=color)
-plt.legend();plt.title('Train sample channel histogram');plt.show()
+plt.legend();plt.title('Channel histogram | train | input 224 x 224 | threshold N/A');plt.show()
 
 
 row = next(r for r in rows if r['split']=='train' and r['boxes'])
@@ -575,10 +636,10 @@ x1,y1,x2,y2 = box['xyxy']
 dx,dy=(x2-x1)*.05,(y2-y1)*.05
 crop=im.crop((max(0,int((x1-dx)*im.width)),max(0,int((y1-dy)*im.height)),
               min(im.width,int((x2+dx)*im.width)),min(im.height,int((y2+dy)*im.height))))
-print('Species:', box['species']); display(crop)
+print('Species:', box['species'], '| Split: train | Crop:', crop.size, '| Model input: 224 x 224 | Threshold: N/A'); display(crop)
 
 
-TEAM_NOTES = ""  
+TEAM_NOTES = ""
 counts = pd.read_csv(DATA/'class_counts.csv', index_col=0)
 cleaning = read_json(DATA/'cleaning_report.json')
 summary = pd.DataFrame(rows).groupby('split').agg(frames=('id','count'),cameras=('camera','nunique'))
@@ -638,11 +699,11 @@ display(Markdown(card))
 
 
 blur_check=pd.read_csv(DATA/'blur_review.csv').fillna('')
-assert len(blur_check) and blur_check['reviewer'].str.strip().ne('').all() and blur_check['decision'].isin(['keep','flag']).all() and blur_check['notes'].str.strip().ne('').all(), 'Complete the image-quality review.: reviewer reviewdecision = keep review flagreview flag review review review review'
+assert len(blur_check) and blur_check['reviewer'].str.strip().ne('').all() and blur_check['decision'].isin(['keep','flag']).all() and blur_check['notes'].str.strip().ne('').all(), 'Save a reviewer name, keep/flag decision and observation for every image in the image-quality review.'
 assert TEAM_NOTES.strip(), 'Complete the dataset observations before continuing.'
-training_defaults = {'project': 'camera-trap-phase1', 'backbone': 'microsoft/resnet-50', 'seed': 42, 'profile': 'full', 'data_dir': 'data/cct20_v1', 'output_dir': 'runs/data', 'max_images': 6000, 'download_workers': 12, 'max_image_side': 1024, 'image_size': 224, 'batch_size': 32, 'workers': 2, 'epochs': 12, 'patience': 4, 'warmup_epochs': 2, 'lr_scratch': 0.001, 'lr_frozen': 0.001, 'lr_full': 0.0001, 'weight_decay': 0.0001, 'label_smoothing': 0.05, 'class_weighted_loss': True, 'wandb_mode': 'offline', 'target_animal_recall': 0.99, 'species_review_confidence': 0.6, 'bootstrap_repeats': 1000, 'audit_events': 100, 'acceptance': {'animal_recall_min': 0.99, 'empty_removal_min': 0.2, 'species_macro_f1_min': 0.65, 'species_ece_max': 0.1}}
+training_defaults = {'project': 'camera-trap-phase1', 'backbone': 'microsoft/resnet-50', 'seed': 42, 'profile': 'full', 'data_dir': 'data/cct20_v1', 'output_dir': 'runs/data', 'max_images': 6000, 'download_workers': 12, 'max_image_side': 1024, 'image_size': 224, 'batch_size': 32, 'workers': 2, 'epochs': 12, 'patience': 4, 'warmup_epochs': 0, 'lr_scratch': 0.001, 'lr_frozen': 0.001, 'lr_full': 0.0001, 'weight_decay': 0.0, 'label_smoothing': 0.0, 'class_weighted_loss': False, 'wandb_mode': 'offline', 'target_animal_recall': 0.99, 'species_review_confidence': 0.6, 'bootstrap_repeats': 1000, 'audit_events': 100, 'acceptance': {'animal_recall_min': 0.99, 'empty_removal_min': 0.2, 'species_macro_f1_min': 0.65, 'species_ece_max': 0.1}}
 training_defaults.update(cfg)
-training_defaults.update(contract_version=2,preprocessing_sha256=digest(Path(preprocessing.__file__)),warmup_epochs=0,weight_decay=0.0,label_smoothing=0.0,class_weighted_loss=False,optimizer='Adam',wandb_mode='offline')
+training_defaults.update(contract_version=2,preprocessing_sha256=digest(Path(preprocessing.__file__)),optimizer='Adam')
 write_json('handoff/preprocessing.json',{'sha256':digest(Path(preprocessing.__file__)),'input_size':224,'library':'OpenCV + torchvision','train_only':['horizontal_flip','brightness_contrast']})
 write_json('handoff/data_config.json', training_defaults)
 write_json(DATA/'preparation_config.json', training_defaults)
@@ -726,10 +787,11 @@ def samples_for_task(rows,task,classes):
                                     sample_id=f'{r["id"]}_{i}',crop=b['xyxy'],species=b['species']))
     return samples
 
+
 DEVICE='cuda' if torch.cuda.is_available() else 'cpu'
 print('Device:',DEVICE)
-if DEVICE=='cpu':print('CPU review review review review GPU review Colab')
-WANDB_MODE='offline'  
+if DEVICE=='cpu':print('Training device: CPU. GPU acceleration is unavailable in this runtime.')
+WANDB_MODE=CFG['wandb_mode']
 import wandb
 if WANDB_MODE=='online':wandb.login()
 REGIMES=['scratch']
@@ -743,7 +805,6 @@ environment(2)
 from torch import nn
 
 class ConvNN(nn.Module):
-    ""
     def __init__(self,num_classes,size=224,num_filters=16,num_neurons=100):
         super().__init__()
         def block(a,b):return nn.Sequential(nn.Conv2d(a,b,3,padding=1),nn.BatchNorm2d(b),nn.ReLU())
@@ -763,7 +824,6 @@ class ConvNN(nn.Module):
         return self.output(x)
 
 class TransferNet(nn.Module):
-    ""
     def __init__(self,classes,pretrained=True):
         super().__init__()
         from transformers import AutoModelForImageClassification,ResNetConfig,ResNetForImageClassification
@@ -781,6 +841,7 @@ def make_model(regime,classes,pretrained=True,size=224):
 def freeze_backbone(model,freeze):
     for p in model.net.base_model.parameters():p.requires_grad=not freeze
     for p in model.classifier.parameters():p.requires_grad=True
+
 
 classes=['empty','animal']
 example_model=make_model(REGIMES[0],len(classes),size=CFG['image_size'])
@@ -861,7 +922,6 @@ def classification_metrics(y,probs,classes):
 
 
 def camera_bootstrap(y,probs,cameras,repeats=1000,seed=42,threshold=None):
-    ""
     y=np.asarray(y);p=np.asarray(probs);c=np.asarray(cameras);sites=np.unique(c)
     if len(sites)<2:return {'status':'not_estimable_fewer_than_two_cameras'}
     rng=np.random.default_rng(seed);acc=[];f1=[];rec=[];empty=[]
@@ -911,7 +971,7 @@ def train_model(task,regime):
         saved=read_json(folder/'summary.json');assert saved['context']==context
         assert saved['checkpoint_sha256']==digest(folder/'best.pt')
         print('Reusing completed run:',task,regime);return saved
-    assert not (folder/'best.pt').exists(), 'review review review review review review review review review'
+    assert not (folder/'best.pt').exists(), 'An unfinished checkpoint exists. Preserve it and use a new output directory for a fresh run.'
     model=make_model(regime,len(classes),size=CFG['image_size']).to(DEVICE)
     if regime!='scratch':freeze_backbone(model,regime=='frozen')
     assert CFG['optimizer']=='Adam', 'Only Adam is implemented'
@@ -923,22 +983,22 @@ def train_model(task,regime):
     criterion=nn.CrossEntropyLoss(weight=weights,label_smoothing=CFG['label_smoothing'])
     optimizer=torch.optim.Adam([p for p in model.parameters() if p.requires_grad],lr=CFG['lr_'+regime],weight_decay=CFG['weight_decay'])
     run=wandb.init(project=CFG['project'],name=f'{task}-{regime}',group=DATA_HASH[:12],
-                   mode=WANDB_MODE,dir=str(folder.resolve()),config=dict(CFG,task=task,regime=regime),reinit=True)
+                   mode=WANDB_MODE,dir=str(folder.resolve()),config=dict(CFG,task=task,regime=regime),reinit='finish_previous')
     best=-1;stale=0;history=[]
     for epoch in range(CFG['epochs']):
         warmup=max(0,int(CFG['warmup_epochs']))
         for group in optimizer.param_groups:
             group['lr']=CFG['lr_'+regime]*min(1.,(epoch+1)/max(1,warmup))
         model.train()
-        if regime=='frozen':model.eval();model.classifier.train() 
+        if regime=='frozen':model.eval();model.classifier.train()
         total_loss=0;correct=0;total=0
         for images,labels,_ in loader(train,True):
             images,labels=images.to(DEVICE),labels.to(DEVICE)
             optimizer.zero_grad()
-            logits=model(images)                     
-            loss=criterion(logits,labels)            
-            loss.backward()                         
-            optimizer.step()                        
+            logits=model(images)
+            loss=criterion(logits,labels)
+            loss.backward()
+            optimizer.step()
             total_loss+=loss.item()*len(labels)
             correct+=int((logits.argmax(1)==labels).sum());total+=len(labels)
         logits,y=predict(model,loader(val))
@@ -978,8 +1038,10 @@ def train_model(task,regime):
 triage_runs=[train_model('triage',regime) for regime in REGIMES]
 display(pd.DataFrame(triage_runs)[['task','regime','selection_score','best_epoch']])
 
+
 species_runs=[train_model('species',regime) for regime in REGIMES]
 display(pd.DataFrame(species_runs)[['task','regime','selection_score','best_epoch']])
+
 
 selection={task:max([r for r in triage_runs+species_runs if r['task']==task],key=lambda r:r['selection_score'])['regime'] for task in ['triage','species']}
 write_json(OUT/'selection.json',{'selected':selection,'criterion':'val_select macro-F1','dataset_hash':DATA_HASH})
@@ -1020,7 +1082,7 @@ def evaluate_model(task,regime):
     pred=p.argmax(1)
     pd.DataFrame([{'sample_id':r['sample_id'],'camera':r['camera'],'true':classes[y[i]],
       'prediction':classes[pred[i]],'confidence':float(p[i].max())} for i,r in enumerate(known)]).to_csv(folder/'test_predictions.csv',index=False)
-    
+
     decisions=(p[:,1]>=policy['threshold']).astype(int) if task=='triage' else pred
     errors=np.flatnonzero(decisions!=y)
     chosen=sorted(errors,key=lambda i:float(p[i].max()),reverse=True)[:12]
@@ -1033,7 +1095,7 @@ def evaluate_model(task,regime):
         fig.suptitle(f'{task}/{regime}: test errors, input {CFG["image_size"]}, threshold '+str(policy.get('threshold','argmax')))
         fig.tight_layout();fig.savefig(folder/'private_errors.jpg');plt.close(fig)
     run=wandb.init(project=CFG['project'],name=f'{task}-{regime}-test',group=DATA_HASH[:12],
-      mode=WANDB_MODE,dir=str(folder.resolve()),config=dict(CFG,task=task,regime=regime,split='locked_test'),reinit=True)
+      mode=WANDB_MODE,dir=str(folder.resolve()),config=dict(CFG,task=task,regime=regime,split='locked_test'),reinit='finish_previous')
     run.log({'test/accuracy':m['accuracy'],'test/macro_f1':m['macro_f1_all_training_classes'],
              'test/ece':m['ece'],'test/top_k_accuracy':m['top_k_accuracy']})
     run.log({'test/per_class':wandb.Table(dataframe=pd.DataFrame(m['per_class']).T.reset_index())})
@@ -1066,6 +1128,7 @@ for task in ['triage','species']:
     for regime in REGIMES:
         evaluate_model(task,regime)
         show_results(task,regime)
+
 
 analysis=OUT/'ERROR_ANALYSIS.md'
 if not analysis.exists():analysis.write_text('# Error analysis\n\nRequired evidence is missing: actual sample IDs, rare-class recall/support, false empty removals, calibration, plausible causes, and data improvement plan.\n')
@@ -1153,10 +1216,11 @@ def samples_for_task(rows,task,classes):
                                     sample_id=f'{r["id"]}_{i}',crop=b['xyxy'],species=b['species']))
     return samples
 
+
 DEVICE='cuda' if torch.cuda.is_available() else 'cpu'
 print('Device:',DEVICE)
-if DEVICE=='cpu':print('CPU review review review review GPU review Colab')
-WANDB_MODE='offline'  
+if DEVICE=='cpu':print('Training device: CPU. GPU acceleration is unavailable in this runtime.')
+WANDB_MODE=CFG['wandb_mode']
 import wandb
 if WANDB_MODE=='online':wandb.login()
 REGIMES=['frozen', 'full']
@@ -1170,7 +1234,6 @@ environment(3)
 from torch import nn
 
 class ConvNN(nn.Module):
-    ""
     def __init__(self,num_classes,size=224,num_filters=16,num_neurons=100):
         super().__init__()
         def block(a,b):return nn.Sequential(nn.Conv2d(a,b,3,padding=1),nn.BatchNorm2d(b),nn.ReLU())
@@ -1190,7 +1253,6 @@ class ConvNN(nn.Module):
         return self.output(x)
 
 class TransferNet(nn.Module):
-    ""
     def __init__(self,classes,pretrained=True):
         super().__init__()
         from transformers import AutoModelForImageClassification,ResNetConfig,ResNetForImageClassification
@@ -1208,6 +1270,7 @@ def make_model(regime,classes,pretrained=True,size=224):
 def freeze_backbone(model,freeze):
     for p in model.net.base_model.parameters():p.requires_grad=not freeze
     for p in model.classifier.parameters():p.requires_grad=True
+
 
 classes=['empty','animal']
 example_model=make_model(REGIMES[0],len(classes),size=CFG['image_size'])
@@ -1288,7 +1351,6 @@ def classification_metrics(y,probs,classes):
 
 
 def camera_bootstrap(y,probs,cameras,repeats=1000,seed=42,threshold=None):
-    ""
     y=np.asarray(y);p=np.asarray(probs);c=np.asarray(cameras);sites=np.unique(c)
     if len(sites)<2:return {'status':'not_estimable_fewer_than_two_cameras'}
     rng=np.random.default_rng(seed);acc=[];f1=[];rec=[];empty=[]
@@ -1338,7 +1400,7 @@ def train_model(task,regime):
         saved=read_json(folder/'summary.json');assert saved['context']==context
         assert saved['checkpoint_sha256']==digest(folder/'best.pt')
         print('Reusing completed run:',task,regime);return saved
-    assert not (folder/'best.pt').exists(), 'review review review review review review review review review'
+    assert not (folder/'best.pt').exists(), 'An unfinished checkpoint exists. Preserve it and use a new output directory for a fresh run.'
     model=make_model(regime,len(classes),size=CFG['image_size']).to(DEVICE)
     if regime!='scratch':freeze_backbone(model,regime=='frozen')
     assert CFG['optimizer']=='Adam', 'Only Adam is implemented'
@@ -1350,22 +1412,22 @@ def train_model(task,regime):
     criterion=nn.CrossEntropyLoss(weight=weights,label_smoothing=CFG['label_smoothing'])
     optimizer=torch.optim.Adam([p for p in model.parameters() if p.requires_grad],lr=CFG['lr_'+regime],weight_decay=CFG['weight_decay'])
     run=wandb.init(project=CFG['project'],name=f'{task}-{regime}',group=DATA_HASH[:12],
-                   mode=WANDB_MODE,dir=str(folder.resolve()),config=dict(CFG,task=task,regime=regime),reinit=True)
+                   mode=WANDB_MODE,dir=str(folder.resolve()),config=dict(CFG,task=task,regime=regime),reinit='finish_previous')
     best=-1;stale=0;history=[]
     for epoch in range(CFG['epochs']):
         warmup=max(0,int(CFG['warmup_epochs']))
         for group in optimizer.param_groups:
             group['lr']=CFG['lr_'+regime]*min(1.,(epoch+1)/max(1,warmup))
         model.train()
-        if regime=='frozen':model.eval();model.classifier.train() 
+        if regime=='frozen':model.eval();model.classifier.train()
         total_loss=0;correct=0;total=0
         for images,labels,_ in loader(train,True):
             images,labels=images.to(DEVICE),labels.to(DEVICE)
             optimizer.zero_grad()
-            logits=model(images)                     
-            loss=criterion(logits,labels)            
-            loss.backward()                         
-            optimizer.step()                        
+            logits=model(images)
+            loss=criterion(logits,labels)
+            loss.backward()
+            optimizer.step()
             total_loss+=loss.item()*len(labels)
             correct+=int((logits.argmax(1)==labels).sum());total+=len(labels)
         logits,y=predict(model,loader(val))
@@ -1405,8 +1467,10 @@ def train_model(task,regime):
 triage_runs=[train_model('triage',regime) for regime in REGIMES]
 display(pd.DataFrame(triage_runs)[['task','regime','selection_score','best_epoch']])
 
+
 species_runs=[train_model('species',regime) for regime in REGIMES]
 display(pd.DataFrame(species_runs)[['task','regime','selection_score','best_epoch']])
+
 
 selection={task:max([r for r in triage_runs+species_runs if r['task']==task],key=lambda r:r['selection_score'])['regime'] for task in ['triage','species']}
 write_json(OUT/'selection.json',{'selected':selection,'criterion':'val_select macro-F1','dataset_hash':DATA_HASH})
@@ -1447,7 +1511,7 @@ def evaluate_model(task,regime):
     pred=p.argmax(1)
     pd.DataFrame([{'sample_id':r['sample_id'],'camera':r['camera'],'true':classes[y[i]],
       'prediction':classes[pred[i]],'confidence':float(p[i].max())} for i,r in enumerate(known)]).to_csv(folder/'test_predictions.csv',index=False)
-    
+
     decisions=(p[:,1]>=policy['threshold']).astype(int) if task=='triage' else pred
     errors=np.flatnonzero(decisions!=y)
     chosen=sorted(errors,key=lambda i:float(p[i].max()),reverse=True)[:12]
@@ -1460,7 +1524,7 @@ def evaluate_model(task,regime):
         fig.suptitle(f'{task}/{regime}: test errors, input {CFG["image_size"]}, threshold '+str(policy.get('threshold','argmax')))
         fig.tight_layout();fig.savefig(folder/'private_errors.jpg');plt.close(fig)
     run=wandb.init(project=CFG['project'],name=f'{task}-{regime}-test',group=DATA_HASH[:12],
-      mode=WANDB_MODE,dir=str(folder.resolve()),config=dict(CFG,task=task,regime=regime,split='locked_test'),reinit=True)
+      mode=WANDB_MODE,dir=str(folder.resolve()),config=dict(CFG,task=task,regime=regime,split='locked_test'),reinit='finish_previous')
     run.log({'test/accuracy':m['accuracy'],'test/macro_f1':m['macro_f1_all_training_classes'],
              'test/ece':m['ece'],'test/top_k_accuracy':m['top_k_accuracy']})
     run.log({'test/per_class':wandb.Table(dataframe=pd.DataFrame(m['per_class']).T.reset_index())})
@@ -1493,6 +1557,7 @@ for task in ['triage','species']:
     for regime in REGIMES:
         evaluate_model(task,regime)
         show_results(task,regime)
+
 
 analysis=OUT/'ERROR_ANALYSIS.md'
 if not analysis.exists():analysis.write_text('# Error analysis\n\nRequired evidence is missing: actual sample IDs, rare-class recall/support, false empty removals, calibration, plausible causes, and data improvement plan.\n')
@@ -1545,6 +1610,7 @@ print('Frames:',len(rows),'| split sizes:',pd.Series([r['split'] for r in rows])
 
 
 environment(4)
+
 
 from collections import defaultdict
 from sklearn.metrics import accuracy_score,f1_score
@@ -1672,7 +1738,10 @@ REPLAY={'reviewer':'','date':'','notebook':'','cells_executed':'','evidence':''}
 REVIEWER=''
 VISUAL_REVIEW_COMPLETE=False
 REPOSITORY_URL='https://github.com/salehdev3/Capstone_5'
-write_json('submission/report_inputs.json',{'team':TEAM,'notes':NOTES,'replay':REPLAY,'repository':REPOSITORY_URL})
+TEAM_NAME=''
+WANDB_PROJECT_URL=''
+DATASET_CARD_URL=''
+write_json('submission/report_inputs.json',{'team':TEAM,'notes':NOTES,'replay':REPLAY,'repository':REPOSITORY_URL,'team_name':TEAM_NAME,'wandb_project':WANDB_PROJECT_URL,'dataset_card_url':DATASET_CARD_URL})
 
 
 gaps=[]
@@ -1708,6 +1777,9 @@ NAMES=['Phase1_Final_Presentation.ipynb']
 for name in NAMES:
     if not (Path('notebooks')/name).exists():gaps.append('Notebook '+name)
 if not REPOSITORY_URL.startswith('https://github.com/'):gaps.append('GitHub repository URL')
+if not TEAM_NAME.strip():gaps.append('Submission team name')
+if not WANDB_PROJECT_URL.startswith('https://wandb.ai/'):gaps.append('W&B project URL for report Section 1')
+if not DATASET_CARD_URL.startswith('https://'):gaps.append('Published Dataset Card URL for report Section 1')
 STATUS='READY_FOR_TEAM_REVIEW' if not gaps else 'INCOMPLETE'
 print(STATUS)
 for gap in gaps:print('-',gap)
@@ -1721,6 +1793,10 @@ def table(df):
     return '\n'.join(['| '+' | '.join(df.columns)+' |','| '+' | '.join(['---']*len(df.columns))+' |']+
                      ['| '+' | '.join(clean(v) for v in row)+' |' for row in df.itertuples(index=False,name=None)])
 sections=['# Project 5 — Phase 1 report','Status: '+STATUS,
+ '## Section 1 links', 'Repository: '+REPOSITORY_URL,
+ 'W&B project: '+(WANDB_PROJECT_URL or '[pending]'),
+ 'Dataset Card: '+(DATASET_CARD_URL or '[pending]'),
+ '## Submission', 'Compile the completed official Overleaf template as '+(TEAM_NAME or 'TeamName')+'_Phase1.pdf. Submit one PDF per team. Replace every grey prompt and complete every section and table. Verify instructor access to all three links. Every figure must state its split, input resolution and threshold (or argmax / not applicable). This Markdown file and the evidence archive are report inputs, not the final PDF.',
  'Scope: M1–M3 only. Frame empty/animal classification and species human-box crop classification.',
  '## Contributions',str(TEAM),'## Motivation',NOTES['motivation'] or '[pending]',
  '## Dataset Card',Path(release['dataset_card']).read_text(),NOTES['data_findings'] or '[pending]',
@@ -1773,7 +1849,7 @@ for row in comparison.to_dict('records'):
     weights.append({'path':str(folder/'best.pt'),'sha256':digest(folder/'best.pt'),'access':'private team storage'})
 write_json(repo/'weights_manifest.json',weights)
 (repo/'.gitignore').write_text('data/\nruns/\nwandb/\n*.pt\n*.pth\n*.jpg\n*.jpeg\n.env\n__pycache__/\n.ipynb_checkpoints/\n')
-(repo/'README.md').write_text("# Project 5 — Phase 1\n\nRun Phase1_Final_Presentation.ipynb in section order. Use the same Member1 dataset release for both training notebooks. All sections run in the unified notebook workspace. Internet and Colab's torch/torchvision are required; use GPU for training.\n\nMember1 uses CCT20 from https://lila.science/datasets/caltech-camera-traps. Follow dataset licence and course non-redistribution policy. Do not commit images or raw archives. The Dataset Card records filtering and limitations.\n\nAll sections import the shared preprocessing.py module. Split is stratified by camera groups; bursts stay together. One shared config defines all six experiments. Validation selects models; calibration chooses temperature/triage threshold; test is evaluated once.\n\nSee environments/ for the actual resolved package versions and Python/platform of each member. Install one role's environment in a compatible runtime. No single cross-platform lock is claimed. The initial install cells describe required packages; actual resolved pins are captured after installation.\n\nReport and metrics are from actual execution, with pending sections visible. Test accuracy intervals include camera bootstrap and Wilson (the latter assumes independent samples). Human audit, error discussion, clean replay and W&B sync require team action. Fresh-process inference alone is not full training reproduction.\n\nWeights remain private; weights_manifest.json provides hashes and paths. Repository notebooks have outputs stripped; keep executed copies privately for assessment. This repository covers M1–M3 only, without detector training or deployment.\n")
+(repo/'README.md').write_text("# Project 5 — Phase 1\n\nRun Phase1_Final_Presentation.ipynb in section order. Use the same Member 1 dataset release for all classification experiments. All sections run in the unified notebook workspace. Internet and Colab's torch/torchvision are required; use GPU for training.\n\nMember1 uses CCT20 from https://lila.science/datasets/caltech-camera-traps. Follow dataset licence and course non-redistribution policy. Do not commit images or raw archives. The Dataset Card records filtering and limitations.\n\nAll sections import the shared preprocessing.py module. Split is stratified by camera groups; bursts stay together. One shared config defines all six experiments. Validation selects models; calibration chooses temperature/triage threshold; test is evaluated once.\n\nSee environments/ for the actual resolved package versions and Python/platform of each member. Install one role's environment in a compatible runtime. No single cross-platform lock is claimed. The initial install cells describe required packages; actual resolved pins are captured after installation.\n\nReport and metrics are from actual execution, with pending sections visible. Test accuracy intervals include camera bootstrap and Wilson (the latter assumes independent samples). Human audit, error discussion, clean replay and W&B sync require team action. Fresh-process inference alone is not full training reproduction.\n\nWeights remain private; weights_manifest.json provides hashes and paths. Repository notebooks have outputs stripped; keep executed copies privately for assessment. This repository covers M1–M3 only, without detector training or deployment.\n")
 assert not list(repo.rglob('*.pt')) and not list(repo.rglob('*.jpg'))
 write_json('handoff/integration_release.json',{'schema':2,'scope':'Phase 1','status':STATUS,'gaps':gaps,
  'dataset_hash':DATA_HASH,'report_sha256':digest(repo/'REPORT_DRAFT.md'),'repository':REPOSITORY_URL})

@@ -30,12 +30,25 @@ Source: supplied **Capstone_Project_Guidelines_UPDATED.pdf**, Phase 1 scope in T
 | Reproducible code and requirements | All | unified notebook and Python export, per-section environment snapshots, fresh-process check and actual replay evidence |
 | Report and repository | 4 | REPORT_DRAFT.md, unified source notebook, selected results and weight hashes |
 
-Performance targets in the starter configuration are proposed team goals, not promised results. They must be agreed before training. A failed performance target does not mean the experiment failed to execute.
+Performance targets in the shared configuration are proposed team goals, not promised results. They must be agreed before training. A failed performance target does not mean the experiment failed to execute.
 
 ## Completion limits
 
-The code creates reports from actual executions and leaves human fields pending. Label audit, independent review, analysis, team contributions, W&B account/link completion and a real replay cannot be automated honestly. No trained weights, CCT20 performance results, completed Dataset Card or final submission report are included in this initial implementation package.
+The code creates reports from actual executions and leaves human fields pending. Label audit, independent review, analysis, team contributions, W&B account/link completion and a real replay cannot be automated honestly. No trained weights, CCT20 performance results, completed Dataset Card or final submission report are included in this source repository.
 
 Frozen release files should not be edited after training starts. A data correction requires a new release and retraining all comparison runs; record the issue. Do not tune on test. Unknown species reduce overall coverage and are explicitly counted rather than silently removed from reported scope.
 
 Detection, segmentation, ONNX export and HTTP deployment belong to later work and are outside this package.
+
+## Project-specific scope
+
+Section 8.5, Project 5, page 19, Phase 1 item 1.2 explicitly requires both frame empty/non-empty classification and species classification on crops, with per-class recall on unseen locations and calibration. Crops come from human-annotated boxes in CCT20. These are classification inputs, not detector predictions. Both tasks must remain in the Phase 1 comparison.
+
+## Official report submission
+
+- One team member submits one compiled PDF using the official Overleaf template: `TeamName_Phase1.pdf`.
+- Complete every section and table, replace grey prompts, and store figures in `figures/`.
+- Section 1 includes working repository, W&B project and published Dataset Card links, accessible to instructors.
+- Every figure identifies its data split, model input resolution and decision threshold, or states argmax / not applicable.
+- The notebook's Markdown report and ZIP contain evidence for writing the report; they do not replace the required PDF.
+- Table 6 allocates 12 points to M1, 20 to M2–M3 and 8 to reproducibility.
