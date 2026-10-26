@@ -19,7 +19,7 @@
     {
       "image_id": "RYD_003",
       "object_id": 1,
-      "species": "bird",
+      "species": "pigeon",
       "xyxy_pixels": [
         264,
         608,
@@ -28,12 +28,14 @@
       ],
       "status": "draft_pending_human_review",
       "assigned_reviewer": "Saleh",
-      "annotation_source": "assistant_visual_annotation"
+      "annotation_source": "assistant_visual_annotation",
+      "coarse_category": "bird",
+      "species_confirmation_source": "user_confirmed"
     },
     {
       "image_id": "RYD_003",
       "object_id": 2,
-      "species": "bird",
+      "species": "pigeon",
       "xyxy_pixels": [
         547,
         672,
@@ -42,12 +44,14 @@
       ],
       "status": "draft_pending_human_review",
       "assigned_reviewer": "Saleh",
-      "annotation_source": "assistant_visual_annotation"
+      "annotation_source": "assistant_visual_annotation",
+      "coarse_category": "bird",
+      "species_confirmation_source": "user_confirmed"
     },
     {
       "image_id": "RYD_003",
       "object_id": 3,
-      "species": "bird",
+      "species": "pigeon",
       "xyxy_pixels": [
         629,
         704,
@@ -56,12 +60,14 @@
       ],
       "status": "draft_pending_human_review",
       "assigned_reviewer": "Saleh",
-      "annotation_source": "assistant_visual_annotation"
+      "annotation_source": "assistant_visual_annotation",
+      "coarse_category": "bird",
+      "species_confirmation_source": "user_confirmed"
     },
     {
       "image_id": "RYD_003",
       "object_id": 4,
-      "species": "bird",
+      "species": "pigeon",
       "xyxy_pixels": [
         793,
         656,
@@ -70,7 +76,9 @@
       ],
       "status": "draft_pending_human_review",
       "assigned_reviewer": "Saleh",
-      "annotation_source": "assistant_visual_annotation"
+      "annotation_source": "assistant_visual_annotation",
+      "coarse_category": "bird",
+      "species_confirmation_source": "user_confirmed"
     },
     {
       "image_id": "RYD_006",
@@ -224,7 +232,8 @@
       ],
       "status": "draft_pending_human_review",
       "assigned_reviewer": "Saleh",
-      "annotation_source": "assistant_visual_annotation"
+      "annotation_source": "assistant_visual_annotation",
+      "species_confirmation_source": "user_confirmed"
     },
     {
       "image_id": "RYD_017",
@@ -295,14 +304,25 @@
       "status": "draft_pending_human_review",
       "assigned_reviewer": "Saleh",
       "annotation_source": "assistant_visual_annotation"
+    },
+    {
+      "image_id": "RYD_015",
+      "object_id": 2,
+      "species": "cat",
+      "xyxy_pixels": [
+        1040,
+        878,
+        1510,
+        998
+      ],
+      "truncated": true,
+      "status": "draft_pending_human_review",
+      "assigned_reviewer": "Saleh",
+      "annotation_source": "assistant_visual_annotation",
+      "species_confirmation_source": "user_confirmed"
     }
   ],
   "unresolved_instances": [
-    {
-      "image_id": "RYD_015",
-      "region": "bottom edge",
-      "reason": "partial animal; species and inclusion need human confirmation"
-    },
     {
       "image_id": "RYD_003",
       "region": "distant birds",
