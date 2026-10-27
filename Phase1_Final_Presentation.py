@@ -1218,6 +1218,40 @@ print(selection)
 import matplotlib.pyplot as plt
 from sklearn.metrics import ConfusionMatrixDisplay
 
+def upload_test_results(task, regime):
+    import subprocess, sys
+    folder = (OUT/task/regime).resolve()
+    payload = {'project': CFG['project'], 'name': f'{task}-{regime}-test',
+               'group': DATA_HASH[:12], 'mode': WANDB_MODE,
+               'config': dict(CFG, task=task, regime=regime, split='locked_test')}
+    write_json(folder/'test_upload_config.json', payload)
+    script = """
+import json, sys
+from pathlib import Path
+import pandas as pd
+import wandb
+folder = Path(sys.argv[1])
+m = json.loads((folder/'test_metrics.json').read_text())
+cfg = json.loads((folder/'test_upload_config.json').read_text())
+run = wandb.init(**cfg, dir=str(folder))
+run.log({'test/accuracy': m['accuracy'], 'test/macro_f1': m['macro_f1_all_training_classes'],
+         'test/ece': m['ece'], 'test/top_k_accuracy': m['top_k_accuracy']})
+run.log({'test/per_class': wandb.Table(dataframe=pd.DataFrame(m['per_class']).T.reset_index())})
+receipt = {'run_id': run.id, 'url': run.url, 'mode': cfg['mode']}
+run.finish()
+(folder/'test_upload_receipt.json').write_text(json.dumps(receipt))
+"""
+    print(f'{task}/{regime}: results saved; W&B upload (maximum 120 seconds)', flush=True)
+    try:
+        with (folder/'test_upload.log').open('w') as log:
+            result = subprocess.run([sys.executable, '-c', script, str(folder)],
+                                    stdout=log, stderr=subprocess.STDOUT, timeout=120)
+        status = 'finished' if result.returncode == 0 else 'failed'
+    except subprocess.TimeoutExpired:
+        status = 'timed_out'
+    write_json(folder/'test_upload_status.json', {'status': status})
+    print(f'{task}/{regime}: upload {status}; log: {folder / "test_upload.log"}', flush=True)
+
 def evaluate_model(task,regime):
     folder=OUT/task/regime;summary=read_json(folder/'summary.json')
     signature={'data':DATA_HASH,'checkpoint':digest(folder/'best.pt'),'policy':digest(folder/'policy.json')}
@@ -1231,6 +1265,7 @@ def evaluate_model(task,regime):
     model.load_state_dict(checkpoint['state_dict'])
     all_test=[r for r in samples_for_task(rows,task,classes) if r['split']=='test']
     known=[r for r in all_test if r['label']>=0];unknown=[r for r in all_test if r['label']<0]
+    print(f'{task}/{regime}: predicting {len(known)} test samples', flush=True)
     logits,y=predict(model,loader(known));raw=softmax(logits,axis=1);p=softmax(logits/policy['temperature'],axis=1)
     m=classification_metrics(y,p,classes)
     m.update(task=task,regime=regime,split='test',image_size=CFG['image_size'],policy=policy,
@@ -1261,13 +1296,9 @@ def evaluate_model(task,regime):
             ax.imshow(rgb);ax.set_title(f"{known[i]['sample_id'][:12]}\n{classes[y[i]]} -> {classes[decisions[i]]}",fontsize=8)
         fig.suptitle(f'{task}/{regime}: test errors, input {CFG["image_size"]}, threshold '+str(policy.get('threshold','argmax')))
         fig.tight_layout();fig.savefig(folder/'private_errors.jpg');plt.close(fig)
-    run=wandb.init(project=CFG['project'],name=f'{task}-{regime}-test',group=DATA_HASH[:12],
-      mode=WANDB_MODE,dir=str(folder.resolve()),config=dict(CFG,task=task,regime=regime,split='locked_test'),reinit='finish_previous')
-    run.log({'test/accuracy':m['accuracy'],'test/macro_f1':m['macro_f1_all_training_classes'],
-             'test/ece':m['ece'],'test/top_k_accuracy':m['top_k_accuracy']})
-    run.log({'test/per_class':wandb.Table(dataframe=pd.DataFrame(m['per_class']).T.reset_index())})
-    m['wandb_test_run_id']=run.id;m['wandb_test_url']=run.url if WANDB_MODE=='online' else None
-    run.finish();write_json(folder/'test_metrics.json',m)
+    write_json(folder/'test_metrics.json',m)
+    if WANDB_MODE != 'disabled':
+        upload_test_results(task,regime)
     return m
 
 def show_results(task,regime):
@@ -1293,8 +1324,12 @@ def show_results(task,regime):
 
 for task in ['triage','species']:
     for regime in REGIMES:
+        print(f'Evaluating {task}/{regime}', flush=True)
         evaluate_model(task,regime)
+        print(f'Displaying {task}/{regime}', flush=True)
         show_results(task,regime)
+        plt.close('all')
+        print(f'Completed {task}/{regime}', flush=True)
 
 
 analysis=OUT/'ERROR_ANALYSIS.md'
@@ -1669,6 +1704,40 @@ print(selection)
 import matplotlib.pyplot as plt
 from sklearn.metrics import ConfusionMatrixDisplay
 
+def upload_test_results(task, regime):
+    import subprocess, sys
+    folder = (OUT/task/regime).resolve()
+    payload = {'project': CFG['project'], 'name': f'{task}-{regime}-test',
+               'group': DATA_HASH[:12], 'mode': WANDB_MODE,
+               'config': dict(CFG, task=task, regime=regime, split='locked_test')}
+    write_json(folder/'test_upload_config.json', payload)
+    script = """
+import json, sys
+from pathlib import Path
+import pandas as pd
+import wandb
+folder = Path(sys.argv[1])
+m = json.loads((folder/'test_metrics.json').read_text())
+cfg = json.loads((folder/'test_upload_config.json').read_text())
+run = wandb.init(**cfg, dir=str(folder))
+run.log({'test/accuracy': m['accuracy'], 'test/macro_f1': m['macro_f1_all_training_classes'],
+         'test/ece': m['ece'], 'test/top_k_accuracy': m['top_k_accuracy']})
+run.log({'test/per_class': wandb.Table(dataframe=pd.DataFrame(m['per_class']).T.reset_index())})
+receipt = {'run_id': run.id, 'url': run.url, 'mode': cfg['mode']}
+run.finish()
+(folder/'test_upload_receipt.json').write_text(json.dumps(receipt))
+"""
+    print(f'{task}/{regime}: results saved; W&B upload (maximum 120 seconds)', flush=True)
+    try:
+        with (folder/'test_upload.log').open('w') as log:
+            result = subprocess.run([sys.executable, '-c', script, str(folder)],
+                                    stdout=log, stderr=subprocess.STDOUT, timeout=120)
+        status = 'finished' if result.returncode == 0 else 'failed'
+    except subprocess.TimeoutExpired:
+        status = 'timed_out'
+    write_json(folder/'test_upload_status.json', {'status': status})
+    print(f'{task}/{regime}: upload {status}; log: {folder / "test_upload.log"}', flush=True)
+
 def evaluate_model(task,regime):
     folder=OUT/task/regime;summary=read_json(folder/'summary.json')
     signature={'data':DATA_HASH,'checkpoint':digest(folder/'best.pt'),'policy':digest(folder/'policy.json')}
@@ -1682,6 +1751,7 @@ def evaluate_model(task,regime):
     model.load_state_dict(checkpoint['state_dict'])
     all_test=[r for r in samples_for_task(rows,task,classes) if r['split']=='test']
     known=[r for r in all_test if r['label']>=0];unknown=[r for r in all_test if r['label']<0]
+    print(f'{task}/{regime}: predicting {len(known)} test samples', flush=True)
     logits,y=predict(model,loader(known));raw=softmax(logits,axis=1);p=softmax(logits/policy['temperature'],axis=1)
     m=classification_metrics(y,p,classes)
     m.update(task=task,regime=regime,split='test',image_size=CFG['image_size'],policy=policy,
@@ -1712,13 +1782,9 @@ def evaluate_model(task,regime):
             ax.imshow(rgb);ax.set_title(f"{known[i]['sample_id'][:12]}\n{classes[y[i]]} -> {classes[decisions[i]]}",fontsize=8)
         fig.suptitle(f'{task}/{regime}: test errors, input {CFG["image_size"]}, threshold '+str(policy.get('threshold','argmax')))
         fig.tight_layout();fig.savefig(folder/'private_errors.jpg');plt.close(fig)
-    run=wandb.init(project=CFG['project'],name=f'{task}-{regime}-test',group=DATA_HASH[:12],
-      mode=WANDB_MODE,dir=str(folder.resolve()),config=dict(CFG,task=task,regime=regime,split='locked_test'),reinit='finish_previous')
-    run.log({'test/accuracy':m['accuracy'],'test/macro_f1':m['macro_f1_all_training_classes'],
-             'test/ece':m['ece'],'test/top_k_accuracy':m['top_k_accuracy']})
-    run.log({'test/per_class':wandb.Table(dataframe=pd.DataFrame(m['per_class']).T.reset_index())})
-    m['wandb_test_run_id']=run.id;m['wandb_test_url']=run.url if WANDB_MODE=='online' else None
-    run.finish();write_json(folder/'test_metrics.json',m)
+    write_json(folder/'test_metrics.json',m)
+    if WANDB_MODE != 'disabled':
+        upload_test_results(task,regime)
     return m
 
 def show_results(task,regime):
@@ -1744,8 +1810,12 @@ def show_results(task,regime):
 
 for task in ['triage','species']:
     for regime in REGIMES:
+        print(f'Evaluating {task}/{regime}', flush=True)
         evaluate_model(task,regime)
+        print(f'Displaying {task}/{regime}', flush=True)
         show_results(task,regime)
+        plt.close('all')
+        print(f'Completed {task}/{regime}', flush=True)
 
 
 analysis=OUT/'ERROR_ANALYSIS.md'
