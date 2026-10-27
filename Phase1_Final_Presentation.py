@@ -570,43 +570,78 @@ for row in [r for r in cleaned if r['split']=='train'][:4]:
 
 def audit_widget(cfg):
     import ipywidgets as w
-    from IPython.display import display,clear_output
-    from PIL import Image,ImageDraw
-    root=Path(cfg['data_dir']);path=root/'label_audit.csv'
-    df=pd.read_csv(path).fillna('');rows={r['id']:r for r in read_json(root/'manifest.json')}
-    index=w.IntSlider(value=0,min=0,max=len(df)-1,description='Sample')
-    correct=w.Dropdown(options=['','yes','no'],description='Label correct')
-    boxes=w.Dropdown(options=['','yes','no','not applicable'],description='Boxes correct')
-    person=w.Dropdown(options=['','yes','no'],description='Person visible')
-    reviewer=w.Text(description='Reviewer');notes=w.Textarea(description='Notes')
-    save=w.Button(description='Save and next',button_style='success');output=w.Output();status=w.Output()
+    from IPython.display import display, clear_output
+    from PIL import Image, ImageDraw
+    root = Path(cfg['data_dir'])
+    path = root/'label_audit.csv'
+    df = pd.read_csv(path).fillna('')
+    if df.empty:
+        raise ValueError('The label audit contains no samples.')
+    rows = {r['id']: r for r in read_json(root/'manifest.json')}
+    position = w.BoundedIntText(value=1, min=1, max=len(df), description='Sample')
+    previous = w.Button(description='Previous')
+    following = w.Button(description='Next')
+    progress = w.HTML()
+    correct = w.Dropdown(options=[('Select', ''), ('Yes', 'yes'), ('No', 'no')], description='Label')
+    boxes = w.Dropdown(options=[('Select', ''), ('Yes', 'yes'), ('No', 'no'), ('Not applicable', 'not applicable')], description='Boxes')
+    person = w.Dropdown(options=[('Select', ''), ('Yes', 'yes'), ('No', 'no')], description='Person')
+    reviewer = w.Text(value='Saleh', description='Reviewer')
+    notes = w.Textarea(description='Notes', layout=w.Layout(width='100%', height='80px'))
+    save = w.Button(description='Save and next', button_style='success')
+    preview = w.Output(layout=w.Layout(width='600px', min_height='400px'))
+    status = w.Output()
     def show(change=None):
-        row=df.iloc[index.value];r=rows[row.id]
-        correct.value=str(row.label_correct);boxes.value=str(row.boxes_correct);person.value=str(row.identifiable_person)
-        if row.reviewer:reviewer.value=str(row.reviewer)
-        notes.value=str(row.notes)
-        with output:
-            clear_output(wait=True);print('Expected:',row.expected_species,'| sample:',row.id)
-            im=Image.open(r['path']).convert('RGB');draw=ImageDraw.Draw(im)
-            for b in r['boxes']:
-                x1,y1,x2,y2=b['xyxy'];draw.rectangle([x1*im.width,y1*im.height,x2*im.width,y2*im.height],outline='lime',width=3)
-            im.thumbnail((900,600));display(im)
+        row = df.iloc[position.value-1]
+        sample = rows[row['id']]
+        correct.value = str(row['label_correct'])
+        boxes.value = str(row['boxes_correct'])
+        person.value = str(row['identifiable_person'])
+        reviewer.value = str(row['reviewer']) or reviewer.value
+        notes.value = str(row['notes'])
+        completed = int((df['reviewer'].astype(str).str.strip().ne('') &
+                         df['label_correct'].isin(['yes', 'no']) &
+                         df['boxes_correct'].isin(['yes', 'no', 'not applicable']) &
+                         df['identifiable_person'].isin(['yes', 'no'])).sum())
+        progress.value = f'<b>Sample {position.value} of {len(df)} · Saved reviews: {completed}/{len(df)}</b>'
+        with preview:
+            clear_output(wait=True)
+            print('ID:', row['id'], '| Expected:', row['expected_species'])
+            with Image.open(sample['path']) as source:
+                image = source.convert('RGB')
+            draw = ImageDraw.Draw(image)
+            for box in sample['boxes']:
+                x1, y1, x2, y2 = box['xyxy']
+                draw.rectangle([x1*image.width, y1*image.height,
+                                x2*image.width, y2*image.height], outline='lime', width=4)
+            image.thumbnail((560, 500))
+            display(image)
     def persist(_):
         with status:
-            clear_output()
-            if not reviewer.value.strip() or not correct.value or not person.value or not boxes.value:
-                print('Fill every decision and the reviewer name before saving.');return
-        i=index.value
-        for key,value in [('label_correct',correct.value),('boxes_correct',boxes.value),('identifiable_person',person.value),
-                          ('reviewer',reviewer.value.strip()),('notes',notes.value)]:df.loc[i,key]=value
-        df.to_csv(path,index=False)
-        with status:print('Saved. Corrections/privacy flags need resolution before final training/report.')
-        if i<len(df)-1:index.value=i+1
-    index.observe(show,names='value');save.on_click(persist)
-    display(w.VBox([index,output,correct,boxes,person,reviewer,notes,save,status]));show()
+            clear_output(wait=True)
+            if not reviewer.value.strip() or not all([correct.value, boxes.value, person.value]):
+                print('Enter reviewer and all three decisions before saving.')
+                return
+            i = position.value-1
+            for key, value in [('label_correct', correct.value), ('boxes_correct', boxes.value),
+                               ('identifiable_person', person.value), ('reviewer', reviewer.value.strip()),
+                               ('notes', notes.value.strip())]:
+                df.loc[i, key] = value
+            df.to_csv(path, index=False)
+            print('Saved:', df.loc[i, 'id'])
+        if position.value < len(df):
+            position.value += 1
+        else:
+            show()
+    previous.on_click(lambda _: setattr(position, 'value', max(1, position.value-1)))
+    following.on_click(lambda _: setattr(position, 'value', min(len(df), position.value+1)))
+    position.observe(show, names='value')
+    save.on_click(persist)
+    controls = w.VBox([progress, w.HBox([previous, position, following]), correct, boxes,
+                       person, reviewer, notes, save, status], layout=w.Layout(width='420px'))
+    display(w.HBox([preview, controls], layout=w.Layout(align_items='flex-start')))
+    show()
 
 audit_widget(cfg)
-
 
 from scipy.stats import beta
 
