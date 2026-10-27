@@ -1,21 +1,21 @@
-image_id,filename,proposed_label,proposed_species,coarse_category,label_source,reviewer,human_review_status,species_confirmation_source
-RYD_001,WhatsApp Image 2026-10-27 at 12.37.40 AM (1).jpeg,empty,empty,,assistant_visual_annotation,Saleh,pending,
-RYD_002,WhatsApp Image 2026-10-27 at 12.37.40 AM.jpeg,animal,dog,,assistant_visual_annotation,Saleh,pending,
-RYD_003,WhatsApp Image 2026-10-27 at 12.37.41 AM (1).jpeg,animal,pigeon,bird,assistant_visual_annotation,Saleh,pending,user_confirmed
-RYD_004,WhatsApp Image 2026-10-27 at 12.37.41 AM (2).jpeg,empty,empty,,assistant_visual_annotation,Saleh,pending,
-RYD_005,WhatsApp Image 2026-10-27 at 12.37.41 AM.jpeg,empty,empty,,assistant_visual_annotation,Saleh,pending,
-RYD_006,WhatsApp Image 2026-10-27 at 12.37.42 AM (1).jpeg,animal,chicken,bird,assistant_visual_annotation,Saleh,pending,user_confirmed
-RYD_007,WhatsApp Image 2026-10-27 at 12.37.42 AM (2).jpeg,animal,cat,,assistant_visual_annotation,Saleh,pending,
-RYD_008,WhatsApp Image 2026-10-27 at 12.37.42 AM (3).jpeg,animal,cat,,assistant_visual_annotation,Saleh,pending,
-RYD_009,WhatsApp Image 2026-10-27 at 12.37.42 AM (4).jpeg,animal,cat,,assistant_visual_annotation,Saleh,pending,
-RYD_010,WhatsApp Image 2026-10-27 at 12.37.42 AM (5).jpeg,animal,cat,,assistant_visual_annotation,Saleh,pending,
-RYD_011,WhatsApp Image 2026-10-27 at 12.37.42 AM.jpeg,empty,empty,,assistant_visual_annotation,Saleh,pending,
-RYD_012,WhatsApp Image 2026-10-27 at 12.37.43 AM (1).jpeg,animal,cat,,assistant_visual_annotation,Saleh,pending,
-RYD_013,WhatsApp Image 2026-10-27 at 12.37.43 AM (2).jpeg,animal,cat,,assistant_visual_annotation,Saleh,pending,
-RYD_014,WhatsApp Image 2026-10-27 at 12.37.43 AM (3).jpeg,animal,cat,,assistant_visual_annotation,Saleh,pending,
-RYD_015,WhatsApp Image 2026-10-27 at 12.37.43 AM (4).jpeg,animal,cat,,assistant_visual_annotation,Saleh,pending,user_confirmed
-RYD_016,WhatsApp Image 2026-10-27 at 12.37.43 AM.jpeg,animal,cat,,assistant_visual_annotation,Saleh,pending,
-RYD_017,WhatsApp Image 2026-10-27 at 12.37.44 AM (1).jpeg,animal,cat,,assistant_visual_annotation,Saleh,pending,
-RYD_018,WhatsApp Image 2026-10-27 at 12.37.44 AM (2).jpeg,animal,cat,,assistant_visual_annotation,Saleh,pending,
-RYD_019,WhatsApp Image 2026-10-27 at 12.37.44 AM (3).jpeg,animal,cat,,assistant_visual_annotation,Saleh,pending,
-RYD_020,WhatsApp Image 2026-10-27 at 12.37.44 AM.jpeg,animal,cat,,assistant_visual_annotation,Saleh,pending,
+image_id,filename,proposed_label,proposed_species,coarse_category,label_source,reviewer,human_review_status,species_confirmation_source,label_review_status,label_review_date
+RYD_001,WhatsApp Image 2026-10-27 at 12.37.40 AM (1).jpeg,empty,empty,,assistant_visual_annotation,Saleh,labels_verified_boxes_pending,,verified,2026-10-27
+RYD_002,WhatsApp Image 2026-10-27 at 12.37.40 AM.jpeg,animal,dog,,assistant_visual_annotation,Saleh,labels_verified_boxes_pending,,verified,2026-10-27
+RYD_003,WhatsApp Image 2026-10-27 at 12.37.41 AM (1).jpeg,animal,pigeon,bird,assistant_visual_annotation,Saleh,labels_verified_boxes_pending,user_confirmed,verified,2026-10-27
+RYD_004,WhatsApp Image 2026-10-27 at 12.37.41 AM (2).jpeg,empty,empty,,assistant_visual_annotation,Saleh,labels_verified_boxes_pending,,verified,2026-10-27
+RYD_005,WhatsApp Image 2026-10-27 at 12.37.41 AM.jpeg,empty,empty,,assistant_visual_annotation,Saleh,labels_verified_boxes_pending,,verified,2026-10-27
+RYD_006,WhatsApp Image 2026-10-27 at 12.37.42 AM (1).jpeg,animal,chicken,bird,assistant_visual_annotation,Saleh,labels_verified_boxes_pending,user_confirmed,verified,2026-10-27
+RYD_007,WhatsApp Image 2026-10-27 at 12.37.42 AM (2).jpeg,animal,cat,,assistant_visual_annotation,Saleh,labels_verified_boxes_pending,,verified,2026-10-27
+RYD_008,WhatsApp Image 2026-10-27 at 12.37.42 AM (3).jpeg,animal,cat,,assistant_visual_annotation,Saleh,labels_verified_boxes_pending,,verified,2026-10-27
+RYD_009,WhatsApp Image 2026-10-27 at 12.37.42 AM (4).jpeg,animal,cat,,assistant_visual_annotation,Saleh,labels_verified_boxes_pending,,verified,2026-10-27
+RYD_010,WhatsApp Image 2026-10-27 at 12.37.42 AM (5).jpeg,animal,cat,,assistant_visual_annotation,Saleh,labels_verified_boxes_pending,,verified,2026-10-27
+RYD_011,WhatsApp Image 2026-10-27 at 12.37.42 AM.jpeg,empty,empty,,assistant_visual_annotation,Saleh,labels_verified_boxes_pending,,verified,2026-10-27
+RYD_012,WhatsApp Image 2026-10-27 at 12.37.43 AM (1).jpeg,animal,cat,,assistant_visual_annotation,Saleh,labels_verified_boxes_pending,,verified,2026-10-27
+RYD_013,WhatsApp Image 2026-10-27 at 12.37.43 AM (2).jpeg,animal,cat,,assistant_visual_annotation,Saleh,labels_verified_boxes_pending,,verified,2026-10-27
+RYD_014,WhatsApp Image 2026-10-27 at 12.37.43 AM (3).jpeg,animal,cat,,assistant_visual_annotation,Saleh,labels_verified_boxes_pending,,verified,2026-10-27
+RYD_015,WhatsApp Image 2026-10-27 at 12.37.43 AM (4).jpeg,animal,cat,,assistant_visual_annotation,Saleh,labels_verified_boxes_pending,user_confirmed,verified,2026-10-27
+RYD_016,WhatsApp Image 2026-10-27 at 12.37.43 AM.jpeg,animal,cat,,assistant_visual_annotation,Saleh,labels_verified_boxes_pending,,verified,2026-10-27
+RYD_017,WhatsApp Image 2026-10-27 at 12.37.44 AM (1).jpeg,animal,cat,,assistant_visual_annotation,Saleh,labels_verified_boxes_pending,,verified,2026-10-27
+RYD_018,WhatsApp Image 2026-10-27 at 12.37.44 AM (2).jpeg,animal,cat,,assistant_visual_annotation,Saleh,labels_verified_boxes_pending,,verified,2026-10-27
+RYD_019,WhatsApp Image 2026-10-27 at 12.37.44 AM (3).jpeg,animal,cat,,assistant_visual_annotation,Saleh,labels_verified_boxes_pending,,verified,2026-10-27
+RYD_020,WhatsApp Image 2026-10-27 at 12.37.44 AM.jpeg,animal,cat,,assistant_visual_annotation,Saleh,labels_verified_boxes_pending,,verified,2026-10-27
