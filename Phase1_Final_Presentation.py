@@ -66,10 +66,10 @@ NON_ANIMALS = {'empty', 'car', 'vehicle', 'person', 'human', 'people'}
 SEED = 42
 MAX_IMAGES = 6000
 AUDIT_IMAGES = 100
-PROJECT = Path.cwd() if Path.cwd().name == 'CameraTrap_Phase1_Team' else Path.cwd()/'CameraTrap_Phase1_Team'
+PROJECT = Path.cwd() if Path.cwd().name == 'CameraTrap_Phase1_Team_Mixed_v2' else Path.cwd()/'CameraTrap_Phase1_Team_Mixed_v2'
 PROJECT.mkdir(exist_ok=True)
 os.chdir(PROJECT)
-DATA = Path('data/cct20_v1')
+DATA = Path('data/cct20_team_v2')
 DATA.mkdir(parents=True, exist_ok=True)
 Path('runs/data').mkdir(parents=True, exist_ok=True)
 Path('handoff').mkdir(exist_ok=True)
@@ -391,6 +391,64 @@ def near_duplicate_quarantine(rows, distance=2):
     return [r for r in rows if r['event'] not in bad], pairs, sorted(bad)
 
 
+TEAM_DATA_ROOT = Path(preprocessing.__file__).resolve().parent / 'data/team_collected_riyadh'
+assert (TEAM_DATA_ROOT/'metadata_review.csv').exists(), 'Set TEAM_DATA_ROOT to your private checkout or uploaded team-image folder.'
+team_metadata = pd.read_csv(TEAM_DATA_ROOT/'metadata_review.csv').fillna('')
+team_annotations = read_json(TEAM_DATA_ROOT/'draft_boxes.json')['annotations']
+assert team_metadata.status.eq('verified').all()
+assert all(a['status']=='verified' for a in team_annotations)
+team_mapping = {'cat':'cat', 'dog':'dog', 'pigeon':'bird', 'chicken':'bird'}
+team_rows, team_exclusions = [], []
+for item in team_metadata.to_dict('records'):
+    if item['image_id']=='RYD_001':
+        team_exclusions.append({'id':item['image_id'],'reason':'Visible people; excluded from model data.'})
+        continue
+    assert item['city'] in ['Riyadh','Tabuk']
+    split = 'train' if item['city']=='Riyadh' else 'test'
+    assert item['planned_split']==split
+    original = TEAM_DATA_ROOT/item['filename']
+    assert digest(original)==item['sha256']
+    with Image.open(original) as im:
+        rgb=im.convert('RGB'); original_w,original_h=rgb.size
+        rgb.thumbnail((cfg['max_image_side'],cfg['max_image_side']),Image.Resampling.LANCZOS)
+        target=DATA/'images'/(item['image_id']+'.jpg')
+        target.parent.mkdir(parents=True,exist_ok=True)
+        rgb.save(target,quality=95)
+    boxes=[]
+    for a in team_annotations:
+        if a['image_id']!=item['image_id']:continue
+        x1,y1,x2,y2=a['xyxy_pixels']
+        assert 0<=x1<x2<=original_w and 0<=y1<y2<=original_h
+        boxes.append({'species':team_mapping[a['species']], 'original_species':a['species'],
+                      'xyxy':[x1/original_w,y1/original_h,x2/original_w,y2/original_h],
+                      'annotation_source':'team_human_verified'})
+    labels=sorted({b['species'] for b in boxes})
+    assert bool(labels)==(item['proposed_label']=='animal')
+    with Image.open(target) as im:
+        im=im.convert('RGB');small=np.array(im.resize((64,64)),dtype=float)
+        team_rows.append({'id':item['image_id'],'source':'team_collected','city':item['city'],
+            'file_name':target.name,'path':str(target.resolve()),'width':im.width,'height':im.height,
+            'original_width':original_w,'original_height':original_h,'split':split,
+            'camera':'team_city_'+item['city'],'site_id':item['site_id'],
+            'event':'team_'+item['city']+'_'+item['session_id'],
+            'timestamp':item['capture_date']+'T'+item['capture_time']+':00+03:00',
+            'labels':labels,'animal':int(bool(labels)),'boxes':boxes,'incomplete_boxes':False,
+            'processed_file_md5':hashlib.md5(target.read_bytes()).hexdigest(),
+            'pixel_sha256':hashlib.sha256(im.tobytes()).hexdigest(), 'phash':str(imagehash.phash(im)),
+            'grayscale_proxy':bool(np.mean(np.max(small,2)-np.min(small,2))<6)})
+for r in good:r['source']='CCT20'
+good.extend(team_rows)
+site_map.update({'team_city_Riyadh':'train','team_city_Tabuk':'test'})
+write_json(DATA/'site_split.json',site_map)
+write_json(DATA/'team_collection.json',{'protocol':'Riyadh train, Tabuk test; CCT20 validation only',
+    'species_mapping':team_mapping,'submitted':len(team_metadata),'included_before_cleaning':len(team_rows),
+    'exclusions':team_exclusions,'source_hashes':{name:digest(TEAM_DATA_ROOT/name) for name in ['metadata_review.csv','draft_boxes.json']},
+    'limitation':'Local training images are animal-only. The tiny local test has a different species mix and is not representative.'})
+team_metadata.to_csv(DATA/'team_metadata.csv',index=False)
+cfg['team_protocol']='city_split_v2'
+print('Team images before duplicate cleaning:',pd.Series([r['split'] for r in team_rows]).value_counts().to_dict())
+
+
 hashes=collections.defaultdict(list)
 for r in good:hashes[r['pixel_sha256']].append(r)
 excluded_events=set(); duplicate_ids=[];conflicting_duplicate_groups=[]
@@ -413,7 +471,9 @@ if len(labels)<2:raise ValueError('Need at least two training species')
 write_json(DATA/'species.json',labels)
 write_json(DATA/'manifest.json',cleaned)
 write_json(DATA/'preparation_config.json',cfg)
-write_json(DATA/'cleaning_report.json',dict(selected=len(chosen),downloaded=len(good),kept=len(cleaned),
+write_json(DATA/'cleaning_report.json',dict(selected=len(chosen)+len(team_metadata),downloaded=len(good),kept=len(cleaned),
+    cct_selected=len(chosen),team_submitted=len(team_metadata),team_exclusions=team_exclusions,
+    team_retained_by_split=dict(collections.Counter(r["split"] for r in cleaned if r.get("source")=="team_collected")),
     failures=len(failures),excluded_failed_events=len(failed_events),duplicate_ids=duplicate_ids,
     exact_cross_split_events=sorted(excluded_events),near_duplicate_pairs=pairs,near_quarantined_events=near_events,
     conflicting_duplicate_label_groups=conflicting_duplicate_groups,
@@ -644,7 +704,12 @@ counts = pd.read_csv(DATA/'class_counts.csv', index_col=0)
 cleaning = read_json(DATA/'cleaning_report.json')
 summary = pd.DataFrame(rows).groupby('split').agg(frames=('id','count'),cameras=('camera','nunique'))
 card = f"""# Dataset Card — CCT20 / Phase 1
-Source: https://lila.science/datasets/caltech-camera-traps
+Source: https://lila.science/datasets/caltech-camera-traps plus team photographs from Riyadh and Tabuk.
+Local protocol: Riyadh train; Tabuk test; validation/calibration from CCT20 only.
+Team image 1 excluded for visible people. Local training is animal-only; the local test has very few frames and different class proportions.
+Category mapping: pigeon/chicken -> bird; original species retained.
+Retained team counts: {dict(collections.Counter(r["split"] for r in rows if r.get("source")=="team_collected"))}.
+Collection metadata and provenance: team_metadata.csv and team_collection.json.
 Citation: Beery, Van Horn and Perona, Recognition in Terra Incognita, ECCV 2018.
 Licence: CDLA-Permissive; follow course policy: do not redistribute images or commit them to Git.
 
@@ -687,7 +752,7 @@ RGB, resize 224, ImageNet normalization. Random flip and brightness/contrast cha
 All sections import image preprocessing and augmentation from preprocessing.py.
 
 ## Limitations and privacy
-Curated US wildlife data; no claim of Saudi generalisation. The empty fraction must be measured on this subset.
+Main source is curated US wildlife data; local supplementation is too small to establish generalisation across Saudi locations. The empty fraction must be measured on this subset.
 Grayscale is an infrared proxy, not verified nighttime. Blur is a review flag; no image is discarded solely for low Laplacian variance. No GPS publication; keep photos and review galleries private.
 Test accuracy confidence intervals belong to Member 2 after training, not this untrained data notebook.
 
@@ -711,6 +776,7 @@ Path('handoff/requirements_member1.txt').write_text(subprocess.check_output([sys
 write_json('handoff/runtime_member1.json', {'python':sys.version, 'platform':sys.platform})
 files=[DATA/name for name in ['manifest.json','species.json','site_split.json','audit_report.json',
  'label_audit.csv','preparation_config.json','cleaning_report.json','class_counts.csv','crop_counts.csv','metadata_summary.json','class_balance_proportions.csv','species_crop_support.csv','inventory.csv','blur_review.csv']]
+files += [DATA/'team_collection.json', DATA/'team_metadata.csv']
 files += [Path('handoff/data_config.json'),Path('runs/data/DATASET_CARD.md'),Path('handoff/preprocessing.json')]
 write_json('handoff/dataset_release.json', {'schema':2,'scope':'Phase 1 M1-M3',
  'data_dir':str(DATA),'audit_complete':True,'files':{str(f):digest(f) for f in files},
@@ -722,7 +788,7 @@ from pathlib import Path
 import os,json,hashlib,sys,subprocess,platform,random
 import numpy as np,pandas as pd
 from IPython.display import display,Markdown
-ROOT=Path.cwd() if Path.cwd().name=='CameraTrap_Phase1_Team' else Path.cwd()/'CameraTrap_Phase1_Team'
+ROOT=Path.cwd() if Path.cwd().name=='CameraTrap_Phase1_Team_Mixed_v2' else Path.cwd()/'CameraTrap_Phase1_Team_Mixed_v2'
 ROOT.mkdir(exist_ok=True);os.chdir(ROOT)
 for name in ['handoff','runs','review','submission','docs']:Path(name).mkdir(exist_ok=True)
 def read_json(p):return json.loads(Path(p).read_text())
@@ -1151,7 +1217,7 @@ from pathlib import Path
 import os,json,hashlib,sys,subprocess,platform,random
 import numpy as np,pandas as pd
 from IPython.display import display,Markdown
-ROOT=Path.cwd() if Path.cwd().name=='CameraTrap_Phase1_Team' else Path.cwd()/'CameraTrap_Phase1_Team'
+ROOT=Path.cwd() if Path.cwd().name=='CameraTrap_Phase1_Team_Mixed_v2' else Path.cwd()/'CameraTrap_Phase1_Team_Mixed_v2'
 ROOT.mkdir(exist_ok=True);os.chdir(ROOT)
 for name in ['handoff','runs','review','submission','docs']:Path(name).mkdir(exist_ok=True)
 def read_json(p):return json.loads(Path(p).read_text())
@@ -1580,7 +1646,7 @@ from pathlib import Path
 import os,json,hashlib,sys,subprocess,platform,random
 import numpy as np,pandas as pd
 from IPython.display import display,Markdown
-ROOT=Path.cwd() if Path.cwd().name=='CameraTrap_Phase1_Team' else Path.cwd()/'CameraTrap_Phase1_Team'
+ROOT=Path.cwd() if Path.cwd().name=='CameraTrap_Phase1_Team_Mixed_v2' else Path.cwd()/'CameraTrap_Phase1_Team_Mixed_v2'
 ROOT.mkdir(exist_ok=True);os.chdir(ROOT)
 for name in ['handoff','runs','review','submission','docs']:Path(name).mkdir(exist_ok=True)
 def read_json(p):return json.loads(Path(p).read_text())
@@ -1825,6 +1891,8 @@ def evaluate_local_riyadh(root):
     from PIL import Image
     import imagehash
     metadata = pd.read_csv(root / 'metadata_review.csv').fillna('')
+    heldout_ids = {r['id'] for r in rows if r.get('source')=='team_collected' and r['split']=='test'}
+    metadata = metadata[metadata.image_id.isin(heldout_ids)].copy()
     annotations = read_json(root / 'draft_boxes.json')['annotations']
     required = ['site_id', 'session_id', 'reviewer']
     ready = metadata.status.eq('verified')
@@ -1840,8 +1908,8 @@ def evaluate_local_riyadh(root):
     local_rows = []
     excluded = []
     seen = set()
-    reference_hashes = {r['pixel_sha256'] for r in rows if 'pixel_sha256' in r}
-    reference_phashes = [imagehash.hex_to_hash(r['phash']) for r in rows if r.get('phash')]
+    reference_hashes = {r['pixel_sha256'] for r in rows if 'pixel_sha256' in r and r.get('source')!='team_collected'}
+    reference_phashes = [imagehash.hex_to_hash(r['phash']) for r in rows if r.get('phash') and r.get('source')!='team_collected']
     local_phashes = []
     for row in metadata.to_dict('records'):
         path = root / row['filename']
@@ -1863,10 +1931,10 @@ def evaluate_local_riyadh(root):
                 continue
             x1,y1,x2,y2 = a['xyxy_pixels']
             assert 0 <= x1 < x2 <= width and 0 <= y1 < y2 <= height
-            boxes.append({'species': a['species'], 'xyxy': [x1/width,y1/height,x2/width,y2/height]})
+            boxes.append({'species': {'pigeon':'bird','chicken':'bird'}.get(a['species'],a['species']), 'xyxy': [x1/width,y1/height,x2/width,y2/height]})
         assert bool(boxes) == (row['proposed_label'] == 'animal'), 'Review missing or inconsistent boxes: ' + row['image_id']
         local_rows.append({'id': row['image_id'], 'path': str(path), 'camera': row['site_id'],
-                           'event': row['site_id'] + '/' + row['session_id'], 'split': 'local_external_test',
+                           'event': row['site_id'] + '/' + row['session_id'], 'split': 'local_test_Tabuk',
                            'animal': int(row['proposed_label'] == 'animal'), 'boxes': boxes})
     write_json(LOCAL_OUTPUT / 'cleaning_report.json', {'submitted': len(metadata), 'retained': len(local_rows), 'excluded': excluded})
     assert local_rows, 'No local images remain after cleaning.'
@@ -1881,7 +1949,7 @@ def evaluate_local_riyadh(root):
         known = [r for r in samples if r['label'] >= 0]
         unknown = [r for r in samples if r['label'] < 0]
         policy = read_json(folder/'policy.json')
-        result = {'task': task, 'regime': regime, 'split': 'local_external_test',
+        result = {'task': task, 'regime': regime, 'split': 'local_test_Tabuk',
                   'input_resolution': checkpoint['image_size'], 'policy': policy,
                   'known_count': len(known), 'unknown_count': len(unknown),
                   'unknown_species': sorted({r['species'] for r in unknown}),
@@ -1901,7 +1969,7 @@ def evaluate_local_riyadh(root):
             del model
         run = wandb.init(project=CFG['project'], name=f'{task}-{regime}-local-riyadh',
                          mode=WANDB_MODE, dir=str(LOCAL_OUTPUT.resolve()),
-                         config={'split':'local_external_test','task':task,'regime':regime,
+                         config={'split':'local_test_Tabuk','task':task,'regime':regime,
                                  'input_resolution':checkpoint['image_size']}, reinit='finish_previous')
         run.log({'local/known_count':len(known),'local/unknown_count':len(unknown)})
         if known:
@@ -1913,8 +1981,8 @@ def evaluate_local_riyadh(root):
         results.append(result)
     write_json(LOCAL_OUTPUT/'metrics.json', results)
     metadata.to_csv(LOCAL_OUTPUT/'collection_metadata.csv', index=False)
-    (LOCAL_OUTPUT/'DATASET_CARD.md').write_text('# Team-collected Riyadh images\n\nPurpose: separate exploratory external evaluation. Models and thresholds were selected using CCT20 validation only. No local image is used for training or model selection.\n\nSource: team-provided photographs from Riyadh and Tabuk. Per-image cities are recorded in collection_metadata.csv. Capture dates/times and site/session codes are recorded in collection_metadata.csv; blank times are unknown. Labels and boxes were proposed with assistance and verified by the named human reviewers.\n\nSubmitted images: '+str(len(metadata))+'; retained after duplicate screening: '+str(len(local_rows))+'. Exact and perceptual duplicates are quarantined. See cleaning_report.json.\n\nAll local images belong exclusively to local_external_test. Site and session groups include provisional visual estimates; different IDs do not establish independent sites. See collection_metadata.csv for grouping provenance. Image groups are correlated; this small, cat-dominated convenience sample is not representative of wildlife or camera-trap deployment. Unknown species are reported separately and excluded from known-species metrics.\n\nImages remain in private team storage. Confirm permission and anonymize any identifiable people before sharing. Bonus credit is assessed by the instructor.\n')
-    write_json(LOCAL_OUTPUT/'status.json', {'status':'EVALUATED', 'split':'local_external_test'})
+    (LOCAL_OUTPUT/'DATASET_CARD.md').write_text('# Team-collected Riyadh images\n\nPurpose: report the Tabuk subset separately from the combined CCT20 plus Tabuk test. Models and thresholds were selected using CCT20 validation only. Riyadh images supplement training. Only held-out Tabuk images are evaluated here. Model and threshold selection use CCT20 validation only.\n\nSource: team-provided photographs from Riyadh and Tabuk. Per-image cities are recorded in collection_metadata.csv. Capture dates/times and site/session codes are recorded in collection_metadata.csv; blank times are unknown. Labels and boxes were proposed with assistance and verified by the named human reviewers.\n\nSubmitted images: '+str(len(metadata))+'; retained after duplicate screening: '+str(len(local_rows))+'. Exact and perceptual duplicates are quarantined. See cleaning_report.json.\n\nOnly retained Tabuk images belong to this local test; Riyadh images are training data. Site and session groups include provisional visual estimates; different IDs do not establish independent sites. See collection_metadata.csv for grouping provenance. Image groups are correlated; this small, cat-dominated convenience sample is not representative of wildlife or camera-trap deployment. Unknown species are reported separately and excluded from known-species metrics.\n\nImages remain in private team storage. Confirm permission and anonymize any identifiable people before sharing. Bonus credit is assessed by the instructor.\n')
+    write_json(LOCAL_OUTPUT/'status.json', {'status':'EVALUATED', 'split':'local_test_Tabuk'})
     display(pd.DataFrame([{k:v for k,v in r.items() if k not in ['metrics_argmax','policy','operating_point']} for r in results]))
 
 if (LOCAL_DATA_ROOT/'metadata_review.csv').exists():
@@ -1946,7 +2014,7 @@ for name in ['comparison.csv','acceptance.csv','REPORT_DRAFT.md','wandb_links.cs
     collect(Path('submission')/name,name)
 for name in ['automatic_checks.csv','independent_audit.csv','issues.csv','fresh_process_results.json']:
     collect(Path('review')/name,Path('review')/name)
-for name in ['class_balance_proportions.csv','species_crop_support.csv','audit_report.json','blur_review.csv']:
+for name in ['class_balance_proportions.csv','species_crop_support.csv','audit_report.json','blur_review.csv','team_collection.json','team_metadata.csv']:
     collect(DATA/name,Path('data_evidence')/name)
 weights=[]
 for row in comparison.to_dict('records'):

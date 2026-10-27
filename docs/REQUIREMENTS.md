@@ -52,3 +52,7 @@ Section 8.5, Project 5, page 19, Phase 1 item 1.2 explicitly requires both frame
 - Every figure identifies its data split, model input resolution and decision threshold, or states argmax / not applicable.
 - The notebook's Markdown report and ZIP contain evidence for writing the report; they do not replace the required PDF.
 - Table 6 allocates 12 points to M1, 20 to M2–M3 and 8 to reproducibility.
+
+## Team-collected data contribution
+
+Updated protocol: Riyadh training supplementation and Tabuk test, split by confirmed city. CCT20 retains validation/calibration. The same cleaning, leakage checks, augmentation and train-only label audit apply to the combined release. Team labels and boxes are separately human-verified by Saleh. Record retained counts, exclusions, collection dates, category mapping, imbalance and limits in the report; retrain all six comparisons. The new workspace preserves the old experiment outputs. Five held-out local images remain before duplicate cleaning after excluding image 1 for visible people. The local report is a subset of the combined test, not an additional independent test.

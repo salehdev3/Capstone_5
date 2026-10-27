@@ -1,27 +1,13 @@
-# Team-Collected Riyadh Images
+# Team-collected data: mixed training release v2
 
-This folder contains 20 photographs supplied by the team for the local camera-trap classification extension. The original image files are retained unchanged.
+The confirmed cities define the split: 14 Riyadh images supplement CCT20 training; 6 Tabuk images are reserved for test. Image 1 is excluded because people are visible, leaving 5 local test images before duplicate cleaning. Further cleaning or audit exclusions may reduce these counts. CCT20 supplies validation and calibration. City grouping avoids relying on inferred site independence.
 
-`metadata_review.csv` contains proposed image-level labels and blank capture-time, site, session and reviewer fields. WhatsApp filenames are not treated as verified capture times. Fill those fields using the photographer's records.
+All image labels and boxes were approved by Saleh. Collection dates, times, cities and review provenance are in metadata_review.csv. Pigeon and chicken map to the shared bird category; original labels remain recorded. Class support is computed from training data only. This small local sample is imbalanced: all Riyadh training images are animal-positive; Tabuk contains three empty images and two animal-positive images before cleaning. CCT20 retains both classes in training.
 
-`draft_boxes.json` contains proposed pixel-coordinate bounding boxes. These were prepared as annotation drafts and require human visual verification before use as ground truth. `review.html` displays the images with the proposed boxes. In particular, verify small birds, partially visible animals, all instances in multi-animal images and suspected repeat photos.
+Start the notebook in the new CameraTrap_Phase1_Team_Mixed_v2 workspace and make this folder available at TEAM_DATA_ROOT. A private repository needs an authenticated checkout or a folder upload in Colab. The notebook imports local images before shared cleaning, leakage checks and label auditing. Retrain scratch, frozen and full models; do not reuse prior checkpoints or summaries. Outputs and dataset hashes are kept in the new workspace.
 
-Preliminary labels: 13 cat images, one dog image, one pigeon image, one chicken image, and four images that appear empty. Keep the box label `cat` or `dog` only if it matches the supported species vocabulary; otherwise report it as an unknown class in species evaluation. No model evaluation has been run on these images.
+Evaluate the combined test and report the Tabuk subset separately. These two reports overlap and must not be counted as separate test samples. Never use test results to choose models, thresholds or the split. The earlier all-local-images external-test protocol is superseded.
 
-These images are team-collected data. Keep this repository private and do not redistribute the photographs. Use them as a separate exploratory evaluation set unless the team creates a leakage-safe training split and reruns every comparison experiment.
+The notebook records the collection protocol, source hashes, exclusions and retained class counts in the frozen release. Include these in the official report with the Dataset Card and actual experiment results. Bonus credit is assessed by the instructor, not guaranteed by a split ratio.
 
-## Notebook evaluation
-
-Member 4 includes `Team-Collected Riyadh Data — External Evaluation`. Set `LOCAL_DATA_ROOT` to this folder in the Colab runtime. A standalone notebook cannot download a private dataset without your authenticated repository checkout or upload.
-
-Review all images and all boxes, correct mistakes and missing instances, and only then set the corresponding metadata and annotation `status` fields to `verified`. Fill the reviewer, site and session fields; record actual capture dates and times where known. Do not use WhatsApp transfer times as capture dates. Images 17 and 20 may belong to the same session. Review the people visible in image 1 before sharing.
-
-This set remains entirely in `local_external_test`; no local images influence training, model selection, calibration or threshold selection. Duplicate screening quarantines exact/near duplicate local images and potential overlap with CCT20. Results and a Dataset Card are saved under `submission/local_riyadh/` and copied into the evidence archive. The official report should describe collection, annotation review, cleaning, class balance, the separate local results and the limitations of this small sample. No bonus score is guaranteed.
-
-## Review approval
-
-On 2026-10-27, Saleh confirmed all image labels, box boundaries and animal-instance coverage. Metadata and annotation statuses are now verified. The historical filename `draft_boxes.json` is retained for notebook compatibility; its records are human-verified. Earlier pending-review instructions describe the preparation workflow. Site-group uncertainty remains documented separately. Model evaluation has not yet been run on these images.
-
-## City correction
-
-Images 1, 3, 4, 5, 11 and 12 are from Tabuk, as confirmed by the photographer. The other 14 remain recorded in Riyadh. Folder and RYD identifiers are retained for compatibility. Images 11 and 12 are both confirmed as Tabuk; exact site and shared visit remain unconfirmed.
+Raw photos remain private. review.html displays approved boxes; draft_boxes.json retains its historical filename. Confirmed site groups and uncertain assignments are documented in SITE_GROUPS.md.

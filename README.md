@@ -41,3 +41,9 @@ Submit one PDF per team, compiled from the official Overleaf template and named 
 The notebook generates `REPORT_DRAFT.md` and an evidence archive, not the completed Overleaf PDF. Publish the generated Dataset Card and sync offline W&B runs before checking instructor access. Complete the report with actual experiment results and team analysis. The grading allocation is M1: 12, M2–M3: 20, reproducibility: 8 points.
 
 Run `python tests/test_blur_review.py` to validate review persistence and frozen-release protection.
+
+## Current team-data training protocol (v2)
+
+The notebook now creates `CameraTrap_Phase1_Team_Mixed_v2`. Team data enter before shared duplicate checks and the training label audit. The confirmed city defines the split: 14 Riyadh images train; 6 Tabuk images are held out, with image 1 excluded for visible people, leaving 5 before cleaning. All comparison models must be retrained with the new frozen release. CCT20 supplies validation and calibration. The retained Tabuk subset is reported separately and is also included in combined test metrics; do not count it twice.
+
+Make the private `data/team_collected_riyadh` folder available and set `TEAM_DATA_ROOT` in Member 1. For the separate local report, set `LOCAL_DATA_ROOT` to the same folder. The default paths expect the data folder beside the shared preprocessing module. Local metadata, provenance, exclusions and category mapping are frozen with the release. Pigeon and chicken map to bird, with original species preserved. The site IDs for local frames represent conservative city groups, not actual camera counts. This small, imbalanced sample is not representative; bonus credit remains the instructor's assessment.
