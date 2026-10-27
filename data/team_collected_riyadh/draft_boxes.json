@@ -83,7 +83,7 @@
     {
       "image_id": "RYD_006",
       "object_id": 1,
-      "species": "cat",
+      "species": "chicken",
       "xyxy_pixels": [
         575,
         784,
@@ -92,7 +92,9 @@
       ],
       "status": "draft_pending_human_review",
       "assigned_reviewer": "Saleh",
-      "annotation_source": "assistant_visual_annotation"
+      "annotation_source": "assistant_visual_annotation",
+      "coarse_category": "bird",
+      "species_confirmation_source": "user_confirmed"
     },
     {
       "image_id": "RYD_007",
