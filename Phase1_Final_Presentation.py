@@ -436,9 +436,6 @@ assert all(a['status']=='verified' for a in team_annotations)
 team_mapping = {'cat':'cat', 'dog':'dog', 'pigeon':'bird', 'chicken':'bird'}
 team_rows, team_exclusions = [], []
 for item in team_metadata.to_dict('records'):
-    if item['image_id']=='RYD_001':
-        team_exclusions.append({'id':item['image_id'],'reason':'Visible people; excluded from model data.'})
-        continue
     assert item['city'] in ['Riyadh','Tabuk']
     split = 'train' if item['city']=='Riyadh' else 'test'
     assert item['planned_split']==split
@@ -742,7 +739,7 @@ summary = pd.DataFrame(rows).groupby('split').agg(frames=('id','count'),cameras=
 card = f"""# Dataset Card — CCT20 / Phase 1
 Source: https://lila.science/datasets/caltech-camera-traps plus team photographs from Riyadh and Tabuk.
 Local protocol: Riyadh train; Tabuk test; validation/calibration from CCT20 only.
-Team image 1 excluded for visible people. Local training is animal-only; the local test has very few frames and different class proportions.
+Local training is animal-only; the local test has very few frames and different class proportions.
 Category mapping: pigeon/chicken -> bird; original species retained.
 Retained team counts: {dict(collections.Counter(r["split"] for r in rows if r.get("source")=="team_collected"))}.
 Collection metadata and provenance: team_metadata.csv and team_collection.json.

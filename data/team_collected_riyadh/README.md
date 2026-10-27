@@ -1,6 +1,6 @@
 # Team-collected data: mixed training release v2
 
-The confirmed cities define the split: 14 Riyadh images supplement CCT20 training; 6 Tabuk images are reserved for test. Image 1 is excluded because people are visible, leaving 5 local test images before duplicate cleaning. Further cleaning or audit exclusions may reduce these counts. CCT20 supplies validation and calibration. City grouping avoids relying on inferred site independence.
+The confirmed cities define the split: 14 Riyadh images supplement CCT20 training; 5 Tabuk images are reserved for test. All 5 Tabuk images form the local test before duplicate cleaning. Further cleaning or audit exclusions may reduce these counts. CCT20 supplies validation and calibration. City grouping avoids relying on inferred site independence.
 
 All image labels and boxes were approved by Saleh. Collection dates, times, cities and review provenance are in metadata_review.csv. Pigeon and chicken map to the shared bird category; original labels remain recorded. Class support is computed from training data only. This small local sample is imbalanced: all Riyadh training images are animal-positive; Tabuk contains three empty images and two animal-positive images before cleaning. CCT20 retains both classes in training.
 

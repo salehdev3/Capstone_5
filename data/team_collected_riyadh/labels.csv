@@ -1,5 +1,4 @@
 image_id,filename,proposed_label,proposed_species,coarse_category,label_source,reviewer,human_review_status,species_confirmation_source,label_review_status,label_review_date,box_review_status,box_review_date,city
-RYD_001,WhatsApp Image 2026-10-27 at 12.37.40 AM (1).jpeg,empty,empty,,assistant_visual_annotation,Saleh,verified,,verified,2026-10-27,verified,2026-10-27,Tabuk
 RYD_002,WhatsApp Image 2026-10-27 at 12.37.40 AM.jpeg,animal,dog,,assistant_visual_annotation,Saleh,verified,,verified,2026-10-27,verified,2026-10-27,Riyadh
 RYD_003,WhatsApp Image 2026-10-27 at 12.37.41 AM (1).jpeg,animal,pigeon,bird,assistant_visual_annotation,Saleh,verified,user_confirmed,verified,2026-10-27,verified,2026-10-27,Tabuk
 RYD_004,WhatsApp Image 2026-10-27 at 12.37.41 AM (2).jpeg,empty,empty,,assistant_visual_annotation,Saleh,verified,,verified,2026-10-27,verified,2026-10-27,Tabuk
