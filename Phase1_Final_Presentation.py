@@ -426,6 +426,8 @@ if TEAM_DATA_ROOT is None:
     del github_token, archive_bytes
 assert (TEAM_DATA_ROOT/'metadata_review.csv').is_file(), 'Team image metadata is unavailable.'
 print('Team image folder:', TEAM_DATA_ROOT)
+
+
 assert (TEAM_DATA_ROOT/'metadata_review.csv').exists(), 'Set TEAM_DATA_ROOT to your private checkout or uploaded team-image folder.'
 team_metadata = pd.read_csv(TEAM_DATA_ROOT/'metadata_review.csv').fillna('')
 team_annotations = read_json(TEAM_DATA_ROOT/'draft_boxes.json')['annotations']
