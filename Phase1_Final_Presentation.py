@@ -391,7 +391,41 @@ def near_duplicate_quarantine(rows, distance=2):
     return [r for r in rows if r['event'] not in bad], pairs, sorted(bad)
 
 
-TEAM_DATA_ROOT = Path(preprocessing.__file__).resolve().parent / 'data/team_collected_riyadh'
+from io import BytesIO
+import zipfile
+
+team_candidates = [Path.cwd()/'data/team_collected_riyadh',
+                   Path(preprocessing.__file__).resolve().parent/'data/team_collected_riyadh',
+                   Path.cwd()/'private_team_data']
+TEAM_DATA_ROOT = next((p for p in team_candidates if (p/'metadata_review.csv').is_file()), None)
+if TEAM_DATA_ROOT is None:
+    from google.colab import userdata
+    github_token = userdata.get('GITHUB_TOKEN')
+    if not github_token:
+        raise RuntimeError('Add a GitHub token with private repository access to Colab Secrets as GITHUB_TOKEN.')
+    request = urllib.request.Request(
+        'https://api.github.com/repos/salehdev3/Capstone_5/zipball/v1',
+        headers={'Authorization': 'Bearer ' + github_token,
+                 'Accept': 'application/vnd.github+json',
+                 'User-Agent': 'CameraTrap-Phase1-Colab'})
+    with urllib.request.urlopen(request, timeout=120) as response:
+        archive_bytes = response.read()
+    TEAM_DATA_ROOT = Path.cwd()/'private_team_data'
+    TEAM_DATA_ROOT.mkdir(parents=True, exist_ok=True)
+    with zipfile.ZipFile(BytesIO(archive_bytes)) as archive:
+        members = [member for member in archive.infolist()
+                   if '/data/team_collected_riyadh/' in member.filename and not member.is_dir()]
+        if not members:
+            raise RuntimeError('Team images were not found in the private v1 branch archive.')
+        for member in members:
+            name = Path(member.filename).name
+            if not name or name in {'.', '..'}:
+                continue
+            destination = TEAM_DATA_ROOT/name
+            destination.write_bytes(archive.read(member))
+    del github_token, archive_bytes
+assert (TEAM_DATA_ROOT/'metadata_review.csv').is_file(), 'Team image metadata is unavailable.'
+print('Team image folder:', TEAM_DATA_ROOT)
 assert (TEAM_DATA_ROOT/'metadata_review.csv').exists(), 'Set TEAM_DATA_ROOT to your private checkout or uploaded team-image folder.'
 team_metadata = pd.read_csv(TEAM_DATA_ROOT/'metadata_review.csv').fillna('')
 team_annotations = read_json(TEAM_DATA_ROOT/'draft_boxes.json')['annotations']
@@ -1883,7 +1917,7 @@ Path('submission/REPORT_DRAFT.md').write_text('\n\n'.join(sections))
 display(Markdown(Path('submission/REPORT_DRAFT.md').read_text()))
 
 
-LOCAL_DATA_ROOT = Path(preprocessing.__file__).resolve().parent / 'data/team_collected_riyadh'
+LOCAL_DATA_ROOT = TEAM_DATA_ROOT
 LOCAL_OUTPUT = Path('submission/local_riyadh')
 LOCAL_OUTPUT.mkdir(parents=True, exist_ok=True)
 
