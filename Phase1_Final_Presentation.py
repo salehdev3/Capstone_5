@@ -397,7 +397,9 @@ import zipfile
 team_candidates = [Path.cwd()/'data/team_collected_riyadh',
                    Path(preprocessing.__file__).resolve().parent/'data/team_collected_riyadh',
                    Path.cwd()/'private_team_data']
-TEAM_DATA_ROOT = next((p for p in team_candidates if (p/'metadata_review.csv').is_file()), None)
+expected_team_metadata_sha256 = '1e658521756296d024e78a1bc617749ac958d267ac97d7d7148706099b24a01e'
+TEAM_DATA_ROOT = next((p for p in team_candidates if (p/'metadata_review.csv').is_file()
+                       and hashlib.sha256((p/'metadata_review.csv').read_bytes()).hexdigest() == expected_team_metadata_sha256), None)
 if TEAM_DATA_ROOT is None:
     from google.colab import userdata
     github_token = userdata.get('GITHUB_TOKEN')
@@ -423,6 +425,7 @@ if TEAM_DATA_ROOT is None:
                 continue
             destination = TEAM_DATA_ROOT/name
             destination.write_bytes(archive.read(member))
+    assert hashlib.sha256((TEAM_DATA_ROOT/'metadata_review.csv').read_bytes()).hexdigest() == expected_team_metadata_sha256, 'Downloaded team metadata does not match this notebook release.'
     del github_token, archive_bytes
 assert (TEAM_DATA_ROOT/'metadata_review.csv').is_file(), 'Team image metadata is unavailable.'
 print('Team image folder:', TEAM_DATA_ROOT)
