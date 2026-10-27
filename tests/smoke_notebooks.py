@@ -95,6 +95,17 @@ with tempfile.TemporaryDirectory(prefix='phase1-smoke-') as tmp:
         folder=ns['OUT']/task/'scratch'
         assert all((folder/name).exists() for name in ['best.pt','policy.json','history.csv','test_probabilities.npz','learning_loss.png','learning_accuracy.png','reliability.png','confusion.png'])
     print('PASS: scratch training, calibration, evaluation, cached reuse and saved plots for both tasks')
+    old_out=ns['OUT']
+    ns['OUT']=Path('runs/budget_check')
+    cfg['max_training_seconds']=0.000001
+    limited=ns['train_model']('triage','scratch')
+    limited_history=pd.read_csv(ns['OUT']/'triage/scratch/history.csv')
+    assert limited['budget_exhausted'] and len(limited_history)==1
+    assert bool(limited_history.iloc[0]['partial_epoch'])
+    assert (ns['OUT']/'triage/scratch/best.pt').exists()
+    cfg.pop('max_training_seconds')
+    ns['OUT']=old_out
+    print('PASS: time budget stops mid-epoch, records truncation and saves a usable checkpoint')
     old=cfg['epochs'];cfg['epochs']=3
     try:ns['train_model']('triage','scratch')
     except AssertionError:pass

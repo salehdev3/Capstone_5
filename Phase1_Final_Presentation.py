@@ -839,7 +839,7 @@ assert len(blur_check) and blur_check['reviewer'].str.strip().ne('').all() and b
 assert TEAM_NOTES.strip(), 'Complete the dataset observations before continuing.'
 training_defaults = {'project': 'camera-trap-phase1', 'backbone': 'microsoft/resnet-50', 'seed': 42, 'profile': 'full', 'data_dir': 'data/cct20_v1', 'output_dir': 'runs/data', 'max_images': 6000, 'download_workers': 12, 'max_image_side': 1024, 'image_size': 224, 'batch_size': 32, 'workers': 2, 'epochs': 12, 'patience': 4, 'warmup_epochs': 0, 'lr_scratch': 0.001, 'lr_frozen': 0.001, 'lr_full': 0.0001, 'weight_decay': 0.0, 'label_smoothing': 0.0, 'class_weighted_loss': False, 'wandb_mode': 'offline', 'target_animal_recall': 0.99, 'species_review_confidence': 0.6, 'bootstrap_repeats': 1000, 'audit_events': 100, 'acceptance': {'animal_recall_min': 0.99, 'empty_removal_min': 0.2, 'species_macro_f1_min': 0.65, 'species_ece_max': 0.1}}
 training_defaults.update(cfg)
-training_defaults.update(contract_version=2,preprocessing_sha256=digest(Path(preprocessing.__file__)),optimizer='Adam')
+training_defaults.update(contract_version=2,preprocessing_sha256=digest(Path(preprocessing.__file__)),optimizer='Adam',max_training_seconds=900,mixed_precision=True,require_gpu=True)
 write_json('handoff/preprocessing.json',{'sha256':digest(Path(preprocessing.__file__)),'input_size':224,'library':'OpenCV + torchvision','train_only':['horizontal_flip','brightness_contrast']})
 write_json('handoff/data_config.json', training_defaults)
 write_json(DATA/'preparation_config.json', training_defaults)
@@ -906,7 +906,7 @@ def seed_everything(seed):
     torch.backends.cudnn.deterministic = True
 
 def artifact_context(cfg, task):
-    return dict(training_implementation=2, task=task, profile=cfg['profile'], image_size=cfg['image_size'],
+    return dict(runtime_policy={'version':3,'max_training_seconds':cfg.get('max_training_seconds',900),'mixed_precision':cfg.get('mixed_precision',True),'workers':cfg.get('workers',2)},training_implementation=2, task=task, profile=cfg['profile'], image_size=cfg['image_size'],
                 seed=cfg['seed'], manifest_sha256=digest(Path(cfg['data_dir'])/'manifest.json'),
                 split_policy='camera-disjoint train / val_select / val_calibrate / test',
                 preprocessing_sha256=cfg['preprocessing_sha256'],
@@ -927,6 +927,9 @@ def samples_for_task(rows,task,classes):
 
 DEVICE='cuda' if torch.cuda.is_available() else 'cpu'
 print('Device:',DEVICE)
+if CFG.get('require_gpu',False) and DEVICE!='cuda':
+    raise RuntimeError('Enable a GPU runtime in Colab before training. Save your current files before changing the runtime.')
+if DEVICE=='cuda':print('GPU:',torch.cuda.get_device_name(0))
 if DEVICE=='cpu':print('Training device: CPU. GPU acceleration is unavailable in this runtime.')
 WANDB_MODE=CFG['wandb_mode']
 import wandb
@@ -1084,7 +1087,8 @@ import time,wandb
 def loader(samples,train=False):
     gen=torch.Generator().manual_seed(CFG['seed'])
     return DataLoader(FrameDataset(samples,CFG['image_size'],train),batch_size=CFG['batch_size'],
-                      shuffle=train,num_workers=0,generator=gen)
+                      shuffle=train,num_workers=int(CFG.get('workers',2)) if DEVICE=='cuda' else 0,
+                      pin_memory=DEVICE=='cuda',generator=gen)
 
 def predict(model,data):
     model.eval();all_logits=[];all_y=[]
@@ -1122,34 +1126,51 @@ def train_model(task,regime):
     run=wandb.init(project=CFG['project'],name=f'{task}-{regime}',group=DATA_HASH[:12],
                    mode=WANDB_MODE,dir=str(folder.resolve()),config=dict(CFG,task=task,regime=regime),reinit='finish_previous')
     best=-1;stale=0;history=[]
+    amp_enabled=DEVICE=='cuda' and CFG.get('mixed_precision',True)
+    scaler=torch.amp.GradScaler('cuda',enabled=amp_enabled)
+    train_batches=loader(train,True);validation_batches=loader(val)
+    started=time.monotonic();budget=float(CFG.get('max_training_seconds',900))
+    timed_out=False
+    print('Training budget:',budget,'seconds | GPU mixed precision:',amp_enabled)
     for epoch in range(CFG['epochs']):
+        if history and time.monotonic()-started>=budget:
+            timed_out=True
+            break
         warmup=max(0,int(CFG['warmup_epochs']))
         for group in optimizer.param_groups:
             group['lr']=CFG['lr_'+regime]*min(1.,(epoch+1)/max(1,warmup))
         model.train()
         if regime=='frozen':model.eval();model.classifier.train()
         total_loss=0;correct=0;total=0
-        for images,labels,_ in loader(train,True):
-            images,labels=images.to(DEVICE),labels.to(DEVICE)
-            optimizer.zero_grad()
-            logits=model(images)
-            loss=criterion(logits,labels)
-            loss.backward()
-            optimizer.step()
+        for images,labels,_ in train_batches:
+            if total and time.monotonic()-started>=budget:
+                timed_out=True
+                break
+            images,labels=images.to(DEVICE,non_blocking=True),labels.to(DEVICE,non_blocking=True)
+            optimizer.zero_grad(set_to_none=True)
+            with torch.autocast(device_type='cuda',dtype=torch.float16,enabled=amp_enabled):
+                logits=model(images)
+                loss=criterion(logits,labels)
+            scaler.scale(loss).backward()
+            scaler.step(optimizer)
+            scaler.update()
             total_loss+=loss.item()*len(labels)
             correct+=int((logits.argmax(1)==labels).sum());total+=len(labels)
-        logits,y=predict(model,loader(val))
+        logits,y=predict(model,validation_batches)
         m=classification_metrics(y,softmax(logits,axis=1),classes)
         val_loss=float(nn.functional.cross_entropy(torch.tensor(logits),torch.tensor(y)))
         row={'epoch':epoch+1,'learning_rate':optimizer.param_groups[0]['lr'],'train_loss':total_loss/total,'train_accuracy':correct/total,
              'val_loss':val_loss,'val_accuracy':m['accuracy'],'val_macro_f1':m['macro_f1_all_training_classes']}
+        row.update(elapsed_seconds=time.monotonic()-started,train_samples_seen=total,partial_epoch=total<len(train))
         history.append(row);run.log(row);print(task,regime,row)
+        pd.DataFrame(history).to_csv(folder/'history.csv',index=False)
         if row['val_macro_f1']>best:
             best=row['val_macro_f1'];stale=0
             torch.save({'state_dict':model.state_dict(),'regime':regime,'task':task,'classes':classes,
               'image_size':CFG['image_size'],'epoch':epoch+1,'config':CFG,'context':context},folder/'best.pt')
         else:stale+=1
-        if stale>=CFG['patience']:break
+        if timed_out or stale>=CFG['patience']:break
+    training_elapsed=time.monotonic()-started
     pd.DataFrame(history).to_csv(folder/'history.csv',index=False)
     checkpoint=torch.load(folder/'best.pt',map_location=DEVICE,weights_only=False)
     model.load_state_dict(checkpoint['state_dict'])
@@ -1163,6 +1184,7 @@ def train_model(task,regime):
         pd.DataFrame(sweep).to_csv(folder/'validation_threshold_sweep.csv',index=False)
     write_json(folder/'policy.json',policy)
     result={'task':task,'regime':regime,'context':context,'selection_score':best,
+      'budget_seconds':budget,'training_loop_seconds':training_elapsed,'budget_exhausted':timed_out or training_elapsed>=budget,
       'best_epoch':checkpoint['epoch'],'classes':classes,'checkpoint_sha256':digest(folder/'best.pt'),
       'wandb_run_id':run.id,'wandb_url':run.url if WANDB_MODE=='online' else None,
       'wandb_mode':WANDB_MODE,'calibration_ece_before':ece(y,before),'calibration_ece_after':ece(y,after),
@@ -1335,7 +1357,7 @@ def seed_everything(seed):
     torch.backends.cudnn.deterministic = True
 
 def artifact_context(cfg, task):
-    return dict(training_implementation=2, task=task, profile=cfg['profile'], image_size=cfg['image_size'],
+    return dict(runtime_policy={'version':3,'max_training_seconds':cfg.get('max_training_seconds',900),'mixed_precision':cfg.get('mixed_precision',True),'workers':cfg.get('workers',2)},training_implementation=2, task=task, profile=cfg['profile'], image_size=cfg['image_size'],
                 seed=cfg['seed'], manifest_sha256=digest(Path(cfg['data_dir'])/'manifest.json'),
                 split_policy='camera-disjoint train / val_select / val_calibrate / test',
                 preprocessing_sha256=cfg['preprocessing_sha256'],
@@ -1356,6 +1378,9 @@ def samples_for_task(rows,task,classes):
 
 DEVICE='cuda' if torch.cuda.is_available() else 'cpu'
 print('Device:',DEVICE)
+if CFG.get('require_gpu',False) and DEVICE!='cuda':
+    raise RuntimeError('Enable a GPU runtime in Colab before training. Save your current files before changing the runtime.')
+if DEVICE=='cuda':print('GPU:',torch.cuda.get_device_name(0))
 if DEVICE=='cpu':print('Training device: CPU. GPU acceleration is unavailable in this runtime.')
 WANDB_MODE=CFG['wandb_mode']
 import wandb
@@ -1513,7 +1538,8 @@ import time,wandb
 def loader(samples,train=False):
     gen=torch.Generator().manual_seed(CFG['seed'])
     return DataLoader(FrameDataset(samples,CFG['image_size'],train),batch_size=CFG['batch_size'],
-                      shuffle=train,num_workers=0,generator=gen)
+                      shuffle=train,num_workers=int(CFG.get('workers',2)) if DEVICE=='cuda' else 0,
+                      pin_memory=DEVICE=='cuda',generator=gen)
 
 def predict(model,data):
     model.eval();all_logits=[];all_y=[]
@@ -1551,34 +1577,51 @@ def train_model(task,regime):
     run=wandb.init(project=CFG['project'],name=f'{task}-{regime}',group=DATA_HASH[:12],
                    mode=WANDB_MODE,dir=str(folder.resolve()),config=dict(CFG,task=task,regime=regime),reinit='finish_previous')
     best=-1;stale=0;history=[]
+    amp_enabled=DEVICE=='cuda' and CFG.get('mixed_precision',True)
+    scaler=torch.amp.GradScaler('cuda',enabled=amp_enabled)
+    train_batches=loader(train,True);validation_batches=loader(val)
+    started=time.monotonic();budget=float(CFG.get('max_training_seconds',900))
+    timed_out=False
+    print('Training budget:',budget,'seconds | GPU mixed precision:',amp_enabled)
     for epoch in range(CFG['epochs']):
+        if history and time.monotonic()-started>=budget:
+            timed_out=True
+            break
         warmup=max(0,int(CFG['warmup_epochs']))
         for group in optimizer.param_groups:
             group['lr']=CFG['lr_'+regime]*min(1.,(epoch+1)/max(1,warmup))
         model.train()
         if regime=='frozen':model.eval();model.classifier.train()
         total_loss=0;correct=0;total=0
-        for images,labels,_ in loader(train,True):
-            images,labels=images.to(DEVICE),labels.to(DEVICE)
-            optimizer.zero_grad()
-            logits=model(images)
-            loss=criterion(logits,labels)
-            loss.backward()
-            optimizer.step()
+        for images,labels,_ in train_batches:
+            if total and time.monotonic()-started>=budget:
+                timed_out=True
+                break
+            images,labels=images.to(DEVICE,non_blocking=True),labels.to(DEVICE,non_blocking=True)
+            optimizer.zero_grad(set_to_none=True)
+            with torch.autocast(device_type='cuda',dtype=torch.float16,enabled=amp_enabled):
+                logits=model(images)
+                loss=criterion(logits,labels)
+            scaler.scale(loss).backward()
+            scaler.step(optimizer)
+            scaler.update()
             total_loss+=loss.item()*len(labels)
             correct+=int((logits.argmax(1)==labels).sum());total+=len(labels)
-        logits,y=predict(model,loader(val))
+        logits,y=predict(model,validation_batches)
         m=classification_metrics(y,softmax(logits,axis=1),classes)
         val_loss=float(nn.functional.cross_entropy(torch.tensor(logits),torch.tensor(y)))
         row={'epoch':epoch+1,'learning_rate':optimizer.param_groups[0]['lr'],'train_loss':total_loss/total,'train_accuracy':correct/total,
              'val_loss':val_loss,'val_accuracy':m['accuracy'],'val_macro_f1':m['macro_f1_all_training_classes']}
+        row.update(elapsed_seconds=time.monotonic()-started,train_samples_seen=total,partial_epoch=total<len(train))
         history.append(row);run.log(row);print(task,regime,row)
+        pd.DataFrame(history).to_csv(folder/'history.csv',index=False)
         if row['val_macro_f1']>best:
             best=row['val_macro_f1'];stale=0
             torch.save({'state_dict':model.state_dict(),'regime':regime,'task':task,'classes':classes,
               'image_size':CFG['image_size'],'epoch':epoch+1,'config':CFG,'context':context},folder/'best.pt')
         else:stale+=1
-        if stale>=CFG['patience']:break
+        if timed_out or stale>=CFG['patience']:break
+    training_elapsed=time.monotonic()-started
     pd.DataFrame(history).to_csv(folder/'history.csv',index=False)
     checkpoint=torch.load(folder/'best.pt',map_location=DEVICE,weights_only=False)
     model.load_state_dict(checkpoint['state_dict'])
@@ -1592,6 +1635,7 @@ def train_model(task,regime):
         pd.DataFrame(sweep).to_csv(folder/'validation_threshold_sweep.csv',index=False)
     write_json(folder/'policy.json',policy)
     result={'task':task,'regime':regime,'context':context,'selection_score':best,
+      'budget_seconds':budget,'training_loop_seconds':training_elapsed,'budget_exhausted':timed_out or training_elapsed>=budget,
       'best_epoch':checkpoint['epoch'],'classes':classes,'checkpoint_sha256':digest(folder/'best.pt'),
       'wandb_run_id':run.id,'wandb_url':run.url if WANDB_MODE=='online' else None,
       'wandb_mode':WANDB_MODE,'calibration_ece_before':ece(y,before),'calibration_ece_after':ece(y,after),
