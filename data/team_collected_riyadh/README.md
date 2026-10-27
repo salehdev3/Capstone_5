@@ -24,4 +24,4 @@ On 2026-10-27, Saleh confirmed all image labels, box boundaries and animal-insta
 
 ## City correction
 
-Images 1, 3, 4, 5 and 11 are from Tabuk, as confirmed by the photographer. The other 15 remain recorded in Riyadh. Folder and RYD identifiers are retained for compatibility. The prior shared-site inference for images 11 and 12 was withdrawn.
+Images 1, 3, 4, 5, 11 and 12 are from Tabuk, as confirmed by the photographer. The other 14 remain recorded in Riyadh. Folder and RYD identifiers are retained for compatibility. Images 11 and 12 are both confirmed as Tabuk; exact site and shared visit remain unconfirmed.
