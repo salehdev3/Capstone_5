@@ -17,3 +17,7 @@ Member 4 includes `Team-Collected Riyadh Data — External Evaluation`. Set `LOC
 Review all images and all boxes, correct mistakes and missing instances, and only then set the corresponding metadata and annotation `status` fields to `verified`. Fill the reviewer, site and session fields; record actual capture dates and times where known. Do not use WhatsApp transfer times as capture dates. Images 17 and 20 may belong to the same session. Review the people visible in image 1 before sharing.
 
 This set remains entirely in `local_external_test`; no local images influence training, model selection, calibration or threshold selection. Duplicate screening quarantines exact/near duplicate local images and potential overlap with CCT20. Results and a Dataset Card are saved under `submission/local_riyadh/` and copied into the evidence archive. The official report should describe collection, annotation review, cleaning, class balance, the separate local results and the limitations of this small sample. No bonus score is guaranteed.
+
+## Review approval
+
+On 2026-10-27, Saleh confirmed all image labels, box boundaries and animal-instance coverage. Metadata and annotation statuses are now verified. The historical filename `draft_boxes.json` is retained for notebook compatibility; its records are human-verified. Earlier pending-review instructions describe the preparation workflow. Site-group uncertainty remains documented separately. Model evaluation has not yet been run on these images.

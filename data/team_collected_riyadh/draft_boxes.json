@@ -1,6 +1,6 @@
 {
   "coordinate_format": "xyxy pixels in original image",
-  "status": "AI-assisted proposals, not verified ground truth",
+  "status": "human_verified",
   "annotations": [
     {
       "image_id": "RYD_002",
@@ -12,9 +12,11 @@
         581,
         783
       ],
-      "status": "draft_pending_human_review",
+      "status": "verified",
       "assigned_reviewer": "Saleh",
-      "annotation_source": "assistant_visual_annotation"
+      "annotation_source": "assistant_visual_annotation",
+      "reviewer": "Saleh",
+      "review_date": "2026-10-27"
     },
     {
       "image_id": "RYD_003",
@@ -26,11 +28,13 @@
         301,
         672
       ],
-      "status": "draft_pending_human_review",
+      "status": "verified",
       "assigned_reviewer": "Saleh",
       "annotation_source": "assistant_visual_annotation",
       "coarse_category": "bird",
-      "species_confirmation_source": "user_confirmed"
+      "species_confirmation_source": "user_confirmed",
+      "reviewer": "Saleh",
+      "review_date": "2026-10-27"
     },
     {
       "image_id": "RYD_003",
@@ -42,11 +46,13 @@
         593,
         736
       ],
-      "status": "draft_pending_human_review",
+      "status": "verified",
       "assigned_reviewer": "Saleh",
       "annotation_source": "assistant_visual_annotation",
       "coarse_category": "bird",
-      "species_confirmation_source": "user_confirmed"
+      "species_confirmation_source": "user_confirmed",
+      "reviewer": "Saleh",
+      "review_date": "2026-10-27"
     },
     {
       "image_id": "RYD_003",
@@ -58,11 +64,13 @@
         675,
         768
       ],
-      "status": "draft_pending_human_review",
+      "status": "verified",
       "assigned_reviewer": "Saleh",
       "annotation_source": "assistant_visual_annotation",
       "coarse_category": "bird",
-      "species_confirmation_source": "user_confirmed"
+      "species_confirmation_source": "user_confirmed",
+      "reviewer": "Saleh",
+      "review_date": "2026-10-27"
     },
     {
       "image_id": "RYD_003",
@@ -74,11 +82,13 @@
         821,
         704
       ],
-      "status": "draft_pending_human_review",
+      "status": "verified",
       "assigned_reviewer": "Saleh",
       "annotation_source": "assistant_visual_annotation",
       "coarse_category": "bird",
-      "species_confirmation_source": "user_confirmed"
+      "species_confirmation_source": "user_confirmed",
+      "reviewer": "Saleh",
+      "review_date": "2026-10-27"
     },
     {
       "image_id": "RYD_006",
@@ -90,11 +100,13 @@
         776,
         1120
       ],
-      "status": "draft_pending_human_review",
+      "status": "verified",
       "assigned_reviewer": "Saleh",
       "annotation_source": "assistant_visual_annotation",
       "coarse_category": "bird",
-      "species_confirmation_source": "user_confirmed"
+      "species_confirmation_source": "user_confirmed",
+      "reviewer": "Saleh",
+      "review_date": "2026-10-27"
     },
     {
       "image_id": "RYD_007",
@@ -106,9 +118,11 @@
         588,
         896
       ],
-      "status": "draft_pending_human_review",
+      "status": "verified",
       "assigned_reviewer": "Saleh",
-      "annotation_source": "assistant_visual_annotation"
+      "annotation_source": "assistant_visual_annotation",
+      "reviewer": "Saleh",
+      "review_date": "2026-10-27"
     },
     {
       "image_id": "RYD_008",
@@ -120,9 +134,11 @@
         660,
         432
       ],
-      "status": "draft_pending_human_review",
+      "status": "verified",
       "assigned_reviewer": "Saleh",
-      "annotation_source": "assistant_visual_annotation"
+      "annotation_source": "assistant_visual_annotation",
+      "reviewer": "Saleh",
+      "review_date": "2026-10-27"
     },
     {
       "image_id": "RYD_008",
@@ -134,9 +150,11 @@
         684,
         832
       ],
-      "status": "draft_pending_human_review",
+      "status": "verified",
       "assigned_reviewer": "Saleh",
-      "annotation_source": "assistant_visual_annotation"
+      "annotation_source": "assistant_visual_annotation",
+      "reviewer": "Saleh",
+      "review_date": "2026-10-27"
     },
     {
       "image_id": "RYD_008",
@@ -148,9 +166,11 @@
         516,
         1344
       ],
-      "status": "draft_pending_human_review",
+      "status": "verified",
       "assigned_reviewer": "Saleh",
-      "annotation_source": "assistant_visual_annotation"
+      "annotation_source": "assistant_visual_annotation",
+      "reviewer": "Saleh",
+      "review_date": "2026-10-27"
     },
     {
       "image_id": "RYD_009",
@@ -162,9 +182,11 @@
         588,
         880
       ],
-      "status": "draft_pending_human_review",
+      "status": "verified",
       "assigned_reviewer": "Saleh",
-      "annotation_source": "assistant_visual_annotation"
+      "annotation_source": "assistant_visual_annotation",
+      "reviewer": "Saleh",
+      "review_date": "2026-10-27"
     },
     {
       "image_id": "RYD_010",
@@ -176,9 +198,11 @@
         875,
         922
       ],
-      "status": "draft_pending_human_review",
+      "status": "verified",
       "assigned_reviewer": "Saleh",
-      "annotation_source": "assistant_visual_annotation"
+      "annotation_source": "assistant_visual_annotation",
+      "reviewer": "Saleh",
+      "review_date": "2026-10-27"
     },
     {
       "image_id": "RYD_012",
@@ -190,9 +214,11 @@
         336,
         451
       ],
-      "status": "draft_pending_human_review",
+      "status": "verified",
       "assigned_reviewer": "Saleh",
-      "annotation_source": "assistant_visual_annotation"
+      "annotation_source": "assistant_visual_annotation",
+      "reviewer": "Saleh",
+      "review_date": "2026-10-27"
     },
     {
       "image_id": "RYD_013",
@@ -204,9 +230,11 @@
         732,
         768
       ],
-      "status": "draft_pending_human_review",
+      "status": "verified",
       "assigned_reviewer": "Saleh",
-      "annotation_source": "assistant_visual_annotation"
+      "annotation_source": "assistant_visual_annotation",
+      "reviewer": "Saleh",
+      "review_date": "2026-10-27"
     },
     {
       "image_id": "RYD_014",
@@ -218,9 +246,11 @@
         768,
         720
       ],
-      "status": "draft_pending_human_review",
+      "status": "verified",
       "assigned_reviewer": "Saleh",
-      "annotation_source": "assistant_visual_annotation"
+      "annotation_source": "assistant_visual_annotation",
+      "reviewer": "Saleh",
+      "review_date": "2026-10-27"
     },
     {
       "image_id": "RYD_015",
@@ -232,10 +262,12 @@
         576,
         729
       ],
-      "status": "draft_pending_human_review",
+      "status": "verified",
       "assigned_reviewer": "Saleh",
       "annotation_source": "assistant_visual_annotation",
-      "species_confirmation_source": "user_confirmed"
+      "species_confirmation_source": "user_confirmed",
+      "reviewer": "Saleh",
+      "review_date": "2026-10-27"
     },
     {
       "image_id": "RYD_017",
@@ -247,9 +279,11 @@
         684,
         944
       ],
-      "status": "draft_pending_human_review",
+      "status": "verified",
       "assigned_reviewer": "Saleh",
-      "annotation_source": "assistant_visual_annotation"
+      "annotation_source": "assistant_visual_annotation",
+      "reviewer": "Saleh",
+      "review_date": "2026-10-27"
     },
     {
       "image_id": "RYD_018",
@@ -261,9 +295,11 @@
         720,
         1120
       ],
-      "status": "draft_pending_human_review",
+      "status": "verified",
       "assigned_reviewer": "Saleh",
-      "annotation_source": "assistant_visual_annotation"
+      "annotation_source": "assistant_visual_annotation",
+      "reviewer": "Saleh",
+      "review_date": "2026-10-27"
     },
     {
       "image_id": "RYD_019",
@@ -275,9 +311,11 @@
         780,
         1120
       ],
-      "status": "draft_pending_human_review",
+      "status": "verified",
       "assigned_reviewer": "Saleh",
-      "annotation_source": "assistant_visual_annotation"
+      "annotation_source": "assistant_visual_annotation",
+      "reviewer": "Saleh",
+      "review_date": "2026-10-27"
     },
     {
       "image_id": "RYD_020",
@@ -289,9 +327,11 @@
         684,
         1168
       ],
-      "status": "draft_pending_human_review",
+      "status": "verified",
       "assigned_reviewer": "Saleh",
-      "annotation_source": "assistant_visual_annotation"
+      "annotation_source": "assistant_visual_annotation",
+      "reviewer": "Saleh",
+      "review_date": "2026-10-27"
     },
     {
       "image_id": "RYD_016",
@@ -303,9 +343,11 @@
         626,
         965
       ],
-      "status": "draft_pending_human_review",
+      "status": "verified",
       "assigned_reviewer": "Saleh",
-      "annotation_source": "assistant_visual_annotation"
+      "annotation_source": "assistant_visual_annotation",
+      "reviewer": "Saleh",
+      "review_date": "2026-10-27"
     },
     {
       "image_id": "RYD_015",
@@ -318,17 +360,22 @@
         998
       ],
       "truncated": true,
-      "status": "draft_pending_human_review",
+      "status": "verified",
       "assigned_reviewer": "Saleh",
       "annotation_source": "assistant_visual_annotation",
-      "species_confirmation_source": "user_confirmed"
+      "species_confirmation_source": "user_confirmed",
+      "reviewer": "Saleh",
+      "review_date": "2026-10-27"
     }
   ],
-  "unresolved_instances": [
+  "reviewer": "Saleh",
+  "review_date": "2026-10-27",
+  "resolved_review_items": [
     {
       "image_id": "RYD_003",
       "region": "distant birds",
       "reason": "small background birds may require additional boxes"
     }
-  ]
+  ],
+  "review_confirmation": "Saleh confirmed all labels, box boundaries and animal-instance coverage."
 }
