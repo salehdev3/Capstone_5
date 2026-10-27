@@ -834,6 +834,14 @@ Path('runs/data/DATASET_CARD.md').write_text(card)
 display(Markdown(card))
 
 
+import wandb
+from google.colab import userdata
+
+assert not Path('handoff/dataset_release.json').exists(), 'The configuration is already frozen. Sync existing offline runs instead of editing this release.'
+wandb.login(key=userdata.get('WANDB_API_KEY'))
+cfg['wandb_mode'] = 'online'
+print('W&B online tracking enabled for the upcoming experiments.')
+
 blur_check=pd.read_csv(DATA/'blur_review.csv').fillna('')
 assert len(blur_check) and blur_check['reviewer'].str.strip().ne('').all() and blur_check['decision'].isin(['keep','flag']).all() and blur_check['notes'].str.strip().ne('').all(), 'Save a reviewer name, keep/flag decision and observation for every image in the image-quality review.'
 assert TEAM_NOTES.strip(), 'Complete the dataset observations before continuing.'

@@ -22,7 +22,7 @@ The setup cell loads `preprocessing.py` from the local repository. When opened a
 
 Both tasks share the dataset release: empty/animal classification on full frames and species classification on human-box crops. Cameras and bursts remain disjoint across train, val_select, val_calibrate and test. Select on val_select and calibrate on val_calibrate before evaluating locked models on test.
 
-W&B defaults offline. Sync actual logs and record run links. Complete team observations, independent reviews, error analysis and replay evidence before presenting the report as complete. Keep raw images, weights and private galleries outside Git.
+The W&B Account Connection cell reads WANDB_API_KEY from Colab Secrets and enables online tracking before configuration freeze. Sync any older offline logs and record run links. Complete team observations, independent reviews, error analysis and replay evidence before presenting the report as complete. Keep raw images, weights and private galleries outside Git.
 
 ## Validation
 
