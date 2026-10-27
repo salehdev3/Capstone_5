@@ -21,3 +21,7 @@ This set remains entirely in `local_external_test`; no local images influence tr
 ## Review approval
 
 On 2026-10-27, Saleh confirmed all image labels, box boundaries and animal-instance coverage. Metadata and annotation statuses are now verified. The historical filename `draft_boxes.json` is retained for notebook compatibility; its records are human-verified. Earlier pending-review instructions describe the preparation workflow. Site-group uncertainty remains documented separately. Model evaluation has not yet been run on these images.
+
+## City correction
+
+Images 1, 3, 4, 5 and 11 are from Tabuk, as confirmed by the photographer. The other 15 remain recorded in Riyadh. Folder and RYD identifiers are retained for compatibility. The prior shared-site inference for images 11 and 12 was withdrawn.
