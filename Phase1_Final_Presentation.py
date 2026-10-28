@@ -2216,6 +2216,7 @@ for row in comparison.to_dict('records'):
     folder=Path(row['folder']);destination=Path('results')/row['task']/row['regime']
     for name in ['summary.json','test_metrics.json','history.csv','policy.json','confusion.png','learning_loss.png','learning_accuracy.png','reliability.png','validation_threshold_sweep.csv']:
         collect(folder/name,destination/name)
+    print('Hashing checkpoint:',folder/'best.pt',flush=True)
     weights.append({'path':str(folder/'best.pt'),'sha256':digest(folder/'best.pt'),'access':'private team storage'})
 write_json(repo/'weights_manifest.json',weights)
 (repo/'.gitignore').write_text('data/\nruns/\nwandb/\n*.pt\n*.pth\n*.jpg\n*.jpeg\n.env\n__pycache__/\n.ipynb_checkpoints/\n')
@@ -2223,11 +2224,10 @@ write_json(repo/'weights_manifest.json',weights)
 assert not list(repo.rglob('*.pt')) and not list(repo.rglob('*.jpg'))
 write_json('handoff/integration_release.json',{'schema':2,'scope':'Phase 1','status':STATUS,'gaps':gaps,
  'dataset_hash':DATA_HASH,'report_sha256':digest(repo/'REPORT_DRAFT.md'),'repository':REPOSITORY_URL})
-archive=shutil.make_archive(str(ROOT.parent/'Phase1_Submission'),'zip',root_dir=repo)
-print('Prepared:',repo.resolve(),'|',archive)
-print('Submission archive:', archive)
-
 for evidence in Path('submission/local_riyadh').glob('*'):
     if evidence.is_file():collect(evidence,Path('local_riyadh')/evidence.name)
+files=[p for p in repo.rglob('*') if p.is_file()]
+print('Packaging',len(files),'files,',round(sum(p.stat().st_size for p in files)/1048576,1),'MiB',flush=True)
 archive=shutil.make_archive(str(ROOT.parent/'Phase1_Submission'),'zip',root_dir=repo)
+print('Prepared:',repo.resolve(),'|',archive,flush=True)
 
