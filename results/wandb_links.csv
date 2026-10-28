@@ -1,0 +1,7 @@
+task,regime,train_run_id,train_url,test_run_id,test_url
+triage,scratch,6nqew908,https://wandb.ai/saleh-alanazi-ministry-of-interior/camera-trap-phase1/runs/6nqew908,2uaqqgq4,https://wandb.ai/saleh-alanazi-ministry-of-interior/camera-trap-phase1/runs/2uaqqgq4
+species,scratch,xbty4y66,https://wandb.ai/saleh-alanazi-ministry-of-interior/camera-trap-phase1/runs/xbty4y66,7ktkni32,https://wandb.ai/saleh-alanazi-ministry-of-interior/camera-trap-phase1/runs/7ktkni32
+triage,frozen,kbij5lcv,https://wandb.ai/saleh-alanazi-ministry-of-interior/camera-trap-phase1/runs/kbij5lcv,ztpkiol0,https://wandb.ai/saleh-alanazi-ministry-of-interior/camera-trap-phase1/runs/ztpkiol0
+triage,full,4bssmudy,https://wandb.ai/saleh-alanazi-ministry-of-interior/camera-trap-phase1/runs/4bssmudy,bx6czm31,https://wandb.ai/saleh-alanazi-ministry-of-interior/camera-trap-phase1/runs/bx6czm31
+species,frozen,bfx7xgov,https://wandb.ai/saleh-alanazi-ministry-of-interior/camera-trap-phase1/runs/bfx7xgov,8ydwpra0,https://wandb.ai/saleh-alanazi-ministry-of-interior/camera-trap-phase1/runs/8ydwpra0
+species,full,04gn2wgw,https://wandb.ai/saleh-alanazi-ministry-of-interior/camera-trap-phase1/runs/04gn2wgw,mdz4rmbn,https://wandb.ai/saleh-alanazi-ministry-of-interior/camera-trap-phase1/runs/mdz4rmbn

@@ -1,0 +1,52 @@
+{
+  "task": "triage",
+  "regime": "frozen",
+  "context": {
+    "runtime_policy": {
+      "version": 3,
+      "max_training_seconds": 900,
+      "mixed_precision": true,
+      "workers": 2
+    },
+    "training_implementation": 2,
+    "task": "triage",
+    "profile": "full",
+    "image_size": 224,
+    "seed": 42,
+    "manifest_sha256": "d3bfb6ba0c9d31412f9d603a6f63ae7c4890f458c5d2aa2a87d7653bb882bb53",
+    "split_policy": "camera-disjoint train / val_select / val_calibrate / test",
+    "preprocessing_sha256": "87e3366dd7946e566c3a9238095748eb698ed0b57e2a9a5699d49817c440a5eb",
+    "training_config": {
+      "optimizer": "Adam",
+      "backbone": "microsoft/resnet-50",
+      "batch_size": 32,
+      "epochs": 12,
+      "patience": 4,
+      "warmup_epochs": 0,
+      "lr_scratch": 0.001,
+      "lr_frozen": 0.001,
+      "lr_full": 0.0001,
+      "weight_decay": 0.0,
+      "label_smoothing": 0.0,
+      "class_weighted_loss": false
+    }
+  },
+  "selection_score": 0.6617330803289058,
+  "budget_seconds": 900.0,
+  "training_loop_seconds": 670.1277594640001,
+  "budget_exhausted": false,
+  "best_epoch": 12,
+  "classes": [
+    "empty",
+    "animal"
+  ],
+  "checkpoint_sha256": "7084b6b2cb1b72481002ff61867c91d019668dffe617c79807ef714183eae38a",
+  "wandb_run_id": "kbij5lcv",
+  "wandb_url": "https://wandb.ai/saleh-alanazi-ministry-of-interior/camera-trap-phase1/runs/kbij5lcv",
+  "wandb_mode": "online",
+  "calibration_ece_before": 0.029284907925513484,
+  "calibration_ece_after": 0.020969227663253733,
+  "train_n": 3534,
+  "val_select_n": 1337,
+  "val_calibrate_n": 527
+}

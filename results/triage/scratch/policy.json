@@ -1,0 +1,22 @@
+{
+  "temperature": 0.7588902536427269,
+  "calibration_split": "val_calibrate",
+  "species_review_confidence": 0.6,
+  "threshold": 0.5225282311439514,
+  "animal_recall": 0.9902723735408561,
+  "empty_removal_rate": 0.0,
+  "animal_frames_lost": 5,
+  "animal_frames": 514,
+  "empty_frames": 13,
+  "removed_frames": 5,
+  "tp": 509,
+  "tn": 0,
+  "fp": 13,
+  "fn": 5,
+  "animal_recall_wilson95_independence_assumption": [
+    0.9774328726459307,
+    0.995837983549678
+  ],
+  "selection_split": "val_calibrate",
+  "recall_target_is_empirical_not_guaranteed": true
+}

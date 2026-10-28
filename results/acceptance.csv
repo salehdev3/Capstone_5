@@ -1,0 +1,5 @@
+task,regime,metric,value,target,direction,met
+triage,frozen,animal_recall,1.0,0.99,min,True
+triage,frozen,empty_removal,0.11320754716981132,0.2,min,False
+species,frozen,test_macro_f1,0.4819939992470852,0.65,min,False
+species,frozen,ece,0.05677375132877996,0.1,max,True
