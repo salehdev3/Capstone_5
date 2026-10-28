@@ -1908,6 +1908,7 @@ for member in [2,3]:
             check(f'provenance_{task}_{regime}',m['context']==s['context'] and
                   m['signature']=={'data':DATA_HASH,'checkpoint':digest(folder/'best.pt'),'policy':digest(folder/'policy.json')})
             contexts.append({k:v for k,v in s['context'].items() if k!='task'})
+            receipt=read_json(folder/'test_upload_receipt.json') if (folder/'test_upload_receipt.json').exists() else {}
             records.append({'member':member,'task':task,'regime':regime,'folder':str(folder),
               'val_macro_f1':s['selection_score'],'test_accuracy':m['accuracy'],
               'test_macro_f1':m['macro_f1_all_training_classes'],'top_k':m['top_k'],
@@ -1918,7 +1919,8 @@ for member in [2,3]:
               'empty_removal':m.get('operating_point',{}).get('empty_removal_rate'),
               'accuracy_ci_camera':str(m['camera_bootstrap'].get('accuracy95')),
               'train_run_id':s['wandb_run_id'],'train_url':s.get('wandb_url') or '',
-              'test_run_id':m['wandb_test_run_id'],'test_url':m.get('wandb_test_url') or ''})
+              'test_run_id':receipt.get('run_id') or m.get('wandb_test_run_id') or '',
+              'test_url':receipt.get('url') or m.get('wandb_test_url') or ''})
 check('common_training_configuration',all(c==contexts[0] for c in contexts))
 comparison=pd.DataFrame(records)
 comparison['selected_on_validation']=False
