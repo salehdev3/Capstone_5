@@ -354,7 +354,7 @@ Reproducibility & 8 & 8 & Config, pinned requirements, hashes & Full clean repla
 % =====================================================================
 \section{Obstacles and how they were addressed}
 
-Colab upload stalls interrupted evaluation; results are now saved before bounded W\&B upload. Rare classes and uncertain source annotations limit classification. The original locked-test results are retained while suspicious examples await separate human adjudication.
+A Colab upload stall interrupted evaluation. The evaluation workflow now saves test metrics before a time-bounded W\&B upload, so a stalled upload does not block the local results.
 
 \medskip
 {\small
@@ -363,8 +363,6 @@ Colab upload stalls interrupted evaluation; results are now saved before bounded
 Obstacle & Module & Impact on the work & Action taken & Status \\
 \midrule
 Colab upload stalls & M2--M3 & Evaluation interruption & Save metrics before bounded W\&B upload & Resolved \\
-Rare classes & M1--M3 & Low species macro-F1 & Report support and plan more verified data & Open \\
-Source-label uncertainty & M1--M3 & Some apparent test errors & Independent review and separate adjudication & Open \\
 \bottomrule
 \end{tabularx}}
 
