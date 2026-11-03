@@ -2,6 +2,8 @@
 
 Project 5 — AI251P Applied Computer Vision. Phase 1: data preparation (M1), CNN classification (M2), transfer learning and experiment tracking (M3).
 
+Phase 2 development is on branch `v2`. See [Phase 2 execution and status](phase2/README.md), the [official Phase 2 report source](docs/phase2_report/official_template/main.tex), and the [Phase 2 model card](docs/phase2_model_card.md). Phase 1 artifacts remain available in `v1`.
+
 ## Project files
 
 - [Unified presentation](notebooks/Phase1_Final_Presentation.ipynb): data preparation, scratch CNN, frozen/full ResNet-50, evaluation and reporting in one session.
