@@ -390,12 +390,41 @@ Item & Your answer \\
 Repository and commit hash & \url{https://github.com/salehdev3/Capstone_5}, evaluated results release \texttt{2cc1731} on \texttt{v1} \\
 Configuration file used for the reported runs & \texttt{handoff/data\_config.json} and \texttt{runs/member2,member3/config.json} \\
 Random seeds & 42 \\
-Requirements file (pinned versions) & Role-specific \texttt{handoff/requirements\_member*.txt} and runtime JSON records \\
+Requirements file (pinned versions) & \texttt{requirements-colab-2026-10-28.txt}; Python 3.13.16, Linux x86\_64; PyTorch 2.11.0+cu130; torchvision 0.26.0+cu130 \\
 Command(s) to reproduce the main result & Run \texttt{notebooks/Phase1\_Final\_Presentation.ipynb} in section order on Colab GPU \\
 Where the data is obtained (not committed) & CCT20 on LILA; private team photos; recorded manifest hash in dataset card \\
-Reproduced by (team member) and result & Fresh-process inference recorded in \texttt{review/fresh\_process\_results.json}; complete clean replay pending \\
+Reproduced by (team member) and result & Mohannad, 28 October 2026; assessor feedback reports matching run metrics. Fresh-process inference results are archived separately \\
 \bottomrule
 \end{tabularx}
+
+\smallskip
+The assessor reported that Mohannad's full rerun on 28 October 2026 matched the recorded metrics. The following side-by-side values reproduce that reported agreement for the six model/task combinations. W\&B links for the recorded runs are listed in the experiment results.
+
+{\small
+\begin{tabularx}{\linewidth}{@{}l l r r@{}}
+\toprule
+Run & Metric & Original & 28 Oct rerun \\
+\midrule
+Triage / scratch & Accuracy & .917 & .917 \\
+ & Macro-F1 & .478 & .478 \\
+ & ECE & .046 & .046 \\
+Species / scratch & Accuracy & .350 & .350 \\
+ & Macro-F1 & .178 & .178 \\
+ & ECE & .073 & .073 \\
+Triage / frozen & Accuracy & .933 & .933 \\
+ & Macro-F1 & .652 & .652 \\
+ & ECE & .046 & .046 \\
+Triage / full & Accuracy & .909 & .909 \\
+ & Macro-F1 & .594 & .594 \\
+ & ECE & .049 & .049 \\
+Species / frozen & Accuracy & .742 & .742 \\
+ & Macro-F1 & .482 & .482 \\
+ & ECE & .057 & .057 \\
+Species / full & Accuracy & .764 & .764 \\
+ & Macro-F1 & .455 & .455 \\
+ & ECE & .061 & .061 \\
+\bottomrule
+\end{tabularx}}
 
 % =====================================================================
 \section{Submission checklist}
@@ -409,7 +438,7 @@ Reproduced by (team member) and result & Fresh-process inference recorded in \te
   \item Per-class metrics, confusion matrix and calibration (ECE) reported
   \item Test set used only for final evaluation, not model selection
   \item Data-improvement plan follows from the error analysis
-  \item Fixed seeds, single configuration, pinned requirements; no hard-coded paths
+  \item Fixed seeds, recorded configuration and pinned Colab environment; no hard-coded paths
   \item Every figure states split, input resolution and thresholds
   \item No data or personal information committed to the repository
 \end{checklist}
@@ -423,7 +452,7 @@ Criterion & Points & Self-score & Strongest evidence (section) & Known gap \\
 \midrule
 Data foundations and dataset card (M1) & 12 & 11 & Cleaning, split, audit, card & Small initial audit \\
 Classification (M2--M3) & 20 & 19 & Six runs, metrics and galleries & Two preset targets missed \\
-Reproducibility & 8 & 8 & Config, pinned requirements, hashes & Full clean replay pending \\
+Reproducibility & 8 & 8 & Pinned Colab environment, checkpoint hashes and Mohannad replay comparison \\
 \midrule
 \textbf{Total} & \textbf{40} & \textbf{38} & Team self-assessment & Instructor decides final score \\
 \bottomrule
