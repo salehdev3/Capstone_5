@@ -1,0 +1,15 @@
+species,train,val_select,val_calibrate,test
+badger,4,0,0,1
+bird,116,3,45,9
+bobcat,286,25,78,57
+cat,142,247,35,48
+coyote,288,29,37,169
+deer,11,0,0,3
+dog,117,33,73,29
+fox,1,0,0,1
+opossum,622,489,99,87
+rabbit,317,164,61,4
+raccoon,709,14,28,28
+rodent,38,0,0,0
+skunk,73,0,21,19
+squirrel,95,120,6,53

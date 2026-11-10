@@ -34,6 +34,28 @@ CCT20 images are split by **camera group** using `StratifiedGroupKFold` with see
 | Validation for calibration | 527 | 2 |
 | Test | 639 | 4 |
 
+### Species crop support
+
+Counts below are annotated animal crops; percentages use the total crops in each split as denominator. A frame may contain multiple crops.
+
+| Species | Train n (%) | Selection n (%) | Calibration n (%) | Test n (%) |
+|---|---:|---:|---:|---:|
+| Badger | 4 (0.1%) | 0 (0.0%) | 0 (0.0%) | 1 (0.2%) |
+| Bird | 116 (4.1%) | 3 (0.3%) | 45 (9.3%) | 9 (1.8%) |
+| Bobcat | 286 (10.1%) | 25 (2.2%) | 78 (16.1%) | 57 (11.2%) |
+| Cat | 142 (5.0%) | 247 (22.0%) | 35 (7.2%) | 48 (9.4%) |
+| Coyote | 288 (10.2%) | 29 (2.6%) | 37 (7.7%) | 169 (33.3%) |
+| Deer | 11 (0.4%) | 0 (0.0%) | 0 (0.0%) | 3 (0.6%) |
+| Dog | 117 (4.2%) | 33 (2.9%) | 73 (15.1%) | 29 (5.7%) |
+| Fox | 1 (0.0%) | 0 (0.0%) | 0 (0.0%) | 1 (0.2%) |
+| Opossum | 622 (22.1%) | 489 (43.5%) | 99 (20.5%) | 87 (17.1%) |
+| Rabbit | 317 (11.2%) | 164 (14.6%) | 61 (12.6%) | 4 (0.8%) |
+| Raccoon | 709 (25.2%) | 14 (1.2%) | 28 (5.8%) | 28 (5.5%) |
+| Rodent | 38 (1.3%) | 0 (0.0%) | 0 (0.0%) | 0 (0.0%) |
+| Skunk | 73 (2.6%) | 0 (0.0%) | 21 (4.3%) | 19 (3.7%) |
+| Squirrel | 95 (3.4%) | 120 (10.7%) | 6 (1.2%) | 53 (10.4%) |
+| **Total crops** | **2,819 (100%)** | **1,124 (100%)** | **483 (100%)** | **508 (100%)** |
+
 The final manifest passed checks for unique IDs and absence of ID, camera, event, and pixel-hash overlap between splits. The full per-class frame frequencies and crop support are in `class_balance_proportions.csv` and `species_crop_support.csv`. Class percentages may sum to more than 100% because a frame can contain multiple categories.
 
 Class frequencies differ substantially between groups. For example, the training split includes 764 raccoon and 727 opossum frame occurrences, whereas fox has one and badger has four. The test split has 53 empty and 586 animal frames. Several rare species have no validation examples. Group separation was prioritized over exact class balance.

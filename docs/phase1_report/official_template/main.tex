@@ -132,7 +132,36 @@ Test & 4 & 639 & Empty: 53; animal: 586 \\
 \bottomrule
 \end{tabularx}
 
-The complete species-by-split crop support table is generated as \texttt{species\_crop\_support.csv} by the notebook. The per-class results below report test crop support; frame counts and crop counts describe different sampling units.
+\subsection{Species crop support by split}
+
+\begin{center}
+{\small
+\begin{tabular}{lrrrr}
+\toprule
+Species & Train & Selection & Calibration & Test \\
+\midrule
+Badger & 4 (0.1\%) & 0 (0.0\%) & 0 (0.0\%) & 1 (0.2\%) \\
+Bird & 116 (4.1\%) & 3 (0.3\%) & 45 (9.3\%) & 9 (1.8\%) \\
+Bobcat & 286 (10.1\%) & 25 (2.2\%) & 78 (16.1\%) & 57 (11.2\%) \\
+Cat & 142 (5.0\%) & 247 (22.0\%) & 35 (7.2\%) & 48 (9.4\%) \\
+Coyote & 288 (10.2\%) & 29 (2.6\%) & 37 (7.7\%) & 169 (33.3\%) \\
+Deer & 11 (0.4\%) & 0 (0.0\%) & 0 (0.0\%) & 3 (0.6\%) \\
+Dog & 117 (4.2\%) & 33 (2.9\%) & 73 (15.1\%) & 29 (5.7\%) \\
+Fox & 1 (0.0\%) & 0 (0.0\%) & 0 (0.0\%) & 1 (0.2\%) \\
+Opossum & 622 (22.1\%) & 489 (43.5\%) & 99 (20.5\%) & 87 (17.1\%) \\
+Rabbit & 317 (11.2\%) & 164 (14.6\%) & 61 (12.6\%) & 4 (0.8\%) \\
+Raccoon & 709 (25.2\%) & 14 (1.2\%) & 28 (5.8\%) & 28 (5.5\%) \\
+Rodent & 38 (1.3\%) & 0 (0.0\%) & 0 (0.0\%) & 0 (0.0\%) \\
+Skunk & 73 (2.6\%) & 0 (0.0\%) & 21 (4.3\%) & 19 (3.7\%) \\
+Squirrel & 95 (3.4\%) & 120 (10.7\%) & 6 (1.2\%) & 53 (10.4\%) \\
+\midrule
+Total crops & 2,819 (100\%) & 1,124 (100\%) & 483 (100\%) & 508 (100\%) \\
+\bottomrule
+\end{tabular}}
+\end{center}
+Each cell gives crop count and percentage of crops in that split. Crop counts differ from frame counts because a frame may contain multiple annotated animals. Species with zero support in a split are shown as zero.
+
+The table reports annotated animal crops, not frame counts. A frame may contain multiple animals. Zero denotes no annotated crop for that species in the corresponding split. The source counts are archived in \texttt{evidence/species\_crop\_support.csv}.
 
 \subsection{Label audit}
 
