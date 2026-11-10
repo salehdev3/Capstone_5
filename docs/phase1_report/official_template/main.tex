@@ -331,14 +331,42 @@ Bobcat was repeatedly confused with raccoon in the gallery; a fox crop was calle
   \caption{Triage test error gallery: recorded label and prediction are shown; input 224$\times$224, animal threshold .3416. Several source labels need human verification.}
 \end{figure}
 
-\begin{tabularx}{\linewidth}{@{}Y r Y@{}}
+\textbf{Full-test error counts.} The selected frozen ResNet-50 produced 43 triage argmax errors among 639 frames and 131 species errors among 508 crops. Species errors comprise 32 distinct true-to-predicted class pairs. The table lists the most frequent pairs; the complete counts are archived in \texttt{evidence/full\_test\_error\_patterns.csv}. The gallery shows selected examples only.
+
+\begin{center}
+{\small
+\begin{tabular}{llr}
 \toprule
-Error pattern & Examples & Likely cause (data, label, model) \\
+Task & True class $\rightarrow$ predicted class & Full-test errors \\
 \midrule
-Recorded empty $\rightarrow$ animal & 12 shown & Several daylight frames look bird-like; source-label review needed. \\
-Bobcat $\rightarrow$ raccoon & 5 shown & Low-detail night crops and camera-domain shift are plausible contributors. \\
+Triage (argmax) & Empty $\rightarrow$ animal & 42 \\
+Triage (argmax) & Animal $\rightarrow$ empty & 1 \\
+Species (argmax) & Coyote $\rightarrow$ opossum & 14 \\
+Species (argmax) & Coyote $\rightarrow$ bobcat & 13 \\
+Species (argmax) & Bobcat $\rightarrow$ raccoon & 12 \\
+Species (argmax) & Cat $\rightarrow$ dog & 10 \\
+Species (argmax) & Coyote $\rightarrow$ raccoon & 10 \\
 \bottomrule
-\end{tabularx}
+\end{tabular}}
+\end{center}
+
+\textbf{Grayscale proxy analysis.} The manifest's grayscale flag is a visual proxy and is not a verified day/night label. Error rates below use argmax predictions and include all samples with a matching manifest record.
+
+\begin{center}
+{\small
+\begin{tabular}{llrrr}
+\toprule
+Task & Grayscale proxy & Samples & Errors & Error rate \\
+\midrule
+Triage & No & 304 & 35 & 11.5\% \\
+Triage & Yes & 335 & 8 & 2.4\% \\
+Species crops & No & 246 & 42 & 17.1\% \\
+Species crops & Yes & 262 & 89 & 34.0\% \\
+\bottomrule
+\end{tabular}}
+\end{center}
+
+Triage frame predictions were matched to the image manifest; species crop predictions inherited the proxy flag from their source frame. These associations do not establish nighttime error rates or a causal lighting effect. Complete error counts and source-image proxy summaries accompany this report.
 
 \subsection{Data-improvement plan}
 
@@ -348,6 +376,7 @@ Finding from the error analysis & Planned action & Expected effect \\
 \midrule
 Possible source-label errors & Review full-resolution originals; report corrected-label sensitivity separately & Distinguish annotation issues from model errors \\
 Rare species and empty frames & Add verified, independently grouped examples; tune on validation only & Improve minority-class recall and empty removal \\
+Potential illumination effect & Record human-verified day/night labels for training and validation images; compare illumination-balanced training on validation groups & Measure nighttime recall without treating grayscale appearance as ground truth \\
 \bottomrule
 \end{tabularx}
 
