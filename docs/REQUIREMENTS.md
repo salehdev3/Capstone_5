@@ -34,7 +34,7 @@ Performance targets in the shared configuration are proposed team goals, not pro
 
 ## Completion limits
 
-The code creates reports from actual executions and leaves human fields pending. Label audit, independent review, analysis, team contributions, W&B account/link completion and a real replay cannot be automated honestly. No trained weights, CCT20 performance results, completed Dataset Card or final submission report are included in this source repository.
+Reports combine recorded experiment outputs with signed team reviews. The repository includes experiment metrics, figures, a Dataset Card and the Phase 1 report. Model weights and full execution artifacts are stored separately. Human review records and independent training runs provide evidence distinct from automated code validation.
 
 Frozen release files should not be edited after training starts. A data correction requires a new release and retraining all comparison runs; record the issue. Do not tune on test. Unknown species reduce overall coverage and are explicitly counted rather than silently removed from reported scope.
 

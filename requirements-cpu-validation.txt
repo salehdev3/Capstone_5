@@ -1,4 +1,4 @@
-# Tested Python 3.12 CPU validation environment; NOT the historical Colab training lock.
+# Python 3.12 CPU validation environment. Historical GPU runs use their recorded Colab environments.
 # Install with --extra-index-url https://download.pytorch.org/whl/cpu
 annotated-types==0.8.0
 anyio==4.16.0
