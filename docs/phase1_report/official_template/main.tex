@@ -192,12 +192,12 @@ Each cell reports crop count and its percentage within that split. A frame can c
 \toprule
 Audited sample size & Errors found & Estimated label-error rate & Upper bound (95\% confidence) \\
 \midrule
-10 training events & 1 & 10\% & 39.4\% one-sided \\
+100 unique training events & 9 / 100 (9\%) & 9\% & 15.2\% one-sided exact 95\% upper bound \\
 \bottomrule
 \end{tabularx}
 
 \smallskip
-One frame was drawn from each of 10 random training events; the team found one incorrect label and quarantined the affected event. A separate 20-image review signed by Mohannad Mohammed Alqahtani found no additional frame-label errors; five box checks were not applicable.
+The audit file contains 120 reviewer records for 100 unique training images from 100 event IDs and 12 cameras. Twenty images received two reviews. The final adjudicated labels identify 9 incorrect labels (9\%). The one-sided 95\% Clopper--Pearson upper bound is 15.2\%, calculated over 100 unique images rather than reviewer records. One image had different initial reviewer decisions and is represented once by its final adjudicated result. The binomial bound treats sampled events as independent; clustering within 12 cameras may make it optimistic. The audit is an annotation review; it does not by itself indicate that these labels were changed in the frozen training release.
 
 \subsection{Data loader and augmentation}
 
@@ -205,7 +205,7 @@ RGB images were prepared with maximum side 1,024 pixels, resized to 224$\times$2
 
 \subsection{Dataset card summary}
 
-Raccoon and opossum dominate some groups while rare species have few examples; camera-group splits have distribution shift. CCT20 is largely US wildlife, and five held-out Tabuk frames cannot establish Saudi deployment performance. The small audit has a wide error bound. Source terms and course policy restrict image redistribution; no GPS or private photos are published. The full card is linked in Section 1.
+Raccoon and opossum dominate some groups while rare species have few examples; camera-group splits have distribution shift. CCT20 is largely US wildlife, and five held-out Tabuk frames cannot establish Saudi deployment performance. The audit covers 100 unique training events; its interval assumes independent sampled events. Source terms and course policy restrict image redistribution; no GPS or private photos are published. The full card is linked in Section 1.
 
 % =====================================================================
 \section{Classification (M2--M3)\pts{20}}

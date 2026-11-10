@@ -62,7 +62,7 @@ Counts are annotated animal crops; percentages use total crops in each split. A 
 
 ## Label audit
 
-One eligible frame was sampled from each of **10 randomly chosen training events**. Reviewers found **1 label error**. The observed error rate is **10%**, and the recorded one-sided 95% upper bound is **39.4%**. The bound assumes independent sampled events; shared cameras may make it optimistic. Flagged training events were quarantined and the original review decisions retained. The sample is too small to establish a precise dataset-wide error rate.
+The audit file contains **120 reviewer records** for **100 unique training images** from 100 event IDs across 12 cameras. Twenty images received two reviews. Final adjudication identifies **9 incorrect labels** (9% of unique images). The one-sided exact Clopper--Pearson 95% upper bound is **15.2%**, calculated by unique image rather than reviewer record. One image had differing initial reviewer decisions and is counted once using its final adjudicated result. The binomial bound assumes independent sampled events; camera clustering may make it optimistic. The audit evidence is archived at `docs/phase1_report/evidence/audit_all_reviews.csv`.
 
 ## Intended use and limitations
 
