@@ -158,7 +158,7 @@ Test & 4 & 639 & Empty: 53; animal: 586 \\
 \bottomrule
 \end{tabularx}
 
-\subsection{Species crop support by split}
+\textbf{Species crop support by split.}\par
 \begin{center}
 {\small
 \begin{tabular}{lrrrr}
@@ -292,6 +292,27 @@ Squirrel (species) & .860 & .925 & .891 & 53 \\
 Top-$k$ accuracy (species, $k=3$): .9055 on test; 224$\times$224, argmax.
 
 \subsection{Confusion matrix and calibration}
+
+\textbf{Triage confusion matrix.}\par
+
+\textbf{Test set ($n=639$; input $224\times224$).} The threshold 0.3416 was selected on the calibration split (\texttt{val\_calibrate}, $n=527$) to target animal recall $\geq0.99$, after temperature scaling ($T=0.714$). The test set was not used to select the threshold.
+
+\begin{center}
+{\small
+\begin{tabular}{lrrrr}
+\toprule
+& \multicolumn{2}{c}{Argmax} & \multicolumn{2}{c}{Threshold 0.3416} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+True class & Empty & Animal & Empty & Animal \\
+\midrule
+Empty ($n=53$) & 11 & 42 & 6 & 47 \\
+Animal ($n=586$) & 1 & 585 & 0 & 586 \\
+\bottomrule
+\end{tabular}}
+\end{center}
+
+The per-class results above use argmax (empty recall .208). At the selected operating threshold, test animal recall was 1.000 and empty removal was $6/53=11.3\%$.
+
 
 \begin{figure}[htbp]
   \centering
