@@ -694,6 +694,7 @@ def apply_audit(cfg):
 
 audit = audit_report(cfg)
 assert audit['status']=='complete', 'Complete the audit before continuing.'
+assert audit['reviewed'] >= 100, 'Review at least 100 sampled training events before freezing a new release; do not fabricate reviews or modify an existing frozen release.'
 apply_audit(cfg)
 audit = audit_report(cfg)
 assert audit['unresolved_flagged_events']==0
@@ -845,7 +846,7 @@ print('W&B online tracking enabled for the upcoming experiments.')
 blur_check=pd.read_csv(DATA/'blur_review.csv').fillna('')
 assert len(blur_check) and blur_check['reviewer'].str.strip().ne('').all() and blur_check['decision'].isin(['keep','flag']).all() and blur_check['notes'].str.strip().ne('').all(), 'Save a reviewer name, keep/flag decision and observation for every image in the image-quality review.'
 assert TEAM_NOTES.strip(), 'Complete the dataset observations before continuing.'
-training_defaults = {'project': 'camera-trap-phase1', 'backbone': 'microsoft/resnet-50', 'seed': 42, 'profile': 'full', 'data_dir': 'data/cct20_v1', 'output_dir': 'runs/data', 'max_images': 6000, 'download_workers': 12, 'max_image_side': 1024, 'image_size': 224, 'batch_size': 32, 'workers': 2, 'epochs': 12, 'patience': 4, 'warmup_epochs': 0, 'lr_scratch': 0.001, 'lr_frozen': 0.001, 'lr_full': 0.0001, 'weight_decay': 0.0, 'label_smoothing': 0.0, 'class_weighted_loss': False, 'wandb_mode': 'offline', 'target_animal_recall': 0.99, 'species_review_confidence': 0.6, 'bootstrap_repeats': 1000, 'audit_events': 100, 'acceptance': {'animal_recall_min': 0.99, 'empty_removal_min': 0.2, 'species_macro_f1_min': 0.65, 'species_ece_max': 0.1}}
+training_defaults = {'project': 'camera-trap-phase1', 'backbone': 'microsoft/resnet-50', 'seed': 42, 'profile': 'full', 'data_dir': 'data/cct20_v1', 'output_dir': 'runs/data', 'max_images': 6000, 'download_workers': 12, 'max_image_side': 1024, 'image_size': 224, 'batch_size': 32, 'workers': 2, 'epochs': 12, 'patience': 4, 'warmup_epochs': 0, 'lr_scratch': 0.001, 'lr_frozen': 0.001, 'lr_full': 0.0001, 'weight_decay': 0.0, 'label_smoothing': 0.0, 'class_weighted_loss': True, 'wandb_mode': 'offline', 'target_animal_recall': 0.99, 'species_review_confidence': 0.6, 'bootstrap_repeats': 1000, 'audit_events': 100, 'acceptance': {'animal_recall_min': 0.99, 'empty_removal_min': 0.2, 'species_macro_f1_min': 0.65, 'species_ece_max': 0.1}}
 training_defaults.update(cfg)
 training_defaults.update(contract_version=2,preprocessing_sha256=digest(Path(preprocessing.__file__)),optimizer='Adam',max_training_seconds=900,mixed_precision=True,require_gpu=True)
 write_json('handoff/preprocessing.json',{'sha256':digest(Path(preprocessing.__file__)),'input_size':224,'library':'OpenCV + torchvision','train_only':['horizontal_flip','brightness_contrast']})
@@ -1052,6 +1053,8 @@ def choose_threshold(y, scores, target=0.99):
     feasible=[r for r in feasible if r['animal_recall']>=target]
     best=max(feasible,key=lambda r:(r['empty_removal_rate'],r['threshold']))
     best['selection_split']='val_calibrate'
+    best['selection_objective']='maximize empty removal subject to empirical animal recall target'
+    best['target_animal_recall']=float(target)
     best['recall_target_is_empirical_not_guaranteed']=True
     return best
 
@@ -1276,7 +1279,11 @@ def evaluate_model(task,regime):
        accuracy_wilson95_independence_assumption=wilson(int((p.argmax(1)==y).sum()),len(y)),
        camera_bootstrap=camera_bootstrap(y,p,[r['camera'] for r in known],CFG['bootstrap_repeats'],CFG['seed'],
                                       policy['threshold'] if task=='triage' else None))
-    if task=='triage':m['operating_point']=triage_metrics(y,p[:,1],policy['threshold'])
+    if task=='triage':
+        m['operating_point']=triage_metrics(y,p[:,1],policy['threshold'])
+        op=m['operating_point']
+        m['operating_confusion_matrix']=[[op['tn'],op['fp']],[op['fn'],op['tp']]]
+        m['operating_confusion_labels']=['empty','animal']
     m['per_camera']={camera:classification_metrics(y[idx],p[idx],classes)
       for camera in sorted({r['camera'] for r in known})
       for idx in [[i for i,r in enumerate(known) if r['camera']==camera]]}
@@ -1286,6 +1293,27 @@ def evaluate_model(task,regime):
       'prediction':classes[pred[i]],'confidence':float(p[i].max())} for i,r in enumerate(known)]).to_csv(folder/'test_predictions.csv',index=False)
 
     decisions=(p[:,1]>=policy['threshold']).astype(int) if task=='triage' else pred
+    # Count every test error; the gallery below is only a visual sample.
+    decision_table=pd.DataFrame([{'sample_id':r['sample_id'],'camera':r['camera'],
+        'true':classes[y[i]],'prediction':classes[decisions[i]],
+        'decision_rule':'calibrated_threshold' if task=='triage' else 'argmax',
+        'threshold':policy.get('threshold') if task=='triage' else None,
+        'is_error':bool(decisions[i]!=y[i])} for i,r in enumerate(known)])
+    decision_table.to_csv(folder/'test_operating_predictions.csv',index=False)
+    error_counts=(decision_table[decision_table.is_error].groupby(['true','prediction'])
+                  .size().reset_index(name='count'))
+    error_counts.to_csv(folder/'test_error_patterns.csv',index=False)
+    if task=='triage':
+        fig,ax=plt.subplots(figsize=(5,4))
+        matrix=np.asarray(m['operating_confusion_matrix'])
+        ax.imshow(matrix,cmap='Blues')
+        for (i,j),value in np.ndenumerate(matrix):ax.text(j,i,str(value),ha='center',va='center')
+        ax.set(xticks=[0,1],yticks=[0,1],xticklabels=['empty','animal'],yticklabels=['empty','animal'],
+               xlabel='Predicted',ylabel='True',title=f'Test | {CFG["image_size"]}px | threshold {policy["threshold"]:.6f}')
+        fig.tight_layout();fig.savefig(folder/'operating_confusion.png');plt.close(fig)
+
+    m['error_patterns_scope']='all known-class test samples; operating decision rule'
+    m['error_patterns']=error_counts.to_dict(orient='records')
     errors=np.flatnonzero(decisions!=y)
     chosen=sorted(errors,key=lambda i:float(p[i].max()),reverse=True)[:12]
     if chosen:
@@ -1538,6 +1566,8 @@ def choose_threshold(y, scores, target=0.99):
     feasible=[r for r in feasible if r['animal_recall']>=target]
     best=max(feasible,key=lambda r:(r['empty_removal_rate'],r['threshold']))
     best['selection_split']='val_calibrate'
+    best['selection_objective']='maximize empty removal subject to empirical animal recall target'
+    best['target_animal_recall']=float(target)
     best['recall_target_is_empirical_not_guaranteed']=True
     return best
 
@@ -1762,7 +1792,11 @@ def evaluate_model(task,regime):
        accuracy_wilson95_independence_assumption=wilson(int((p.argmax(1)==y).sum()),len(y)),
        camera_bootstrap=camera_bootstrap(y,p,[r['camera'] for r in known],CFG['bootstrap_repeats'],CFG['seed'],
                                       policy['threshold'] if task=='triage' else None))
-    if task=='triage':m['operating_point']=triage_metrics(y,p[:,1],policy['threshold'])
+    if task=='triage':
+        m['operating_point']=triage_metrics(y,p[:,1],policy['threshold'])
+        op=m['operating_point']
+        m['operating_confusion_matrix']=[[op['tn'],op['fp']],[op['fn'],op['tp']]]
+        m['operating_confusion_labels']=['empty','animal']
     m['per_camera']={camera:classification_metrics(y[idx],p[idx],classes)
       for camera in sorted({r['camera'] for r in known})
       for idx in [[i for i,r in enumerate(known) if r['camera']==camera]]}
@@ -1772,6 +1806,27 @@ def evaluate_model(task,regime):
       'prediction':classes[pred[i]],'confidence':float(p[i].max())} for i,r in enumerate(known)]).to_csv(folder/'test_predictions.csv',index=False)
 
     decisions=(p[:,1]>=policy['threshold']).astype(int) if task=='triage' else pred
+    # Count every test error; the gallery below is only a visual sample.
+    decision_table=pd.DataFrame([{'sample_id':r['sample_id'],'camera':r['camera'],
+        'true':classes[y[i]],'prediction':classes[decisions[i]],
+        'decision_rule':'calibrated_threshold' if task=='triage' else 'argmax',
+        'threshold':policy.get('threshold') if task=='triage' else None,
+        'is_error':bool(decisions[i]!=y[i])} for i,r in enumerate(known)])
+    decision_table.to_csv(folder/'test_operating_predictions.csv',index=False)
+    error_counts=(decision_table[decision_table.is_error].groupby(['true','prediction'])
+                  .size().reset_index(name='count'))
+    error_counts.to_csv(folder/'test_error_patterns.csv',index=False)
+    if task=='triage':
+        fig,ax=plt.subplots(figsize=(5,4))
+        matrix=np.asarray(m['operating_confusion_matrix'])
+        ax.imshow(matrix,cmap='Blues')
+        for (i,j),value in np.ndenumerate(matrix):ax.text(j,i,str(value),ha='center',va='center')
+        ax.set(xticks=[0,1],yticks=[0,1],xticklabels=['empty','animal'],yticklabels=['empty','animal'],
+               xlabel='Predicted',ylabel='True',title=f'Test | {CFG["image_size"]}px | threshold {policy["threshold"]:.6f}')
+        fig.tight_layout();fig.savefig(folder/'operating_confusion.png');plt.close(fig)
+
+    m['error_patterns_scope']='all known-class test samples; operating decision rule'
+    m['error_patterns']=error_counts.to_dict(orient='records')
     errors=np.flatnonzero(decisions!=y)
     chosen=sorted(errors,key=lambda i:float(p[i].max()),reverse=True)[:12]
     if chosen:
@@ -1911,7 +1966,8 @@ for member in [2,3]:
             receipt=read_json(folder/'test_upload_receipt.json') if (folder/'test_upload_receipt.json').exists() else {}
             records.append({'member':member,'task':task,'regime':regime,'folder':str(folder),
               'val_macro_f1':s['selection_score'],'test_accuracy':m['accuracy'],
-              'test_macro_f1':m['macro_f1_all_training_classes'],'top_k':m['top_k'],
+              'test_macro_f1':m['macro_f1_all_training_classes'],
+              'test_macro_f1_supported':m['macro_f1_supported_classes'],'top_k':m['top_k'],
               'top_k_accuracy':m['top_k_accuracy'],'ece':m['ece'],'raw_ece':m['uncalibrated_ece'],
               'coverage':m['coverage'],'unknown_crops':m['unknown_count'],'input_size':m['image_size'],
               'threshold':m['policy'].get('threshold','argmax'),
@@ -2002,6 +2058,12 @@ REPOSITORY_URL='https://github.com/salehdev3/Capstone_5'
 TEAM_NAME=''
 WANDB_PROJECT_URL=''
 DATASET_CARD_URL=''
+saved_inputs=read_json('submission/report_inputs.json') if Path('submission/report_inputs.json').exists() else {}
+TEAM.update(saved_inputs.get('team',{}));NOTES.update(saved_inputs.get('notes',{}));REPLAY.update(saved_inputs.get('replay',{}))
+REPOSITORY_URL=saved_inputs.get('repository',REPOSITORY_URL)
+TEAM_NAME=saved_inputs.get('team_name',TEAM_NAME)
+WANDB_PROJECT_URL=saved_inputs.get('wandb_project',WANDB_PROJECT_URL)
+DATASET_CARD_URL=saved_inputs.get('dataset_card_url',DATASET_CARD_URL)
 write_json('submission/report_inputs.json',{'team':TEAM,'notes':NOTES,'replay':REPLAY,'repository':REPOSITORY_URL,'team_name':TEAM_NAME,'wandb_project':WANDB_PROJECT_URL,'dataset_card_url':DATASET_CARD_URL})
 
 
@@ -2053,27 +2115,60 @@ def table(df):
     df=df.fillna('');clean=lambda v:str(v).replace('|','/').replace('\n',' ')
     return '\n'.join(['| '+' | '.join(df.columns)+' |','| '+' | '.join(['---']*len(df.columns))+' |']+
                      ['| '+' | '.join(clean(v) for v in row)+' |' for row in df.itertuples(index=False,name=None)])
-sections=['# Project 5 — Phase 1 report','Status: '+STATUS,
+sections=['# Project 5 — Phase 1 report',
  '## Section 1 links', 'Repository: '+REPOSITORY_URL,
- 'W&B project: '+(WANDB_PROJECT_URL or '[pending]'),
- 'Dataset Card: '+(DATASET_CARD_URL or '[pending]'),
+ 'W&B project: '+(WANDB_PROJECT_URL or ''),
+ 'Dataset Card: '+(DATASET_CARD_URL or ''),
  '## Submission', 'Compile the completed official Overleaf template as '+(TEAM_NAME or 'TeamName')+'_Phase1.pdf. Submit one PDF per team. Replace every grey prompt and complete every section and table. Verify instructor access to all three links. Every figure must state its split, input resolution and threshold (or argmax / not applicable). This Markdown file and the evidence archive are report inputs, not the final PDF.',
  'Scope: M1–M3 only. Frame empty/animal classification and species human-box crop classification.',
- '## Contributions',str(TEAM),'## Motivation',NOTES['motivation'] or '[pending]',
- '## Dataset Card',Path(release['dataset_card']).read_text(),NOTES['data_findings'] or '[pending]',
+ '## Contributions',str(TEAM),'## Motivation',NOTES['motivation'] or '',
+ '## Dataset Card',Path(release['dataset_card']).read_text(),NOTES['data_findings'] or '',
  '## Acceptance criteria',table(pd.DataFrame(acceptance)),
  '## Model comparison',table(comparison.drop(columns=['folder','train_url','test_url'])),
  'Selections above use validation macro-F1 only. Test is held out. Per-class reports and confidence intervals are included in results/.',
- NOTES['model_comparison'] or '[pending]','## Error analysis',NOTES['error_analysis'] or '[pending]']
+ NOTES['model_comparison'] or '','## Error analysis',NOTES['error_analysis'] or '']
 for member in [2,3]:
     p=Path(f'runs/member{member}/ERROR_ANALYSIS.md')
-    sections.append(p.read_text() if p.exists() else '[missing analysis]')
-sections+=['## Data improvement plan',NOTES['data_improvement_plan'] or '[pending]',
- '## Limitations',NOTES['limitations'] or '[pending]',
+    if p.exists() and 'Required evidence is missing' not in p.read_text():sections.append(p.read_text())
+sections+=['## Data improvement plan',NOTES['data_improvement_plan'] or '',
+ '## Limitations',NOTES['limitations'] or '',
  'The species task uses human-box crops. This does not evaluate a detector-classifier cascade. Camera-based confidence intervals use few sites and are descriptive.',
- '## Reproducibility',str(REPLAY),'Repository: '+(REPOSITORY_URL or '[pending]'),
- '## W&B',table(links),'## Conclusion',NOTES['conclusion'] or '[pending]',
- '## Outstanding evidence','\n'.join('- '+g for g in gaps) or 'No automated completeness gaps.']
+ '## Reproducibility',str(REPLAY),'Repository: '+(REPOSITORY_URL or ''),
+ '## W&B',table(links),'## Conclusion',NOTES['conclusion'] or '']
+sections += ['## Species counts by split (human-box crops)',
+ 'Counts refer to crops, not frames. Camera separation takes priority over equal class proportions.']
+if (DATA/'species_crop_support.csv').exists():
+    sections.append(table(pd.read_csv(DATA/'species_crop_support.csv')))
+if (DATA/'audit_report.json').exists():
+    a=read_json(DATA/'audit_report.json')
+    sections += ['## Label audit evidence',
+      f"Reviewed {a.get('reviewed')} sampled events; label errors {a.get('label_errors')}; one-sided 95% Clopper-Pearson upper bound {a.get('one_sided_95_upper_bound')}. "
+      'Sampling uses training events; same-camera dependence can make the binomial bound optimistic.']
+sections += ['## Metric definitions',
+ 'Macro-F1 across all training classes and macro-F1 across test-supported classes are reported separately. '
+ 'Accuracy intervals use 1,000 whole-camera bootstrap resamples, seed 42, percentile endpoints 2.5% and 97.5%. '
+ 'Few held-out cameras limit interval stability. Argmax tables differ from threshold-based operating decisions.']
+for row in comparison[comparison.selected_on_validation].to_dict('records'):
+    m=read_json(Path(row['folder'])/'test_metrics.json')
+    sections += ['## Selected '+row['task']+' evidence',
+      'Argmax confusion matrix: '+str(m['confusion_matrix'])]
+    if row['task']=='triage':
+        op=m['operating_point'];policy=m['policy']
+        sections += ['Operating confusion matrix (rows/columns empty, animal): '+str([[op['tn'],op['fp']],[op['fn'],op['tp']]]),
+          'Threshold '+str(policy['threshold'])+' selected on '+policy['selection_split']+
+          ' to maximize empty removal subject to empirical animal recall >= '+str(policy.get('target_animal_recall',CFG.get('target_animal_recall',.99)))+'.']
+    if m.get('error_patterns') is not None:
+        sections += ['Full-test error counts (operating rule):',table(pd.DataFrame(m['error_patterns'],columns=['true','prediction','count']))]
+    for camera,metrics in m.get('per_camera',{}).items():
+        if camera=='team_city_Tabuk':
+            sections.append('Tabuk subset: n='+str(metrics['n'])+', argmax accuracy='+str(metrics['accuracy'])+
+                            '. These samples already belong to the combined test and are not independent extra evidence.')
+sections += ['## Night-time improvement experiment',
+ 'Label illumination on the full evaluation population using a named reviewer and explicit day/night/uncertain categories. '
+ 'Report support and error rates by illumination, keeping uncertain examples visible. '
+ 'Compare night-focused training examples and illumination augmentation on validation-selection; calibrate on validation-calibration. '
+ 'Confusion pairs alone do not prove a night-time cause.']
+sections=[section for section in sections if section.strip()]
 Path('submission/REPORT_DRAFT.md').write_text('\n\n'.join(sections))
 display(Markdown(Path('submission/REPORT_DRAFT.md').read_text()))
 
@@ -2214,13 +2309,13 @@ for name in ['class_balance_proportions.csv','species_crop_support.csv','audit_r
 weights=[]
 for row in comparison.to_dict('records'):
     folder=Path(row['folder']);destination=Path('results')/row['task']/row['regime']
-    for name in ['summary.json','test_metrics.json','history.csv','policy.json','confusion.png','learning_loss.png','learning_accuracy.png','reliability.png','validation_threshold_sweep.csv']:
+    for name in ['summary.json','test_metrics.json','history.csv','policy.json','confusion.png','learning_loss.png','learning_accuracy.png','reliability.png','validation_threshold_sweep.csv','operating_confusion.png','test_error_patterns.csv']:
         collect(folder/name,destination/name)
     print('Hashing checkpoint:',folder/'best.pt',flush=True)
     weights.append({'path':str(folder/'best.pt'),'sha256':digest(folder/'best.pt'),'access':'private team storage'})
 write_json(repo/'weights_manifest.json',weights)
 (repo/'.gitignore').write_text('data/\nruns/\nwandb/\n*.pt\n*.pth\n*.jpg\n*.jpeg\n.env\n__pycache__/\n.ipynb_checkpoints/\n')
-(repo/'README.md').write_text("# Project 5 — Phase 1\n\nRun Phase1_Final_Presentation.ipynb in section order. Use the same Member 1 dataset release for all classification experiments. All sections run in the unified notebook workspace. Internet and Colab's torch/torchvision are required; use GPU for training.\n\nMember1 uses CCT20 from https://lila.science/datasets/caltech-camera-traps. Follow dataset licence and course non-redistribution policy. Do not commit images or raw archives. The Dataset Card records filtering and limitations.\n\nAll sections import the shared preprocessing.py module. Split is stratified by camera groups; bursts stay together. One shared config defines all six experiments. Validation selects models; calibration chooses temperature/triage threshold; test is evaluated once.\n\nSee environments/ for the actual resolved package versions and Python/platform of each member. Install one role's environment in a compatible runtime. No single cross-platform lock is claimed. The initial install cells describe required packages; actual resolved pins are captured after installation.\n\nReport and metrics are from actual execution, with pending sections visible. Test accuracy intervals include camera bootstrap and Wilson (the latter assumes independent samples). Human audit, error discussion, clean replay and W&B sync require team action. Fresh-process inference alone is not full training reproduction.\n\nWeights remain private; weights_manifest.json provides hashes and paths. Repository notebooks have outputs stripped; keep executed copies privately for assessment. This repository covers M1–M3 only, without detector training or deployment.\n")
+(repo/'README.md').write_text("# Project 5 — Phase 1\n\nRun Phase1_Final_Presentation.ipynb in section order. Use the same Member 1 dataset release for all classification experiments. All sections run in the unified notebook workspace. Internet and Colab's torch/torchvision are required; use GPU for training.\n\nMember1 uses CCT20 from https://lila.science/datasets/caltech-camera-traps. Follow dataset licence and course non-redistribution policy. Do not commit images or raw archives. The Dataset Card records filtering and limitations.\n\nAll sections import the shared preprocessing.py module. Split is stratified by camera groups; bursts stay together. One shared config defines all six experiments. Validation selects models; calibration chooses temperature/triage threshold; test is evaluated once.\n\nSee environments/ for the actual resolved package versions and Python/platform of each member. Install one role's environment in a compatible runtime. No single cross-platform lock is claimed. The initial install cells describe required packages; actual resolved pins are captured after installation.\n\nReport and metrics are from actual execution, with scientific results separated from internal QA. Test accuracy intervals include camera bootstrap and Wilson (the latter assumes independent samples). Human audit, error discussion, clean replay and W&B sync require team action. Fresh-process inference alone is not full training reproduction.\n\nWeights remain private; weights_manifest.json provides hashes and paths. Repository notebooks have outputs stripped; keep executed copies privately for assessment. This repository covers M1–M3 only, without detector training or deployment.\n")
 assert not list(repo.rglob('*.pt')) and not list(repo.rglob('*.jpg'))
 write_json('handoff/integration_release.json',{'schema':2,'scope':'Phase 1','status':STATUS,'gaps':gaps,
  'dataset_hash':DATA_HASH,'report_sha256':digest(repo/'REPORT_DRAFT.md'),'repository':REPOSITORY_URL})

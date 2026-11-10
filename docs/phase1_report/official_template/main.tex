@@ -117,7 +117,7 @@ Mohannad Mohammed Alqahtani & 225461 & Integration & Independent review, compari
 Dataset & Link / ref. & Content and annotations & Use & Licence & Images \\
 \midrule
 CCT20 subset & LILA CCT & Camera-trap frames and human boxes & All splits & CDLA-Permissive & 6,022 \\
-Team-collected (bonus) & Private collection & Reviewed frames and boxes & Train/test & Team-owned; private & 19 \\
+Team frames & Local collection & Reviewed frames and boxes & Train/test & Team-owned & 19 \\
 \bottomrule
 \end{tabularx}}
 
@@ -158,6 +158,8 @@ Test & 4 & 639 & Empty: 53; animal: 586 \\
 \bottomrule
 \end{tabularx}
 
+The complete species-by-split crop support table is generated as \texttt{species\_crop\_support.csv} by the notebook. The per-class results below report test crop support; frame counts and crop counts describe different sampling units.
+
 \subsection{Label audit}
 
 \begin{tabularx}{\linewidth}{@{}Y Y Y Y@{}}
@@ -169,7 +171,7 @@ Audited sample size & Errors found & Estimated label-error rate & Upper bound (9
 \end{tabularx}
 
 \smallskip
-One frame was drawn from each of 10 random training events; the team found one incorrect label and quarantined the affected event. A separate 20-image review signed by Mohannad Mohammed Alqahtani found no additional frame-label errors; five box checks were not applicable.
+One frame was drawn from each of 10 random training events; the team found one incorrect label and quarantined the affected event. A new release now requires at least 100 completed training-event reviews before freezing; this does not retroactively enlarge the historical audit. A separate 20-image review signed by Mohannad Mohammed Alqahtani found no additional frame-label errors; five box checks were not applicable.
 
 \subsection{Data loader and augmentation}
 
@@ -177,7 +179,7 @@ RGB images were prepared with maximum side 1,024 pixels, resized to 224$\times$2
 
 \subsection{Dataset card summary}
 
-Raccoon and opossum dominate some groups while rare species have few examples; camera-group splits have distribution shift. CCT20 is largely US wildlife, and five held-out Tabuk frames cannot establish Saudi deployment performance. The small audit has a wide error bound. Source terms and course policy restrict image redistribution; no GPS or private photos are published. The full card is linked in Section 1.
+Raccoon and opossum dominate some groups while rare species have few examples; camera-group splits have distribution shift. CCT20 is largely US wildlife, and five held-out Tabuk frames cannot establish Saudi deployment performance. The small audit has a wide error bound. Source terms and course policy restrict image redistribution. Team images are tracked in the repository and are subject to the team collection and publication policy. The full card is linked in Section 1.
 
 % =====================================================================
 \section{Classification (M2--M3)\pts{20}}
@@ -221,6 +223,14 @@ Species frozen (selected) & .742 [.642,.876] & .482 & .0568 \\
 \smallskip
 \textbf{Which model you keep and why:} Frozen ResNet-50 gave the highest validation macro-F1 for both tasks (.662 triage and .364 species). It was therefore retained before test results were examined. At test threshold .3416, triage retained 586/586 animal frames but removed only 6/53 empty frames (11.3\%), missing the 20\% empty-removal target. Species test macro-F1 was .482, below the .65 target; ECE .0568 met the .10 limit.
 
+All accuracy and per-class tables above use argmax. The separate operating policy uses animal probability $\geq 0.3416247$, selected on \texttt{val\_calibrate} to maximize empty removal subject to empirical animal recall $\geq .99$. Calibration retained 509/514 animals and removed 2/13 empty frames. This empirical constraint is not a population guarantee.
+
+Accuracy intervals are 2.5th--97.5th percentile camera-cluster bootstrap intervals (1,000 resamples, seed 42), resampling whole cameras with replacement. Only four test groups are available; intervals are descriptive and unstable. They are not independent-image confidence intervals.
+
+Species macro-F1 is .481994 across all 14 training classes, and .519070 across the 13 classes with test support. Rodent has zero test examples. Both definitions are retained; excluding the unsupported class does not indicate model improvement.
+
+The held-out Tabuk subset contains five frames and overlaps the combined test. Saved per-camera argmax accuracy is 2/5 for triage and 4/5 for species. This small, imbalanced subset does not establish deployment performance and is not an additional independent test.
+
 \subsection{Learning curves}
 
 \begin{figure}[htbp]
@@ -263,6 +273,20 @@ Squirrel (species) & .860 & .925 & .891 & 53 \\
 \smallskip
 Top-$k$ accuracy (species, $k=3$): .9055 on test; 224$\times$224, argmax.
 
+\subsection{Triage confusion matrices}
+Rows are true labels; columns are predictions. Split: test, input: $224\times224$. These tables use all 639 frames.
+\begin{center}
+\begin{tabular}{lrr|rr}
+\toprule
+& \multicolumn{2}{c}{Argmax} & \multicolumn{2}{c}{Threshold .3416247} \\
+True label & Empty & Animal & Empty & Animal \\
+\midrule
+Empty & 11 & 42 & 6 & 47 \\
+Animal & 1 & 585 & 0 & 586 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
 \subsection{Confusion matrix and calibration}
 
 \begin{figure}[htbp]
@@ -284,12 +308,14 @@ Bobcat was repeatedly confused with raccoon in the gallery; a fox crop was calle
 
 \begin{tabularx}{\linewidth}{@{}Y r Y@{}}
 \toprule
-Error pattern & Examples & Likely cause (data, label, model) \\
+Error pattern & Full-test count / gallery & Likely cause (data, label, model) \\
 \midrule
-Recorded empty $\rightarrow$ animal & 12 shown & Several daylight frames look bird-like; source-label review needed. \\
-Bobcat $\rightarrow$ raccoon & 5 shown & Low-detail night crops and camera-domain shift are plausible contributors. \\
+Recorded empty $\rightarrow$ animal & 47 total; 12 shown & Several daylight frames look bird-like; source-label review needed. \\
+Bobcat $\rightarrow$ raccoon & 12 total; 5 shown & Low-detail night crops and camera-domain shift are plausible contributors. \\
 \bottomrule
 \end{tabularx}
+
+Counts above cover all test decisions: triage uses the calibrated threshold, species uses argmax. Visual explanations are hypotheses, not counts of verified night-time causes.
 
 \subsection{Data-improvement plan}
 
@@ -298,7 +324,8 @@ Bobcat $\rightarrow$ raccoon & 5 shown & Low-detail night crops and camera-domai
 Finding from the error analysis & Planned action & Expected effect \\
 \midrule
 Possible source-label errors & Review full-resolution originals; report corrected-label sensitivity separately & Distinguish annotation issues from model errors \\
-Rare species and empty frames & Add verified, independently grouped examples; tune on validation only & Improve minority-class recall and empty removal \\
+Rare species and empty frames & Compare class-weighted loss against the unchanged baseline on validation-selection; add independently grouped examples & Measure minority recall and empty removal without tuning on test \\
+Low-detail night crops & Annotate day/night across all test errors for descriptive analysis; compare night-focused training data and illumination augmentation using validation only & Measure night recall and calibration; do not claim improvement before experiments \\
 \bottomrule
 \end{tabularx}
 
@@ -312,10 +339,10 @@ Item & Your answer \\
 Repository and commit hash & \url{https://github.com/salehdev3/Capstone_5}, evaluated results release \texttt{2cc1731} on \texttt{v1} \\
 Configuration file used for the reported runs & \texttt{handoff/data\_config.json} and \texttt{runs/member2,member3/config.json} \\
 Random seeds & 42 \\
-Requirements file (pinned versions) & Role-specific \texttt{handoff/requirements\_member*.txt} and runtime JSON records \\
+Requirements file (pinned versions) & Pinned CPU validation environment: \texttt{requirements-cpu-validation.txt}. This file specifies the CPU validation environment; historical GPU runs are identified separately by their recorded configuration and W\&B run links. \\
 Command(s) to reproduce the main result & Run \texttt{notebooks/Phase1\_Final\_Presentation.ipynb} in section order on Colab GPU \\
-Where the data is obtained (not committed) & CCT20 on LILA; private team photos; recorded manifest hash in dataset card \\
-Reproduced by (team member) and result & Fresh-process inference recorded in \texttt{review/fresh\_process\_results.json}; complete clean replay pending \\
+Where the data is obtained (not committed) & CCT20 on LILA; team photos tracked in the repository; recorded manifest hash in dataset card \\
+Reproduction evidence and scope & Fresh-process checkpoint inference is recorded in \texttt{review/fresh\_process\_results.json}. Instructor feedback separately identifies a matching full W\&B rerun on 28 October, attributed by the team to Mohannad. The two checks establish different levels of reproducibility \\
 \bottomrule
 \end{tabularx}
 
@@ -331,9 +358,9 @@ Reproduced by (team member) and result & Fresh-process inference recorded in \te
   \item Per-class metrics, confusion matrix and calibration (ECE) reported
   \item Test set used only for final evaluation, not model selection
   \item Data-improvement plan follows from the error analysis
-  \item Fixed seeds, single configuration, pinned requirements; no hard-coded paths
+  \item Fixed seeds, recorded training configuration, and a pinned CPU validation environment
   \item Every figure states split, input resolution and thresholds
-  \item No data or personal information committed to the repository
+  \item Team photos are identified as tracked repository content
 \end{checklist}
 
 % =====================================================================
@@ -345,9 +372,9 @@ Criterion & Points & Self-score & Strongest evidence (section) & Known gap \\
 \midrule
 Data foundations and dataset card (M1) & 12 & 11 & Cleaning, split, audit, card & Small initial audit \\
 Classification (M2--M3) & 20 & 19 & Six runs, metrics and galleries & Two preset targets missed \\
-Reproducibility & 8 & 8 & Config, pinned requirements, hashes & Full clean replay pending \\
+Reproducibility & 8 & 6 & Config, hashes, inference check & CPU environment pinning and checkpoint inference are distinct from full GPU replay \\
 \midrule
-\textbf{Total} & \textbf{40} & \textbf{38} & Team self-assessment & Instructor decides final score \\
+\textbf{Total} & \textbf{40} & \textbf{36} & Instructor Phase 1 feedback & Remediation does not imply regrading \\
 \bottomrule
 \end{tabularx}
 

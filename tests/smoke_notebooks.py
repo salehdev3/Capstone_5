@@ -86,6 +86,18 @@ with tempfile.TemporaryDirectory(prefix='phase1-smoke-') as tmp:
         result=ns['train_model'](task,'scratch')
         metric=ns['evaluate_model'](task,'scratch')
         assert metric['n']==8 and metric['unknown_count']==0
+        decisions=pd.read_csv(ns['OUT']/task/'scratch'/'test_operating_predictions.csv')
+        patterns=pd.read_csv(ns['OUT']/task/'scratch'/'test_error_patterns.csv')
+        assert len(decisions)==metric['n']
+        assert int(patterns['count'].sum())==int(decisions.is_error.sum())
+        assert set(decisions.decision_rule)=={'calibrated_threshold' if task=='triage' else 'argmax'}
+        if task=='triage':
+            assert int(decisions.is_error.sum())==metric['operating_point']['fp']+metric['operating_point']['fn']
+            assert np.asarray(metric['operating_confusion_matrix']).sum()==metric['n']
+            assert metric['policy']['selection_split']=='val_calibrate'
+            assert metric['policy']['animal_recall']>=metric['policy']['target_animal_recall']
+            assert (ns['OUT']/task/'scratch'/'operating_confusion.png').is_file()
+        assert metric['error_patterns_scope'].startswith('all known-class test samples')
         history=pd.read_csv(ns['OUT']/task/'scratch'/'history.csv')
         assert np.allclose(history.learning_rate,[.0005,.001])
         assert result['context']['training_implementation']==2
@@ -174,6 +186,8 @@ with tempfile.TemporaryDirectory(prefix='phase1-smoke-') as tmp:
     assert ns['STATUS']=='INCOMPLETE'
     report=Path('submission/REPORT_DRAFT.md').read_text()
     assert '\n\n' in report and '| task | regime |' in report
+    assert '## Metric definitions' in report and 'Full-test error counts' in report
+    assert 'Status: INCOMPLETE' not in report and '## Outstanding evidence' not in report
     assert ns['gaps']
     
     colab=types.ModuleType('google.colab');colab.files=types.SimpleNamespace(download=lambda path:None)
