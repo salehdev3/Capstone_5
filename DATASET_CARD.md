@@ -34,9 +34,13 @@ CCT20 images are split by **camera group** using `StratifiedGroupKFold` with see
 | Validation for calibration | 527 | 2 |
 | Test | 639 | 4 |
 
-### Species crop support
+The final manifest passed checks for unique IDs and absence of ID, camera, event, and pixel-hash overlap between splits. The full per-class frame frequencies and crop support are in `class_balance_proportions.csv` and `species_crop_support.csv`. Class percentages may sum to more than 100% because a frame can contain multiple categories.
 
-Counts below are annotated animal crops; percentages use the total crops in each split as denominator. A frame may contain multiple crops.
+Class frequencies differ substantially between groups. For example, the training split includes 764 raccoon and 727 opossum frame occurrences, whereas fox has one and badger has four. The test split has 53 empty and 586 animal frames. Several rare species have no validation examples. Group separation was prioritized over exact class balance.
+
+## Species crop support
+
+Counts are annotated animal crops; percentages use total crops in each split. A frame may contain multiple crops.
 
 | Species | Train n (%) | Selection n (%) | Calibration n (%) | Test n (%) |
 |---|---:|---:|---:|---:|
@@ -55,10 +59,6 @@ Counts below are annotated animal crops; percentages use the total crops in each
 | Skunk | 73 (2.6%) | 0 (0.0%) | 21 (4.3%) | 19 (3.7%) |
 | Squirrel | 95 (3.4%) | 120 (10.7%) | 6 (1.2%) | 53 (10.4%) |
 | **Total crops** | **2,819 (100%)** | **1,124 (100%)** | **483 (100%)** | **508 (100%)** |
-
-The final manifest passed checks for unique IDs and absence of ID, camera, event, and pixel-hash overlap between splits. The full per-class frame frequencies and crop support are in `class_balance_proportions.csv` and `species_crop_support.csv`. Class percentages may sum to more than 100% because a frame can contain multiple categories.
-
-Class frequencies differ substantially between groups. For example, the training split includes 764 raccoon and 727 opossum frame occurrences, whereas fox has one and badger has four. The test split has 53 empty and 586 animal frames. Several rare species have no validation examples. Group separation was prioritized over exact class balance.
 
 ## Label audit
 

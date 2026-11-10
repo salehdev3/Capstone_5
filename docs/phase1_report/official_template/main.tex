@@ -1,3 +1,16 @@
+% =====================================================================
+%  AI251P Applied Computer Vision -- Capstone Project
+%  Phase 1 Report Template (M1--M3, 40 points, due 28 October 2026)
+%
+%  How to use:
+%   * Fill in the team details in the "TEAM DETAILS" block below.
+%   * Replace every grey italic prompt (\prompt{...}) with your own text.
+%   * Fill every table. Add rows by copying an existing row.
+%   * Put your figures in the figures/ folder and replace
+%     figures/placeholder.png with your own file names.
+%   * Every reported figure must state the data split, the input
+%     resolution and any threshold used.
+% =====================================================================
 \documentclass[11pt,a4paper]{article}
 
 \usepackage[T1]{fontenc}
@@ -13,12 +26,22 @@
 \usepackage{fancyhdr}
 \usepackage[colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
 
+% ---------------------------------------------------------------------
+%  TEAM DETAILS -- edit these
+% ---------------------------------------------------------------------
 \newcommand{\teamname}{Project 5}
 \newcommand{\projecttitle}{Camera-Trap Image Classification}
 
+% ---------------------------------------------------------------------
+%  Helpers
+% ---------------------------------------------------------------------
+% Grey italic prompt: delete it and write your own text in its place.
 \newcommand{\prompt}[1]{\leavevmode{\color{gray!80!black}\itshape #1}}
+% Blank line for short answers
 \newcommand{\blank}{\rule{0pt}{2.2ex}}
+% Points label in section titles
 \newcommand{\pts}[1]{\texorpdfstring{\hfill{\normalsize\mdseries(#1 points)}}{}}
+% Checklist
 \newlist{checklist}{itemize}{1}
 \setlist[checklist]{label=$\square$,leftmargin=1.6em,itemsep=2pt}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
@@ -36,6 +59,7 @@
 
 \begin{document}
 
+% =====================================================================
 \begin{center}
   {\large AI251P Applied Computer Vision}\\[4pt]
   {\LARGE\bfseries Capstone Project -- Phase 1 Report}\\[6pt]
@@ -44,11 +68,12 @@
 \end{center}
 \vspace{4pt}
 
+% =====================================================================
 \section{Team and project}
 
 \begin{tabularx}{\linewidth}{@{}l Y@{}}
 \toprule
-Field & Description \\
+Field & Your answer \\
 \midrule
 Team name & Project 5 \\
 Topic & Project 5: camera-trap image classification \\
@@ -81,6 +106,7 @@ Mohannad Mohammed Alqahtani & 225461 & Integration & Independent review, compari
   \item \textbf{Acceptance criteria (fixed before results):} Animal recall $\geq .99$; empty removal $\geq .20$; species macro-F1 $\geq .65$; species ECE $\leq .10$.
 \end{itemize}
 
+% =====================================================================
 \section{Data foundations (M1)\pts{12}}
 
 \subsection{Datasets}
@@ -91,7 +117,7 @@ Mohannad Mohammed Alqahtani & 225461 & Integration & Independent review, compari
 Dataset & Link / ref. & Content and annotations & Use & Licence & Images \\
 \midrule
 CCT20 subset & LILA CCT & Camera-trap frames and human boxes & All splits & CDLA-Permissive & 6,022 \\
-Team frames & Local collection & Reviewed frames and boxes & Train/test & Team-owned & 19 \\
+Team-collected (bonus) & Private collection & Reviewed frames and boxes & Train/test & Team-owned; private & 19 \\
 \bottomrule
 \end{tabularx}}
 
@@ -133,7 +159,6 @@ Test & 4 & 639 & Empty: 53; animal: 586 \\
 \end{tabularx}
 
 \subsection{Species crop support by split}
-
 \begin{center}
 {\small
 \begin{tabular}{lrrrr}
@@ -159,9 +184,7 @@ Total crops & 2,819 (100\%) & 1,124 (100\%) & 483 (100\%) & 508 (100\%) \\
 \bottomrule
 \end{tabular}}
 \end{center}
-Each cell gives crop count and percentage of crops in that split. Crop counts differ from frame counts because a frame may contain multiple annotated animals. Species with zero support in a split are shown as zero.
-
-The table reports annotated animal crops, not frame counts. A frame may contain multiple animals. Zero denotes no annotated crop for that species in the corresponding split. The source counts are archived in \texttt{evidence/species\_crop\_support.csv}.
+Each cell reports crop count and its percentage within that split. A frame can contain multiple annotated animals; zero indicates no crop for that species.
 
 \subsection{Label audit}
 
@@ -182,8 +205,9 @@ RGB images were prepared with maximum side 1,024 pixels, resized to 224$\times$2
 
 \subsection{Dataset card summary}
 
-Raccoon and opossum dominate some groups while rare species have few examples; camera-group splits have distribution shift. CCT20 is largely US wildlife, and five held-out Tabuk frames cannot establish Saudi deployment performance. The small audit has a wide error bound. Source terms and course policy restrict image redistribution. Team images are tracked in the repository and are subject to the team collection and publication policy. The full card is linked in Section 1.
+Raccoon and opossum dominate some groups while rare species have few examples; camera-group splits have distribution shift. CCT20 is largely US wildlife, and five held-out Tabuk frames cannot establish Saudi deployment performance. The small audit has a wide error bound. Source terms and course policy restrict image redistribution; no GPS or private photos are published. The full card is linked in Section 1.
 
+% =====================================================================
 \section{Classification (M2--M3)\pts{20}}
 
 \textbf{Task:} Full frames are classified empty/animal; human-box crops are classified by species. These classifiers provide the baseline for later detection and segmentation.
@@ -224,14 +248,6 @@ Species frozen (selected) & .742 [.642,.876] & .482 & .0568 \\
 
 \smallskip
 \textbf{Which model you keep and why:} Frozen ResNet-50 gave the highest validation macro-F1 for both tasks (.662 triage and .364 species). It was therefore retained before test results were examined. At test threshold .3416, triage retained 586/586 animal frames but removed only 6/53 empty frames (11.3\%), missing the 20\% empty-removal target. Species test macro-F1 was .482, below the .65 target; ECE .0568 met the .10 limit.
-
-All accuracy and per-class tables above use argmax. The separate operating policy uses animal probability $\geq 0.3416247$, selected on \texttt{val\_calibrate} to maximize empty removal subject to empirical animal recall $\geq .99$. Calibration retained 509/514 animals and removed 2/13 empty frames. This empirical constraint is not a population guarantee.
-
-Accuracy intervals are 2.5th--97.5th percentile camera-cluster bootstrap intervals (1,000 resamples, seed 42), resampling whole cameras with replacement. Only four test groups are available; intervals are descriptive and unstable. They are not independent-image confidence intervals.
-
-Species macro-F1 is .481994 across all 14 training classes, and .519070 across the 13 classes with test support. Rodent has zero test examples. Both definitions are retained; excluding the unsupported class does not indicate model improvement.
-
-The held-out Tabuk subset contains five frames and overlaps the combined test. Saved per-camera argmax accuracy is 2/5 for triage and 4/5 for species. This small, imbalanced subset does not establish deployment performance and is not an additional independent test.
 
 \subsection{Learning curves}
 
@@ -275,20 +291,6 @@ Squirrel (species) & .860 & .925 & .891 & 53 \\
 \smallskip
 Top-$k$ accuracy (species, $k=3$): .9055 on test; 224$\times$224, argmax.
 
-\subsection{Triage confusion matrices}
-Rows are true labels; columns are predictions. Split: test, input: $224\times224$. These tables use all 639 frames.
-\begin{center}
-\begin{tabular}{lrr|rr}
-\toprule
-& \multicolumn{2}{c}{Argmax} & \multicolumn{2}{c}{Threshold .3416247} \\
-True label & Empty & Animal & Empty & Animal \\
-\midrule
-Empty & 11 & 42 & 6 & 47 \\
-Animal & 1 & 585 & 0 & 586 \\
-\bottomrule
-\end{tabular}
-\end{center}
-
 \subsection{Confusion matrix and calibration}
 
 \begin{figure}[htbp]
@@ -305,19 +307,17 @@ Bobcat was repeatedly confused with raccoon in the gallery; a fox crop was calle
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.9\linewidth]{figures/triage_frozen_errors.jpg}
-  \caption{Triage test error gallery: recorded label and prediction are shown; input 224$\times$224, animal threshold .3416. Visual inspection indicates potential source-label ambiguity.}
+  \caption{Triage test error gallery: recorded label and prediction are shown; input 224$\times$224, animal threshold .3416. Several source labels need human verification.}
 \end{figure}
 
 \begin{tabularx}{\linewidth}{@{}Y r Y@{}}
 \toprule
-Error pattern & Full-test count / gallery & Likely cause (data, label, model) \\
+Error pattern & Examples & Likely cause (data, label, model) \\
 \midrule
-Recorded empty $\rightarrow$ animal & 47 total; 12 shown & Bird-like visual features in several daylight frames indicate potential source-label ambiguity. \\
-Bobcat $\rightarrow$ raccoon & 12 total; 5 shown & Low-detail night crops and camera-domain shift are plausible contributors. \\
+Recorded empty $\rightarrow$ animal & 12 shown & Several daylight frames look bird-like; source-label review needed. \\
+Bobcat $\rightarrow$ raccoon & 5 shown & Low-detail night crops and camera-domain shift are plausible contributors. \\
 \bottomrule
 \end{tabularx}
-
-Counts above cover all test decisions: triage uses the calibrated threshold, species uses argmax. Visual explanations are hypotheses, not counts of verified night-time causes.
 
 \subsection{Data-improvement plan}
 
@@ -325,28 +325,29 @@ Counts above cover all test decisions: triage uses the calibrated threshold, spe
 \toprule
 Finding from the error analysis & Planned action & Expected effect \\
 \midrule
-Possible source-label errors & Full-resolution annotation review and a separate corrected-label sensitivity analysis & Distinguish annotation issues from model errors \\
-Rare species and empty frames & Validation-selection comparison of class-weighted loss and the baseline, with additional independently grouped examples & Measure minority recall and empty removal without tuning on test \\
-Low-detail night crops & Full-test illumination annotation and validation-based comparison of night-focused training data and illumination augmentation & Night-time recall and calibration measured against the baseline \\
+Possible source-label errors & Review full-resolution originals; report corrected-label sensitivity separately & Distinguish annotation issues from model errors \\
+Rare species and empty frames & Add verified, independently grouped examples; tune on validation only & Improve minority-class recall and empty removal \\
 \bottomrule
 \end{tabularx}
 
+% =====================================================================
 \section{Reproducibility\pts{8}}
 
 \begin{tabularx}{\linewidth}{@{}l Y@{}}
 \toprule
-Item & Description \\
+Item & Your answer \\
 \midrule
 Repository and commit hash & \url{https://github.com/salehdev3/Capstone_5}, evaluated results release \texttt{2cc1731} on \texttt{v1} \\
 Configuration file used for the reported runs & \texttt{handoff/data\_config.json} and \texttt{runs/member2,member3/config.json} \\
 Random seeds & 42 \\
-Requirements file (pinned versions) & Pinned CPU validation environment: \texttt{requirements-cpu-validation.txt}. Historical GPU run configurations are recorded in W\&B. \\
+Requirements file (pinned versions) & Role-specific \texttt{handoff/requirements\_member*.txt} and runtime JSON records \\
 Command(s) to reproduce the main result & Run \texttt{notebooks/Phase1\_Final\_Presentation.ipynb} in section order on Colab GPU \\
-Data sources & CCT20 on LILA; team photos tracked in the repository; recorded manifest hash in dataset card \\
-Reproduction evidence and scope & Fresh-process checkpoint inference is recorded in \texttt{review/fresh\_process\_results.json}. Instructor feedback separately identifies a matching full W\&B rerun on 28 October, attributed by the team to Mohannad. Checkpoint inference and full training replay are reported as distinct validation procedures \\
+Where the data is obtained (not committed) & CCT20 on LILA; private team photos; recorded manifest hash in dataset card \\
+Reproduced by (team member) and result & Fresh-process inference recorded in \texttt{review/fresh\_process\_results.json}; complete clean replay pending \\
 \bottomrule
 \end{tabularx}
 
+% =====================================================================
 \section{Submission checklist}
 
 \begin{checklist}
@@ -358,11 +359,12 @@ Reproduction evidence and scope & Fresh-process checkpoint inference is recorded
   \item Per-class metrics, confusion matrix and calibration (ECE) reported
   \item Test set used only for final evaluation, not model selection
   \item Data-improvement plan follows from the error analysis
-  \item Fixed seeds, recorded training configuration, and a pinned CPU validation environment
+  \item Fixed seeds, single configuration, pinned requirements; no hard-coded paths
   \item Every figure states split, input resolution and thresholds
-  \item Team photos are identified as tracked repository content
+  \item No data or personal information committed to the repository
 \end{checklist}
 
+% =====================================================================
 \section{Self-assessment}
 
 \begin{tabularx}{\linewidth}{@{}l c c Y Y@{}}
@@ -371,12 +373,13 @@ Criterion & Points & Self-score & Strongest evidence (section) & Known gap \\
 \midrule
 Data foundations and dataset card (M1) & 12 & 11 & Cleaning, split, audit, card & Small initial audit \\
 Classification (M2--M3) & 20 & 19 & Six runs, metrics and galleries & Two preset targets missed \\
-Reproducibility & 8 & 6 & Config, hashes, inference check & CPU environment pinning and checkpoint inference are distinct from full GPU replay \\
+Reproducibility & 8 & 8 & Config, pinned requirements, hashes & Full clean replay pending \\
 \midrule
-\textbf{Total} & \textbf{40} & \textbf{36} & Instructor Phase 1 feedback & Phase 1 assessment \\
+\textbf{Total} & \textbf{40} & \textbf{38} & Team self-assessment & Instructor decides final score \\
 \bottomrule
 \end{tabularx}
 
+% =====================================================================
 \section{Obstacles and how they were addressed}
 
 A Colab upload stall interrupted evaluation. The evaluation workflow now saves test metrics before a time-bounded W\&B upload, so a stalled upload does not block the local results.

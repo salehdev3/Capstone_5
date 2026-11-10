@@ -1,6 +1,0 @@
-{
-  "reviewer": "Mohannad",
-  "attribution_source": "Team confirmation dated 2026-11-10",
-  "rerun_date_source": "Instructor feedback: 28 October",
-  "scope": "Operator attribution; numerical comparison is generated from the original and replay result artifacts by tools/compare_replay.py"
-}
