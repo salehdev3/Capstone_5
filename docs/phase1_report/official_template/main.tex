@@ -438,11 +438,35 @@ Requirements file (pinned versions) & \texttt{requirements-colab-2026-10-28.txt}
 Command(s) to reproduce the main result & Run \texttt{notebooks/Phase1\_Final\_Presentation1.ipynb} in section order on Colab GPU \\
 Data sources & CCT20 on LILA; the 19 Riyadh and Tabuk team photographs are intentionally published and publicly available in \href{https://github.com/salehdev3/Capstone_5/tree/v1/data/team_collected_riyadh}{the v1 team-data folder}. Provenance and manifest hash are recorded in the dataset card \\
 Fresh-process validation & Six checkpoint-load and inference checks passed, covering both tasks and all three training regimes \\
+Independent replay & Full notebook re-run by Mohannad Mohammed Alqahtani (225461) on 28 Oct 2026; all six test results match the original to six decimals (Table X). \\
 \bottomrule
 \end{tabularx}
 
 \smallskip
-The uploaded \texttt{review/fresh\_process\_results.json} records six successful checkpoint-load and inference probes: triage output shape $[1,2]$ and species output shape $[1,14]$, with finite outputs. The selected checkpoint hashes match those recorded in the local evaluation.
+The uploaded \texttt{review/fresh\_process\_results.json} records six successful checkpoint-load and inference probes: triage output shape $[1,2]$ and species output shape $[1,14]$, with finite outputs. The selected checkpoint hashes match those recorded in the local evaluation. These probes are a secondary checkpoint-integrity check, separate from the independent full-notebook replay.
+
+Independent replay. Member Mohannad Mohammed Alqahtani (225461) re-ran the full notebook on 28 Oct 2026, 09:36-10:25 (Riyadh time, UTC+3), on a Colab GPU (host 50a1d4903ba6), seed 42, commit 2cc1731, environment requirements-colab-2026-10-28.txt. The runs are logged under the team W\&B account saleh-almodhiany, not under a personal account of the executing member. Replay test runs: triage-frozen-test ztpkiol0, triage-full-test bx6czm31, species-frozen-test 8ydwpra0, species-full-test mdz4rmbn. The original session was 27 Oct 2026, 21:33-22:24 Riyadh time. All six test results of the replay equal the original to six decimal places (Table X). A further full session on 28 Oct 2026, 00:16-01:10 Riyadh time gave slightly different numbers (e.g. species frozen ECE 0.0492, triage full macro-F1 0.658) and was not adopted; it is disclosed for completeness.
+
+\begin{center}
+\captionof*{table}{Table X: Original vs independent replay. Split: test; input: 224x224; threshold: argmax; ECE after temperature scaling.}
+\begin{tabularx}{\linewidth}{@{}Y r r r l@{}}
+\toprule
+Run & Accuracy & Macro-F1 & ECE & Replay equal? \\
+\midrule
+Triage scratch & 0.9171 & 0.4784 & 0.0463 & yes \\
+Triage frozen & 0.9327 & 0.6515 & 0.0460 & yes \\
+Triage full & 0.9092 & 0.5943 & 0.0490 & yes \\
+Species scratch & 0.3504 & 0.1780 & 0.0733 & yes \\
+Species frozen & 0.7421 & 0.4820 & 0.0568 & yes \\
+Species full & 0.7638 & 0.4546 & 0.0605 & yes \\
+\bottomrule
+\end{tabularx}
+\end{center}
+Species macro-F1 uses the 14-class definition. Species frozen top-3 accuracy is 0.9055. Each numeric entry represents both the original and replay value; the table displays four decimal places.
+
+Threshold-based metrics (animal recall 1.0000 and empty removal 0.1132 at 0.3416) and macro-F1 over the 13 supported species classes (0.5191) are archived in evidence/ files rather than the W\&B summary.
+
+The held-out Tabuk check was also re-logged on 28 Oct 2026 (runs wyg8zhz5 triage, rjdbmnl3 species): triage accuracy 0.400, macro-F1 0.286; species accuracy 0.800, macro-F1 0.0714 over 14 classes.
 
 The expanded label audit covers 100 unique training images from 100 events, with 120 reviewer records. Its final adjudications and confidence bound are supported by \path{evidence/audit_all_reviews.csv}. Independent image reviews by Mohannad Alqahtani are archived in \path{evidence/independent_audit.csv}.
 
