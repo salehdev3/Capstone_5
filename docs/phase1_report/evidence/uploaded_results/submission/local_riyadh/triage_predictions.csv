@@ -1,0 +1,6 @@
+image_id,true,prediction,confidence
+RYD_003,animal,animal,0.9927536845207214
+RYD_004,empty,animal,0.6157252788543701
+RYD_005,empty,animal,0.9424839019775391
+RYD_011,empty,animal,0.8446760773658752
+RYD_012,animal,animal,0.9996106028556824

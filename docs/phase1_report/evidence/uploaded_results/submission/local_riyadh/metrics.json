@@ -1,0 +1,465 @@
+[
+  {
+    "task": "triage",
+    "regime": "frozen",
+    "split": "local_test_Tabuk",
+    "input_resolution": 224,
+    "policy": {
+      "temperature": 0.7136191711902783,
+      "calibration_split": "val_calibrate",
+      "species_review_confidence": 0.6,
+      "threshold": 0.3416247069835663,
+      "animal_recall": 0.9902723735408561,
+      "empty_removal_rate": 0.15384615384615385,
+      "animal_frames_lost": 5,
+      "animal_frames": 514,
+      "empty_frames": 13,
+      "removed_frames": 7,
+      "tp": 509,
+      "tn": 2,
+      "fp": 11,
+      "fn": 5,
+      "animal_recall_wilson95_independence_assumption": [
+        0.9774328726459307,
+        0.995837983549678
+      ],
+      "selection_split": "val_calibrate",
+      "recall_target_is_empirical_not_guaranteed": true
+    },
+    "known_count": 5,
+    "unknown_count": 0,
+    "unknown_species": [],
+    "checkpoint_sha256": "7084b6b2cb1b72481002ff61867c91d019668dffe617c79807ef714183eae38a",
+    "metrics_argmax": {
+      "n": 5,
+      "accuracy": 0.4,
+      "macro_f1_all_training_classes": 0.2857142857142857,
+      "macro_f1_supported_classes": 0.2857142857142857,
+      "top_k": 2,
+      "top_k_accuracy": 1.0,
+      "ece": 0.47904992103576666,
+      "per_class": {
+        "empty": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 3.0
+        },
+        "animal": {
+          "precision": 0.4,
+          "recall": 1.0,
+          "f1-score": 0.5714285714285714,
+          "support": 2.0
+        },
+        "accuracy": 0.4,
+        "macro avg": {
+          "precision": 0.2,
+          "recall": 0.5,
+          "f1-score": 0.2857142857142857,
+          "support": 5.0
+        },
+        "weighted avg": {
+          "precision": 0.16,
+          "recall": 0.4,
+          "f1-score": 0.22857142857142856,
+          "support": 5.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          0,
+          3
+        ],
+        [
+          0,
+          2
+        ]
+      ],
+      "classes_absent_from_this_split": []
+    },
+    "operating_point": {
+      "threshold": 0.3416247069835663,
+      "animal_recall": 1.0,
+      "empty_removal_rate": 0.0,
+      "animal_frames_lost": 0,
+      "animal_frames": 2,
+      "empty_frames": 3,
+      "removed_frames": 0,
+      "tp": 2,
+      "tn": 0,
+      "fp": 3,
+      "fn": 0,
+      "animal_recall_wilson95_independence_assumption": [
+        0.34238022750665303,
+        1.0
+      ]
+    },
+    "wandb_run_id": "wyg8zhz5",
+    "wandb_url": "https://wandb.ai/saleh-alanazi-ministry-of-interior/camera-trap-phase1/runs/wyg8zhz5"
+  },
+  {
+    "task": "species",
+    "regime": "frozen",
+    "split": "local_test_Tabuk",
+    "input_resolution": 224,
+    "policy": {
+      "temperature": 1.0354099197861149,
+      "calibration_split": "val_calibrate",
+      "species_review_confidence": 0.6
+    },
+    "known_count": 5,
+    "unknown_count": 0,
+    "unknown_species": [],
+    "checkpoint_sha256": "644b0d485b7fdc3888f86fa729476bbd9a02252527e448f6aa25b10fcaebc780",
+    "metrics_argmax": {
+      "n": 5,
+      "accuracy": 0.8,
+      "macro_f1_all_training_classes": 0.07142857142857142,
+      "macro_f1_supported_classes": 0.5,
+      "top_k": 3,
+      "top_k_accuracy": 1.0,
+      "ece": 0.34655349254608153,
+      "per_class": {
+        "badger": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "bird": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 4.0
+        },
+        "bobcat": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "cat": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "coyote": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "deer": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "dog": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "fox": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "opossum": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "rabbit": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "raccoon": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "rodent": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "skunk": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "squirrel": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "accuracy": 0.8,
+        "macro avg": {
+          "precision": 0.07142857142857142,
+          "recall": 0.07142857142857142,
+          "f1-score": 0.07142857142857142,
+          "support": 5.0
+        },
+        "weighted avg": {
+          "precision": 0.8,
+          "recall": 0.8,
+          "f1-score": 0.8,
+          "support": 5.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          4,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "classes_absent_from_this_split": [
+        "badger",
+        "bobcat",
+        "coyote",
+        "deer",
+        "dog",
+        "fox",
+        "opossum",
+        "rabbit",
+        "raccoon",
+        "rodent",
+        "skunk",
+        "squirrel"
+      ]
+    },
+    "wandb_run_id": "rjdbmnl3",
+    "wandb_url": "https://wandb.ai/saleh-alanazi-ministry-of-interior/camera-trap-phase1/runs/rjdbmnl3"
+  }
+]

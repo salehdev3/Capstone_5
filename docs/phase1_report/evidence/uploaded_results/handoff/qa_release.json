@@ -1,0 +1,33 @@
+{
+  "schema": 2,
+  "dataset_hash": "d3bfb6ba0c9d31412f9d603a6f63ae7c4890f458c5d2aa2a87d7653bb882bb53",
+  "status": "INCOMPLETE",
+  "gaps": [
+    "Independent audit pending or flagged",
+    "Named visual review signoff",
+    "Team name: member1",
+    "Team name: member2",
+    "Team name: member3",
+    "Team name: member4",
+    "Report section: motivation",
+    "Report section: data_findings",
+    "Report section: model_comparison",
+    "Report section: error_analysis",
+    "Report section: data_improvement_plan",
+    "Report section: limitations",
+    "Report section: conclusion",
+    "Clean notebook replay evidence",
+    "Actual error analysis member 2",
+    "Actual error analysis member 3",
+    "Notebook Phase1_Final_Presentation.ipynb",
+    "Submission team name",
+    "W&B project URL for report Section 1",
+    "Published Dataset Card URL for report Section 1"
+  ],
+  "reviewer": "",
+  "input_hashes": {
+    "member2": "5e427052330b8d7a90a4fe56c4c751367a187f21d62766382aacbc02711682df",
+    "member3": "9a10351ff3db2e1ff89b0f6083bda84d7d6fa1ec59da2b3a75ca94ca52b17779"
+  },
+  "scope": "data/metrics checks and fresh-process inference; full replay scope documented separately"
+}

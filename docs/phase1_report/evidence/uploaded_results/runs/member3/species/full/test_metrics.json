@@ -1,0 +1,1782 @@
+{
+  "n": 508,
+  "accuracy": 0.7637795275590551,
+  "macro_f1_all_training_classes": 0.4545607581095033,
+  "macro_f1_supported_classes": 0.4895269702717728,
+  "top_k": 3,
+  "top_k_accuracy": 0.9133858267716536,
+  "ece": 0.060517538749561534,
+  "per_class": {
+    "badger": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1-score": 0.0,
+      "support": 1.0
+    },
+    "bird": {
+      "precision": 0.5714285714285714,
+      "recall": 0.8888888888888888,
+      "f1-score": 0.6956521739130435,
+      "support": 9.0
+    },
+    "bobcat": {
+      "precision": 0.7076923076923077,
+      "recall": 0.8070175438596491,
+      "f1-score": 0.7540983606557377,
+      "support": 57.0
+    },
+    "cat": {
+      "precision": 0.5714285714285714,
+      "recall": 0.25,
+      "f1-score": 0.34782608695652173,
+      "support": 48.0
+    },
+    "coyote": {
+      "precision": 0.9240506329113924,
+      "recall": 0.863905325443787,
+      "f1-score": 0.8929663608562691,
+      "support": 169.0
+    },
+    "deer": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1-score": 0.0,
+      "support": 3.0
+    },
+    "dog": {
+      "precision": 0.7272727272727273,
+      "recall": 0.5517241379310345,
+      "f1-score": 0.6274509803921569,
+      "support": 29.0
+    },
+    "fox": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1-score": 0.0,
+      "support": 1.0
+    },
+    "opossum": {
+      "precision": 0.8333333333333334,
+      "recall": 0.9770114942528736,
+      "f1-score": 0.8994708994708994,
+      "support": 87.0
+    },
+    "rabbit": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1-score": 0.0,
+      "support": 4.0
+    },
+    "raccoon": {
+      "precision": 0.4444444444444444,
+      "recall": 0.7142857142857143,
+      "f1-score": 0.547945205479452,
+      "support": 28.0
+    },
+    "rodent": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1-score": 0.0,
+      "support": 0.0
+    },
+    "skunk": {
+      "precision": 0.8947368421052632,
+      "recall": 0.8947368421052632,
+      "f1-score": 0.8947368421052632,
+      "support": 19.0
+    },
+    "squirrel": {
+      "precision": 0.6909090909090909,
+      "recall": 0.7169811320754716,
+      "f1-score": 0.7037037037037037,
+      "support": 53.0
+    },
+    "accuracy": 0.7637795275590551,
+    "macro avg": {
+      "precision": 0.45466403725183585,
+      "recall": 0.4760393627744773,
+      "f1-score": 0.4545607581095033,
+      "support": 508.0
+    },
+    "weighted avg": {
+      "precision": 0.7652125638296275,
+      "recall": 0.7637795275590551,
+      "f1-score": 0.7538193937328321,
+      "support": 508.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    [
+      0,
+      8,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      46,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      7,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      2,
+      12,
+      12,
+      1,
+      0,
+      4,
+      0,
+      4,
+      2,
+      3,
+      0,
+      1,
+      7
+    ],
+    [
+      0,
+      0,
+      4,
+      1,
+      146,
+      0,
+      0,
+      0,
+      3,
+      1,
+      11,
+      0,
+      1,
+      2
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      1,
+      2,
+      6,
+      0,
+      0,
+      16,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      3
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      85,
+      0,
+      2,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      2,
+      0,
+      1,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      3,
+      0,
+      20,
+      0,
+      0,
+      4
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      17,
+      0
+    ],
+    [
+      0,
+      2,
+      1,
+      1,
+      8,
+      0,
+      0,
+      0,
+      1,
+      2,
+      0,
+      0,
+      0,
+      38
+    ]
+  ],
+  "classes_absent_from_this_split": [
+    "rodent"
+  ],
+  "task": "species",
+  "regime": "full",
+  "split": "test",
+  "image_size": 224,
+  "policy": {
+    "temperature": 1.3847843608506127,
+    "calibration_split": "val_calibrate",
+    "species_review_confidence": 0.6
+  },
+  "signature": {
+    "data": "d3bfb6ba0c9d31412f9d603a6f63ae7c4890f458c5d2aa2a87d7653bb882bb53",
+    "checkpoint": "79d7510746a92f505857dc98ee7301ffc0e9c416ac6ea51c72d88d7685f430ae",
+    "policy": "52fa37d0214164385a253c73e1ddf6bda0851f79b0c8978cde55637186281ae2"
+  },
+  "context": {
+    "runtime_policy": {
+      "version": 3,
+      "max_training_seconds": 900,
+      "mixed_precision": true,
+      "workers": 2
+    },
+    "training_implementation": 2,
+    "task": "species",
+    "profile": "full",
+    "image_size": 224,
+    "seed": 42,
+    "manifest_sha256": "d3bfb6ba0c9d31412f9d603a6f63ae7c4890f458c5d2aa2a87d7653bb882bb53",
+    "split_policy": "camera-disjoint train / val_select / val_calibrate / test",
+    "preprocessing_sha256": "87e3366dd7946e566c3a9238095748eb698ed0b57e2a9a5699d49817c440a5eb",
+    "training_config": {
+      "optimizer": "Adam",
+      "backbone": "microsoft/resnet-50",
+      "batch_size": 32,
+      "epochs": 12,
+      "patience": 4,
+      "warmup_epochs": 0,
+      "lr_scratch": 0.001,
+      "lr_frozen": 0.001,
+      "lr_full": 0.0001,
+      "weight_decay": 0.0,
+      "label_smoothing": 0.0,
+      "class_weighted_loss": false
+    }
+  },
+  "uncalibrated_ece": 0.07076979630927399,
+  "known_count": 508,
+  "unknown_count": 0,
+  "coverage": 1.0,
+  "unknown_species": [],
+  "accuracy_counting_unknown_as_errors": 0.7637795275590551,
+  "accuracy_wilson95_independence_assumption": [
+    0.7249486927756248,
+    0.7986509402386373
+  ],
+  "camera_bootstrap": {
+    "unit": "camera",
+    "cameras": 4,
+    "repeats": 1000,
+    "accuracy95": [
+      0.5909090909090909,
+      0.8820224719101124
+    ],
+    "macro_f1_95": [
+      0.24692754577986734,
+      0.46307374056026374
+    ],
+    "caveat": "Intervals are descriptive and unstable when there are few held-out cameras."
+  },
+  "per_camera": {
+    "120": {
+      "n": 173,
+      "accuracy": 0.8901734104046243,
+      "macro_f1_all_training_classes": 0.3197631322486814,
+      "macro_f1_supported_classes": 0.447668385148154,
+      "top_k": 3,
+      "top_k_accuracy": 0.953757225433526,
+      "ece": 0.12505069082182957,
+      "per_class": {
+        "badger": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "bird": {
+          "precision": 0.6666666666666666,
+          "recall": 1.0,
+          "f1-score": 0.8,
+          "support": 2.0
+        },
+        "bobcat": {
+          "precision": 0.9736842105263158,
+          "recall": 1.0,
+          "f1-score": 0.9866666666666667,
+          "support": 37.0
+        },
+        "cat": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "coyote": {
+          "precision": 0.9655172413793104,
+          "recall": 0.9767441860465116,
+          "f1-score": 0.9710982658959537,
+          "support": 86.0
+        },
+        "deer": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 3.0
+        },
+        "dog": {
+          "precision": 0.875,
+          "recall": 0.7368421052631579,
+          "f1-score": 0.8,
+          "support": 19.0
+        },
+        "fox": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "opossum": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "rabbit": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "raccoon": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "rodent": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "skunk": {
+          "precision": 0.9444444444444444,
+          "recall": 0.8947368421052632,
+          "f1-score": 0.918918918918919,
+          "support": 19.0
+        },
+        "squirrel": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 4.0
+        },
+        "accuracy": 0.8901734104046243,
+        "macro avg": {
+          "precision": 0.31609375450119553,
+          "recall": 0.32916593810106665,
+          "f1-score": 0.3197631322486814,
+          "support": 173.0
+        },
+        "weighted avg": {
+          "precision": 0.8957432157564865,
+          "recall": 0.8901734104046243,
+          "f1-score": 0.8917952427351337,
+          "support": 173.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          37,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          84,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          1,
+          2,
+          0,
+          0,
+          14,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          17,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          2,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "classes_absent_from_this_split": [
+        "cat",
+        "opossum",
+        "raccoon",
+        "rodent"
+      ]
+    },
+    "7": {
+      "n": 159,
+      "accuracy": 0.8176100628930818,
+      "macro_f1_all_training_classes": 0.18570305598394896,
+      "macro_f1_supported_classes": 0.519968556755057,
+      "top_k": 3,
+      "top_k_accuracy": 0.949685534591195,
+      "ece": 0.06363402531956724,
+      "per_class": {
+        "badger": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "bird": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "bobcat": {
+          "precision": 0.3333333333333333,
+          "recall": 0.2222222222222222,
+          "f1-score": 0.26666666666666666,
+          "support": 9.0
+        },
+        "cat": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "coyote": {
+          "precision": 1.0,
+          "recall": 0.7313432835820896,
+          "f1-score": 0.8448275862068966,
+          "support": 67.0
+        },
+        "deer": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "dog": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "fox": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "opossum": {
+          "precision": 0.9315068493150684,
+          "recall": 1.0,
+          "f1-score": 0.9645390070921985,
+          "support": 68.0
+        },
+        "rabbit": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 3.0
+        },
+        "raccoon": {
+          "precision": 0.36666666666666664,
+          "recall": 0.9166666666666666,
+          "f1-score": 0.5238095238095238,
+          "support": 12.0
+        },
+        "rodent": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "skunk": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "squirrel": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "accuracy": 0.8176100628930818,
+        "macro avg": {
+          "precision": 0.1879647749510763,
+          "recall": 0.20501658374792703,
+          "f1-score": 0.18570305598394896,
+          "support": 159.0
+        },
+        "weighted avg": {
+          "precision": 0.8663048160592746,
+          "recall": 0.8176100628930818,
+          "f1-score": 0.8231309122254457,
+          "support": 159.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          7,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          4,
+          1,
+          49,
+          0,
+          0,
+          0,
+          2,
+          0,
+          11,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          68,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          2,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          11,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "classes_absent_from_this_split": [
+        "badger",
+        "bird",
+        "cat",
+        "deer",
+        "dog",
+        "fox",
+        "rodent",
+        "skunk",
+        "squirrel"
+      ]
+    },
+    "78": {
+      "n": 171,
+      "accuracy": 0.5906432748538012,
+      "macro_f1_all_training_classes": 0.31257517516988814,
+      "macro_f1_supported_classes": 0.5470065565473043,
+      "top_k": 3,
+      "top_k_accuracy": 0.8421052631578947,
+      "ece": 0.11392267466637125,
+      "per_class": {
+        "badger": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "bird": {
+          "precision": 0.375,
+          "recall": 1.0,
+          "f1-score": 0.5454545454545454,
+          "support": 3.0
+        },
+        "bobcat": {
+          "precision": 0.3333333333333333,
+          "recall": 0.6363636363636364,
+          "f1-score": 0.4375,
+          "support": 11.0
+        },
+        "cat": {
+          "precision": 0.75,
+          "recall": 0.2553191489361702,
+          "f1-score": 0.38095238095238093,
+          "support": 47.0
+        },
+        "coyote": {
+          "precision": 0.5909090909090909,
+          "recall": 0.8125,
+          "f1-score": 0.6842105263157895,
+          "support": 16.0
+        },
+        "deer": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "dog": {
+          "precision": 0.4,
+          "recall": 0.2,
+          "f1-score": 0.26666666666666666,
+          "support": 10.0
+        },
+        "fox": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "opossum": {
+          "precision": 0.6071428571428571,
+          "recall": 0.8947368421052632,
+          "f1-score": 0.723404255319149,
+          "support": 19.0
+        },
+        "rabbit": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "raccoon": {
+          "precision": 0.6428571428571429,
+          "recall": 0.5625,
+          "f1-score": 0.6,
+          "support": 16.0
+        },
+        "rodent": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "skunk": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "squirrel": {
+          "precision": 0.7037037037037037,
+          "recall": 0.7755102040816326,
+          "f1-score": 0.7378640776699029,
+          "support": 49.0
+        },
+        "accuracy": 0.5906432748538012,
+        "macro avg": {
+          "precision": 0.31449615199615205,
+          "recall": 0.3669235593919073,
+          "f1-score": 0.31257517516988814,
+          "support": 171.0
+        },
+        "weighted avg": {
+          "precision": 0.642100129673229,
+          "recall": 0.5906432748538012,
+          "f1-score": 0.5699864402674498,
+          "support": 171.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          3,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          7,
+          0,
+          0,
+          0,
+          0,
+          0,
+          4,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          2,
+          12,
+          12,
+          1,
+          0,
+          3,
+          0,
+          4,
+          2,
+          3,
+          0,
+          1,
+          7
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          13,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          2
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          4,
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          3
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          17,
+          0,
+          2,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          2,
+          0,
+          9,
+          0,
+          0,
+          4
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          2,
+          1,
+          0,
+          8,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          38
+        ]
+      ],
+      "classes_absent_from_this_split": [
+        "badger",
+        "deer",
+        "fox",
+        "rabbit",
+        "rodent",
+        "skunk"
+      ]
+    },
+    "team_city_Tabuk": {
+      "n": 5,
+      "accuracy": 0.6,
+      "macro_f1_all_training_classes": 0.061224489795918366,
+      "macro_f1_supported_classes": 0.42857142857142855,
+      "top_k": 3,
+      "top_k_accuracy": 0.8,
+      "ece": 0.3376554667949677,
+      "per_class": {
+        "badger": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "bird": {
+          "precision": 1.0,
+          "recall": 0.75,
+          "f1-score": 0.8571428571428571,
+          "support": 4.0
+        },
+        "bobcat": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "cat": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "coyote": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "deer": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "dog": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "fox": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "opossum": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "rabbit": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "raccoon": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "rodent": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "skunk": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "squirrel": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "accuracy": 0.6,
+        "macro avg": {
+          "precision": 0.07142857142857142,
+          "recall": 0.05357142857142857,
+          "f1-score": 0.061224489795918366,
+          "support": 5.0
+        },
+        "weighted avg": {
+          "precision": 0.8,
+          "recall": 0.6,
+          "f1-score": 0.6857142857142857,
+          "support": 5.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          3,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "classes_absent_from_this_split": [
+        "badger",
+        "bobcat",
+        "coyote",
+        "deer",
+        "dog",
+        "fox",
+        "opossum",
+        "rabbit",
+        "raccoon",
+        "rodent",
+        "skunk",
+        "squirrel"
+      ]
+    }
+  }
+}

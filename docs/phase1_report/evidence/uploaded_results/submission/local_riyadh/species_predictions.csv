@@ -1,0 +1,6 @@
+image_id,true,prediction,confidence
+RYD_003_0,bird,bird,0.8205681443214417
+RYD_003_1,bird,bird,0.9202224612236023
+RYD_003_2,bird,bird,0.8587137460708618
+RYD_003_3,bird,bird,0.24916118383407593
+RYD_012_0,cat,dog,0.5814330577850342

@@ -1,0 +1,28 @@
+{
+  "team": {
+    "member1": "",
+    "member2": "",
+    "member3": "",
+    "member4": ""
+  },
+  "notes": {
+    "motivation": "",
+    "data_findings": "",
+    "model_comparison": "",
+    "error_analysis": "",
+    "data_improvement_plan": "",
+    "limitations": "",
+    "conclusion": ""
+  },
+  "replay": {
+    "reviewer": "",
+    "date": "",
+    "notebook": "",
+    "cells_executed": "",
+    "evidence": ""
+  },
+  "repository": "https://github.com/salehdev3/Capstone_5",
+  "team_name": "",
+  "wandb_project": "",
+  "dataset_card_url": ""
+}
