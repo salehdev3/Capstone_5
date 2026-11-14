@@ -1,0 +1,1 @@
+Evidence copied from Phase1_Results_For_Report.zip. The separate Phase1_Submission.zip contains identical local evaluation files. These are archived execution results, not runs executed during report editing. Existing expanded audit evidence is retained separately. Raw upload logs and credentials are not copied.

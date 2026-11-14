@@ -1,0 +1,44 @@
+[
+  {
+    "checkpoint": "runs/member2/triage/scratch/best.pt",
+    "sha256": "7f779fc209d7ac6cf8b6563ccb6c92daae234a3b2ad047c75d3303fc252446fc",
+    "passed": true,
+    "stdout": "{\"shape\": [1, 2], \"finite\": true}\n",
+    "stderr": ""
+  },
+  {
+    "checkpoint": "runs/member2/species/scratch/best.pt",
+    "sha256": "d0bceed72da3faecf7cb1d20c2d8e261fd1692a5b5f4bf7d0c6e411b6b65f283",
+    "passed": true,
+    "stdout": "{\"shape\": [1, 14], \"finite\": true}\n",
+    "stderr": ""
+  },
+  {
+    "checkpoint": "runs/member3/triage/frozen/best.pt",
+    "sha256": "7084b6b2cb1b72481002ff61867c91d019668dffe617c79807ef714183eae38a",
+    "passed": true,
+    "stdout": "{\"shape\": [1, 2], \"finite\": true}\n",
+    "stderr": "WARNING: All log messages before absl::InitializeLog() is called are written to STDERR\nI0000 00:00:1793172629.569651   25960 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.\n"
+  },
+  {
+    "checkpoint": "runs/member3/triage/full/best.pt",
+    "sha256": "700cca05f6fb888fda39b231115b3283615b01d69ab49602b11e1158f03f9454",
+    "passed": true,
+    "stdout": "{\"shape\": [1, 2], \"finite\": true}\n",
+    "stderr": "WARNING: All log messages before absl::InitializeLog() is called are written to STDERR\nI0000 00:00:1793172642.593597   26033 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.\n"
+  },
+  {
+    "checkpoint": "runs/member3/species/frozen/best.pt",
+    "sha256": "644b0d485b7fdc3888f86fa729476bbd9a02252527e448f6aa25b10fcaebc780",
+    "passed": true,
+    "stdout": "{\"shape\": [1, 14], \"finite\": true}\n",
+    "stderr": "WARNING: All log messages before absl::InitializeLog() is called are written to STDERR\nI0000 00:00:1793172653.664241   26091 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.\n"
+  },
+  {
+    "checkpoint": "runs/member3/species/full/best.pt",
+    "sha256": "79d7510746a92f505857dc98ee7301ffc0e9c416ac6ea51c72d88d7685f430ae",
+    "passed": true,
+    "stdout": "{\"shape\": [1, 14], \"finite\": true}\n",
+    "stderr": "WARNING: All log messages before absl::InitializeLog() is called are written to STDERR\nI0000 00:00:1793172664.686103   26152 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.\n"
+  }
+]

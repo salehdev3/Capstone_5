@@ -117,7 +117,7 @@ Mohannad Mohammed Alqahtani & 225461 & Integration & Independent review, compari
 Dataset & Link / ref. & Content and annotations & Use & Licence & Images \\
 \midrule
 CCT20 subset & LILA CCT & Camera-trap frames and human boxes & All splits & CDLA-Permissive & 6,022 \\
-Team-collected (bonus) & Private collection & Reviewed frames and boxes & Train/test & Team-owned; private & 19 \\
+Team-collected (bonus) & Public repo & Reviewed frames and boxes & Train/test & Team-owned & 19 \\
 \bottomrule
 \end{tabularx}}
 
@@ -205,7 +205,7 @@ RGB images were prepared with maximum side 1,024 pixels, resized to 224$\times$2
 
 \subsection{Dataset card summary}
 
-Raccoon and opossum dominate some groups while rare species have few examples; camera-group splits have distribution shift. CCT20 is largely US wildlife, and five held-out Tabuk frames cannot establish Saudi deployment performance. The audit covers 100 unique training events; its interval assumes independent sampled events. Source terms and course policy restrict image redistribution; no GPS or private photos are published. The full card is linked in Section 1.
+Raccoon and opossum dominate some groups while rare species have few examples; camera-group splits have distribution shift. CCT20 is largely US wildlife, and five held-out Tabuk frames cannot establish Saudi deployment performance. The audit covers 100 unique training events; its interval assumes independent sampled events. Source terms and course policy restrict image redistribution; no GPS coordinates are reported here; the 19 team photographs are intentionally published and publicly available with their metadata in the repository. The full card is linked in Section 1.
 
 % =====================================================================
 \section{Classification (M2--M3)\pts{20}}
@@ -222,32 +222,71 @@ Six regimes were compared using validation-selection macro-F1; frozen ResNet-50 
 \toprule
 Run (W\&B link) & Backbone & Training & Input res. & Epochs & Val.\ acc. & Val.\ macro-F1 \\
 \midrule
-Triage (W\&B) & CNN & From scratch & 224 & 6 & .941 & .601 \\
-Triage (W\&B) & ResNet-50 & Pretrained, frozen & 224 & 12 & .940 & .662 \\
-Triage (W\&B) & ResNet-50 & Pretrained, full fine-tuning & 224 & 12 & .927 & .640 \\
-Species (W\&B) & CNN & From scratch & 224 & 12 & .505 & .156 \\
-Species (W\&B) & ResNet-50 & Pretrained, frozen & 224 & 12 & .761 & .364 \\
-Species (W\&B) & ResNet-50 & Pretrained, full fine-tuning & 224 & 12 & .750 & .340 \\
+\href{https://wandb.ai/saleh-alanazi-ministry-of-interior/camera-trap-phase1/runs/6nqew908}{Triage (W\&B)} & CNN & From scratch & 224 & 6 & .941 & .601 \\
+\href{https://wandb.ai/saleh-alanazi-ministry-of-interior/camera-trap-phase1/runs/kbij5lcv}{Triage (W\&B)} & ResNet-50 & Pretrained, frozen & 224 & 12 & .940 & .662 \\
+\href{https://wandb.ai/saleh-alanazi-ministry-of-interior/camera-trap-phase1/runs/4bssmudy}{Triage (W\&B)} & ResNet-50 & Pretrained, full fine-tuning & 224 & 12 & .927 & .640 \\
+\href{https://wandb.ai/saleh-alanazi-ministry-of-interior/camera-trap-phase1/runs/xbty4y66}{Species (W\&B)} & CNN & From scratch & 224 & 12 & .505 & .156 \\
+\href{https://wandb.ai/saleh-alanazi-ministry-of-interior/camera-trap-phase1/runs/bfx7xgov}{Species (W\&B)} & ResNet-50 & Pretrained, frozen & 224 & 12 & .761 & .364 \\
+\href{https://wandb.ai/saleh-alanazi-ministry-of-interior/camera-trap-phase1/runs/04gn2wgw}{Species (W\&B)} & ResNet-50 & Pretrained, full fine-tuning & 224 & 12 & .750 & .340 \\
 \bottomrule
 \end{tabularx}}
 
 \medskip
-\textbf{Test-set results (final models only)}
+\textbf{Test-set results (all six archived runs)}
 
 \smallskip
-\begin{tabularx}{\linewidth}{@{}Y r r r@{}}
+{\small
+\begin{tabularx}{\linewidth}{@{}Y r r r r@{}}
 \toprule
-Run & Test accuracy (95\% CI) & Test macro-F1 & ECE \\
+Run & Accuracy (95\% CI) & F1 (all) & F1 (supported) & ECE \\
 \midrule
-Triage scratch & .917 [.868,.966] & .478 & .0463 \\
-Triage frozen (selected) & .933 [.897,.967] & .652 & .0460 \\
-Species scratch & .350 [.284,.386] & .178 & .0733 \\
-Species frozen (selected) & .742 [.642,.876] & .482 & .0568 \\
+Triage scratch & 0.917 [0.868,0.966] & 0.478 & 0.478 & 0.0463 \\
+Species scratch & 0.350 [0.284,0.386] & 0.178 & 0.192 & 0.0733 \\
+Triage frozen (selected) & 0.933 [0.897,0.967] & 0.652 & 0.652 & 0.0460 \\
+Triage full & 0.909 [0.859,0.972] & 0.594 & 0.594 & 0.0490 \\
+Species frozen (selected) & 0.742 [0.642,0.876] & 0.482 & 0.519 & 0.0568 \\
+Species full & 0.764 [0.591,0.882] & 0.455 & 0.490 & 0.0605 \\
 \bottomrule
-\end{tabularx}
+\end{tabularx}}
+\smallskip
+Accuracy and F1 use argmax. F1 (all) averages over all training classes; F1 (supported) excludes classes with zero test support. Species has 14 training classes but 13 supported test classes (rodent is absent). The selected species model scores 0.4820 and 0.5191, respectively; neither reaches the 0.65 target.
+Confidence intervals are the archived 95\% camera-group bootstrap intervals, using 1,000 resamples of four held-out camera groups. These are descriptive and unstable with so few groups; they are not independent-image intervals. Non-selected runs are shown for completeness and were not used to reselect the model.
 
 \smallskip
 \textbf{Which model you keep and why:} Frozen ResNet-50 gave the highest validation macro-F1 for both tasks (.662 triage and .364 species). It was therefore retained before test results were examined. At test threshold .3416, triage retained 586/586 animal frames but removed only 6/53 empty frames (11.3\%), missing the 20\% empty-removal target. Species test macro-F1 was .482, below the .65 target; ECE .0568 met the .10 limit.
+
+\subsection{Operating policies and additional metrics}
+All archived runs used \texttt{class\_weighted\_loss=false}. Balanced loss or sampling is a proposed improvement, not an implemented result in these experiments.
+
+\begin{tabularx}{\linewidth}{@{}Y r r r@{}}
+\toprule
+Triage regime & Threshold & Animal recall & Empty removal \\
+\midrule
+Scratch & 0.5225 & 1.0000 & 0.0000 \\
+Frozen & 0.3416 & 1.0000 & 0.1132 \\
+Full & 0.2173 & 0.9983 & 0.0189 \\
+\bottomrule
+\end{tabularx}
+
+These test operating points use policies selected on \texttt{val\_calibrate}; they are separate from argmax accuracy and F1. For the selected frozen model, calibration retained 509/514 animals (recall .9903) and removed 2/13 empty frames (.1538). Its test animal-recall target was met, while empty removal remained below .20.
+
+Species top-3 test accuracy was .7244 (scratch), .9055 (frozen) and .9134 (full). Raw $\rightarrow$ temperature-scaled test ECE was .2481 $\rightarrow$ .0733, .0454 $\rightarrow$ .0568 and .0708 $\rightarrow$ .0605, respectively. Triage ECE was .0483 $\rightarrow$ .0463 (scratch), .0364 $\rightarrow$ .0460 (frozen) and .0464 $\rightarrow$ .0490 (full). Temperature scaling therefore did not uniformly improve held-out ECE.
+
+\subsection{Held-out Tabuk check}
+The two uploaded archives contain identical local evaluation files, despite the directory name \texttt{local\_riyadh}; their recorded split is \texttt{local\_test\_Tabuk}. All five submitted frames were retained. The frozen models and calibration policies were reused at $224\times224$, without local tuning.
+
+\begin{tabularx}{\linewidth}{@{}Y r r r r@{}}
+\toprule
+Task & Correct / samples & Accuracy & F1 (supported) & ECE \\
+\midrule
+Triage (argmax) & 2/5 frames & .400 & .286 & .4790 \\
+Species (argmax) & 4/5 crops & .800 & .500 & .3466 \\
+\bottomrule
+\end{tabularx}
+
+Triage predicted animal for every frame: both animal frames were retained and all three empty frames were false positives. The same decisions hold at threshold 0.3416: animal recall $2/2=100\%$, empty removal $0/3=0\%$. Species correctly classified four bird crops from one source frame and misclassified the cat crop from the other animal frame as dog. Thus 4/5 refers to crops, not five independent animal photographs. Species macro-F1 over all 14 training classes is .0714; over the two locally supported classes it is .5000. These small, correlated samples do not establish deployment performance. The local subset is already represented in the combined test set and must not be added to its totals again.
+
+Local W\&B evidence: \href{https://wandb.ai/saleh-alanazi-ministry-of-interior/camera-trap-phase1/runs/wyg8zhz5}{triage run wyg8zhz5} and \href{https://wandb.ai/saleh-alanazi-ministry-of-interior/camera-trap-phase1/runs/rjdbmnl3}{species run rjdbmnl3}. Metrics and per-sample predictions are archived under \texttt{evidence/uploaded\_results/submission/local\_riyadh/}.
 
 \subsection{Learning curves}
 
@@ -289,6 +328,8 @@ Squirrel (species) & .860 & .925 & .891 & 53 \\
 \end{tabularx}
 
 \smallskip
+Macro-F1 excluding the zero-support rodent class is 0.5191 over 13 supported species; the table retains the original 14-class definition for comparability.
+
 Top-$k$ accuracy (species, $k=3$): .9055 on test; 224$\times$224, argmax.
 
 \subsection{Confusion matrix and calibration}
@@ -327,9 +368,12 @@ Bobcat was repeatedly confused with raccoon in the gallery; a fox crop was calle
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.9\linewidth]{figures/triage_frozen_errors.jpg}
-  \caption{Triage test error gallery: recorded label and prediction are shown; input 224$\times$224, animal threshold .3416. Several source labels need human verification.}
+  \includegraphics[width=0.9\linewidth]{figures/triage_frozen_errors.pdf}
+  \caption{Triage test error gallery retained from the previous report: recorded label and prediction are shown; input $224\times224$, animal threshold .3416. Several source labels need human verification. This is a selected gallery, not the basis for full-test error counts.}
 \end{figure}
+
+
+
 
 \textbf{Full-test error counts.} The selected frozen ResNet-50 produced 43 triage argmax errors among 639 frames and 131 species errors among 508 crops. Species errors comprise 32 distinct true-to-predicted class pairs. The table lists the most frequent pairs; the complete counts are archived in \texttt{evidence/full\_test\_error\_patterns.csv}. The gallery shows selected examples only.
 
@@ -391,40 +435,16 @@ Repository and commit hash & \url{https://github.com/salehdev3/Capstone_5}, eval
 Configuration file used for the reported runs & \texttt{handoff/data\_config.json} and \texttt{runs/member2,member3/config.json} \\
 Random seeds & 42 \\
 Requirements file (pinned versions) & \texttt{requirements-colab-2026-10-28.txt}; Python 3.13.16, Linux x86\_64; PyTorch 2.11.0+cu130; torchvision 0.26.0+cu130 \\
-Command(s) to reproduce the main result & Run \texttt{notebooks/Phase1\_Final\_Presentation.ipynb} in section order on Colab GPU \\
-Where the data is obtained (not committed) & CCT20 on LILA; private team photos; recorded manifest hash in dataset card \\
-Reproduced by (team member) and result & Mohannad, 28 October 2026; assessor feedback reports matching run metrics. Fresh-process inference results are archived separately \\
+Command(s) to reproduce the main result & Run \texttt{notebooks/Phase1\_Final\_Presentation1.ipynb} in section order on Colab GPU \\
+Data sources & CCT20 on LILA; the 19 Riyadh and Tabuk team photographs are intentionally published and publicly available in \href{https://github.com/salehdev3/Capstone_5/tree/v1/data/team_collected_riyadh}{the v1 team-data folder}. Provenance and manifest hash are recorded in the dataset card \\
+Fresh-process validation & Six checkpoint-load and inference checks passed, covering both tasks and all three training regimes \\
 \bottomrule
 \end{tabularx}
 
 \smallskip
-The assessor reported that Mohannad's full rerun on 28 October 2026 matched the recorded metrics. The following side-by-side values reproduce that reported agreement for the six model/task combinations. W\&B links for the recorded runs are listed in the experiment results.
+The uploaded \texttt{review/fresh\_process\_results.json} records six successful checkpoint-load and inference probes: triage output shape $[1,2]$ and species output shape $[1,14]$, with finite outputs. The selected checkpoint hashes match those recorded in the local evaluation.
 
-{\small
-\begin{tabularx}{\linewidth}{@{}l l r r@{}}
-\toprule
-Run & Metric & Original & 28 Oct rerun \\
-\midrule
-Triage / scratch & Accuracy & .917 & .917 \\
- & Macro-F1 & .478 & .478 \\
- & ECE & .046 & .046 \\
-Species / scratch & Accuracy & .350 & .350 \\
- & Macro-F1 & .178 & .178 \\
- & ECE & .073 & .073 \\
-Triage / frozen & Accuracy & .933 & .933 \\
- & Macro-F1 & .652 & .652 \\
- & ECE & .046 & .046 \\
-Triage / full & Accuracy & .909 & .909 \\
- & Macro-F1 & .594 & .594 \\
- & ECE & .049 & .049 \\
-Species / frozen & Accuracy & .742 & .742 \\
- & Macro-F1 & .482 & .482 \\
- & ECE & .057 & .057 \\
-Species / full & Accuracy & .764 & .764 \\
- & Macro-F1 & .455 & .455 \\
- & ECE & .061 & .061 \\
-\bottomrule
-\end{tabularx}}
+The expanded label audit covers 100 unique training images from 100 events, with 120 reviewer records. Its final adjudications and confidence bound are supported by \path{evidence/audit_all_reviews.csv}. Independent image reviews by Mohannad Alqahtani are archived in \path{evidence/independent_audit.csv}.
 
 % =====================================================================
 \section{Submission checklist}
@@ -440,21 +460,18 @@ Species / full & Accuracy & .764 & .764 \\
   \item Data-improvement plan follows from the error analysis
   \item Fixed seeds, recorded configuration and pinned Colab environment; no hard-coded paths
   \item Every figure states split, input resolution and thresholds
-  \item No data or personal information committed to the repository
 \end{checklist}
 
 % =====================================================================
 \section{Self-assessment}
 
-\begin{tabularx}{\linewidth}{@{}l c c Y Y@{}}
+\begin{tabularx}{\linewidth}{@{}l c Y@{}}
 \toprule
-Criterion & Points & Self-score & Strongest evidence (section) & Known gap \\
+Criterion & Allocation & Completed work and evidence \\
 \midrule
-Data foundations and dataset card (M1) & 12 & 11 & Cleaning, split, audit, card & Small initial audit \\
-Classification (M2--M3) & 20 & 19 & Six runs, metrics and galleries & Two preset targets missed \\
-Reproducibility & 8 & 8 & Pinned Colab environment, checkpoint hashes and Mohannad replay comparison \\
-\midrule
-\textbf{Total} & \textbf{40} & \textbf{38} & Team self-assessment & Instructor decides final score \\
+Data foundations (M1) & 12 & Cleaning, grouped split, species support by partition, 100-image label audit with a confidence bound, and dataset card \\
+Classification (M2--M3) & 20 & Six model/task experiments, validation-based selection, per-class results, confusion matrices, calibration, full-test error counts and held-out Tabuk evaluation \\
+Reproducibility & 8 & Fixed seed, recorded configurations, pinned environment, checkpoint hashes and six successful fresh-process inference checks \\
 \bottomrule
 \end{tabularx}
 

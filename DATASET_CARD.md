@@ -6,7 +6,7 @@ This Phase 1 dataset supports two image-classification tasks: (1) full-frame cla
 
 The source is a selected subset of [Caltech Camera Traps (CCT20)](https://lila.science/datasets/caltech-camera-traps), supplemented by team photographs from Riyadh and Tabuk. The CCT20 subset is largely US wildlife imagery. The local collection is a small convenience sample and should not be treated as representative of Saudi camera-trap deployment.
 
-**Source citation:** Beery, Van Horn and Perona, *Recognition in Terra Incognita*, ECCV 2018. The source is listed under CDLA-Permissive in the project records; users must check the current source terms and the course redistribution policy before reuse. Original photographs and review galleries are kept outside the code repository.
+**Source citation:** Beery, Van Horn and Perona, *Recognition in Terra Incognita*, ECCV 2018. The source is listed under CDLA-Permissive in the project records; users must check the current source terms and the course redistribution policy before reuse. Downloaded CCT20 photographs are kept outside the code repository. The 19 team photographs are intentionally published and publicly available in [`data/team_collected_riyadh`](https://github.com/salehdev3/Capstone_5/tree/v1/data/team_collected_riyadh) on branch `v1`, together with collection metadata and review material.
 
 ## Dataset construction
 
