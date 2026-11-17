@@ -1,0 +1,13 @@
+{
+  "images": 6037,
+  "recovered": 6037,
+  "pixel_mismatches": 0,
+  "file_mismatches": 0,
+  "reviewed": 100,
+  "verified": 100,
+  "review_sha256": "0bc77514e20d78d3051047e29d0efb92a8a99955156c30ca26068a3c6ebff634",
+  "recovery_hash_matches_release": true,
+  "review_status": "100 recorded verifications; two observations report limited visibility",
+  "candidate_status": "Original candidate retains pending status; no training release frozen",
+  "training_status": "not started"
+}
