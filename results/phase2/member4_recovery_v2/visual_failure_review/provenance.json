@@ -1,0 +1,8 @@
+{
+  "source_archive_sha256": "3ef92bdf18f107a9f31d6c66bbe478f6482f205e851fe6a911d42992739a0450",
+  "original_failure_csv_sha256": "cbc23bb615988f287f7a4cf866e6fb58f7e1e484f69696978a6367b500a2ed8b",
+  "cases": 12,
+  "visual_images_inspected": 12,
+  "reviewer_signoff_present": false,
+  "analysis_scope": "Operational failures plus qualified visual observations; uncertain reference regions need independent adjudication. No labels, metrics or model parameters changed."
+}
