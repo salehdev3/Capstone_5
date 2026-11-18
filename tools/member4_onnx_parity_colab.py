@@ -8,8 +8,27 @@ try:
     from google.colab import drive
 except ImportError:
     drive = None
+def mount_drive_preserving_local_files(drive_module, mountpoint='/content/drive'):
+    import os
+    mountpoint = Path(mountpoint)
+    try:
+        drive_module.mount(str(mountpoint))
+    except ValueError as error:
+        if 'Mountpoint must not already contain files' not in str(error):
+            raise
+        # Refuse to move any directory that contains an active filesystem mount.
+        mountinfo = Path('/proc/self/mountinfo').read_text().splitlines()
+        mounts = [line.split()[4].replace('\\040', ' ').replace('\\134', '\\') for line in mountinfo]
+        prefix = str(mountpoint.resolve())
+        if os.path.ismount(mountpoint) or any(path == prefix or path.startswith(prefix+'/') for path in mounts):
+            raise RuntimeError('An active filesystem mount was detected here; local-folder backup was not attempted.') from error
+        backup = mountpoint.with_name(mountpoint.name+'_local_backup_'+str(time.time_ns()))
+        mountpoint.rename(backup)
+        print('Preserved pre-mount local files:', backup)
+        drive_module.mount(str(mountpoint))
+
 if drive is not None:
-    drive.mount('/content/drive')
+    mount_drive_preserving_local_files(drive)
 
 ROOT = Path(globals().get('ROOT', '/content/drive/MyDrive/CameraTrap_Phase2'))
 OUT = Path(globals().get('OUT', ROOT/'phase2_results'))
