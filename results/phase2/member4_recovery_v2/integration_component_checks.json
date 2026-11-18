@@ -1,11 +1,13 @@
 {
-  "source_module_sha256": "7c1696c188ed0d805f2676699144dcc1e77b1eda34996281a56444d7f49feec1",
+  "source_module_sha256": "c6e24e8c3c5e29fd796e338e612b74745e04403e6b64feacaceef67eeaaf0e4d",
   "preprocessing_reference_sha256": "87e3366dd7946e566c3a9238095748eb698ed0b57e2a9a5699d49817c440a5eb",
   "checks": {
     "exact_phase1_preprocessing_on_three_crops": true,
     "one_to_one_mask_association": true,
     "event_max_count_instead_of_frame_sum": true,
-    "missing_classifier_blocks_readiness": true
+    "missing_classifier_blocks_readiness": true,
+    "invalid_batch_length_rejected": true,
+    "missing_frame_metadata_rejected": true
   },
   "full_species_inference_tested": false,
   "full_pipeline_inference_tested": false,
