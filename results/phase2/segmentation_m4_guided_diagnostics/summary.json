@@ -1,0 +1,15 @@
+{
+  "n": 40,
+  "mean_iou": 0.5802229586356782,
+  "mean_dice": 0.6202363978093163,
+  "mean_area_mae_fraction": 0.025021103267848413,
+  "categories": {
+    "iou_at_least_0.7": 24,
+    "large_foreground_oversegmentation": 1,
+    "no_accepted_mask_after_prompting": 10,
+    "partial_overlap_needs_visual_review": 3,
+    "no_detector_prompt_at_floor": 2
+  },
+  "reference_masks_available_in_this_upload": false,
+  "limitations": "Zero accepted masks with detector prompts does not identify detector confidence filtering versus SAM output/quality filtering. Existing JSON omits rejected outputs. No thresholds changed and no new evaluation or independent-test claim."
+}
