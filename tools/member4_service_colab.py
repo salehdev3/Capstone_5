@@ -8,7 +8,7 @@ subprocess.run([sys.executable,'-m','pip','install','-q','fastapi','uvicorn','py
 MODULE=OUT/'member4_recovery_v2/member4_service_v2.py'
 MODULE.parent.mkdir(parents=True,exist_ok=True)
 urllib.request.urlretrieve('https://raw.githubusercontent.com/salehdev3/Capstone_5/phase-2/tools/member4_service_v2.py',MODULE)
-EXPECTED_SHA256='4dc5dc3750b6930876c35c52bdce071de1528b0deffa4d9fc216f00b63365412'
+EXPECTED_SHA256='3c351637ba5a7d313628a3aba93816e5bebb345a8db00063652153f951e1bf54'
 assert hashlib.sha256(MODULE.read_bytes()).hexdigest()==EXPECTED_SHA256
 spec=importlib.util.spec_from_file_location('member4_service',MODULE)
 module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)

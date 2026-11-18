@@ -1,0 +1,15 @@
+{
+  "kind": "executed local HTTP request",
+  "split": "val_select",
+  "images": 3,
+  "frame_ids": [
+    "5860ed49-23d2-11e8-a6a3-ec086b02610b",
+    "58629431-23d2-11e8-a6a3-ec086b02610b",
+    "5888bc6a-23d2-11e8-a6a3-ec086b02610b"
+  ],
+  "source_manifest_sha256": "d3bfb6ba0c9d31412f9d603a6f63ae7c4890f458c5d2aa2a87d7653bb882bb53",
+  "segmentation_policy_sha256": "1ec85899041742eefd7bd957943fcbc51acd79781bfe248ac7ab4089cf78939c",
+  "http_status": 200,
+  "elapsed_seconds": 2.3546570329999668,
+  "scope": "Three-image functional HTTP demo including transport; not a throughput benchmark or a video recording."
+}

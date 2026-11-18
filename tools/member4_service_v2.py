@@ -77,21 +77,18 @@ def select_demo(root):
     if not manifest.is_file():raise FileNotFoundError('Missing frozen manifest: '+str(manifest))
     assert hashlib.sha256(manifest.read_bytes()).hexdigest()==MANIFEST_SHA
     rows=json.loads(manifest.read_text());images=root/'images'
-    candidates=[r for r in rows if r['split']=='val_select' and (images/(r['id']+'.jpg')).is_file()]
-    # Two positive events plus one empty event when available, selected before inference.
-    chosen=[];events=set()
-    for animal,limit in [(1,2),(0,1)]:
-        selected=0
-        for r in candidates:
-            if int(r['animal'])==animal and r['event'] not in events:
-                chosen.append(r);events.add(r['event']);selected+=1
-                if selected==limit:break
-    if len(chosen)<3:
-        for r in candidates:
-            if r['event'] not in events:
-                chosen.append(r);events.add(r['event'])
-                if len(chosen)==3:break
-    if len(chosen)!=3:raise ValueError('Need three available validation events for the recorded demo')
+    by_id={r['id']:r for r in rows}
+    # Fixed validation branch-coverage cases, including both failures from the first demo.
+    ids=['59d0e396-23d2-11e8-a6a3-ec086b02610b',
+         '59a62b26-23d2-11e8-a6a3-ec086b02610b',
+         '5860ed49-23d2-11e8-a6a3-ec086b02610b',
+         '58629431-23d2-11e8-a6a3-ec086b02610b',
+         '5888bc6a-23d2-11e8-a6a3-ec086b02610b']
+    chosen=[by_id[key] for key in ids]
+    assert all(r['split']=='val_select' for r in chosen)
+    assert len({r['event'] for r in chosen})==len(chosen)
+    missing=[str(images/(r['id']+'.jpg')) for r in chosen if not (images/(r['id']+'.jpg')).is_file()]
+    if missing:raise FileNotFoundError('Missing fixed validation demo images: '+', '.join(missing))
     return chosen,images
 
 
@@ -106,7 +103,7 @@ def record_demo(pipeline,root,output):
     save_json(folder/'request_metadata.json',metadata)
     server,thread,base,instance=start_service(pipeline)
     print('Local HTTP service ready:',base,flush=True)
-    print('Running three validation images through detection, species and Recovery v2 masks. CPU inference may take several minutes.',flush=True)
+    print(f'Running {len(demo)} fixed validation images, including earlier misses. CPU inference may take several minutes.',flush=True)
     started=time.perf_counter()
     try:
         response=requests.post(base+'/batch',
@@ -117,10 +114,15 @@ def record_demo(pipeline,root,output):
         assert [r['id'] for r in result['frames']]==[r['id'] for r in demo]
         elapsed=time.perf_counter()-started
         save_json(folder/'service_test.json',dict(status=response.status_code,instance=instance,base_url=base,result=result))
-        record=dict(kind='executed local HTTP request',split='val_select',images=3,
+        coverage=dict(frames_with_detections=sum(bool(f['objects']) for f in result['frames']),
+            classified_objects=sum('species' in o for f in result['frames'] for o in f['objects']),
+            matched_masks=sum(f['segmentation']['matched_masks'] for f in result['frames']))
+        coverage['all_stages_exercised']=coverage['classified_objects']>0 and coverage['matched_masks']>0
+        record=dict(kind='executed local HTTP request',split='val_select',images=len(demo),coverage=coverage,
+            selection='Two previously detected annotated validation positives, two earlier missed positives, one negative; branch coverage only, not an accuracy sample',
             frame_ids=[r['id'] for r in demo],source_manifest_sha256=MANIFEST_SHA,
             segmentation_policy_sha256=pipeline.policy_sha256,http_status=response.status_code,
-            elapsed_seconds=elapsed,scope='Three-image functional HTTP demo including transport; not a throughput benchmark or a video recording.')
+            elapsed_seconds=elapsed,scope='Fixed validation functional HTTP demo including transport and retained failure cases; not an accuracy sample, throughput benchmark or video recording.')
         save_json(folder/'demo_record.json',record)
         provenance=Path(pipeline.output_dir)/'integration_provenance.json'
         if provenance.is_file():save_json(folder/'integration_provenance.json',json.loads(provenance.read_text()))
@@ -137,7 +139,9 @@ def record_demo(pipeline,root,output):
         # Keep legacy audit filenames pointing to this actually executed demo.
         save_json(output/'service_test.json',dict(status=response.status_code,result=result,evidence_dir=str(folder),instance=instance))
         save_json(output/'demo_record.json',dict(record,evidence_dir=str(folder)))
-        print('HTTP batch demo: PASS',flush=True);print('Evidence saved:',folder,flush=True)
+        print('HTTP transport: PASS',flush=True)
+        print('All model stages exercised:',coverage['all_stages_exercised'],coverage,flush=True)
+        print('Evidence saved:',folder,flush=True)
         return dict(server=server,thread=thread,base_url=base,app=server.config.app,demo_output=result,demo=demo,images=images,evidence_dir=folder)
     except Exception:
         server.should_exit=True
