@@ -1,0 +1,13 @@
+{
+  "p50": 0.48263978549994135,
+  "p95": 9.071337911300134,
+  "p99": 9.08619822625983,
+  "throughput": 0.28816656149482944,
+  "warmup": 3,
+  "repeats": 20,
+  "batch": 1,
+  "backend": "pytorch_cpu",
+  "process_peak_rss_mb": 2354.71875,
+  "scope": "Sequential full inference, image read included, HTTP excluded, repeated fixed validation branch-coverage cases; not representative production traffic. Segmentation helper repeats M4 inference.",
+  "memory_scope": "cumulative process peak RSS, not incremental model memory"
+}

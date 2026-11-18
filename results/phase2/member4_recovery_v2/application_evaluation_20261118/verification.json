@@ -1,0 +1,20 @@
+{
+  "acceptance_rows": 7,
+  "passed": 4,
+  "failed": [
+    "animal_recall",
+    "pipeline_p95_seconds",
+    "species_macro_f1"
+  ],
+  "decision": "NO-GO",
+  "checks": {
+    "acceptance_csv_matches_decision": true,
+    "threshold_direction_comparisons_recomputed": true,
+    "benchmark_p95_matches_acceptance": true,
+    "event_mae_matches_acceptance": true,
+    "detector_identity_matches_released_model": true
+  },
+  "raw_event_counts_supplied": false,
+  "raw_latency_samples_supplied": false,
+  "raw_event_or_timing_recomputed": false
+}
