@@ -1,0 +1,22 @@
+{
+  "n": 40,
+  "policy_sha256": "1ec85899041742eefd7bd957943fcbc51acd79781bfe248ac7ab4089cf78939c",
+  "mean_iou_recomputed": 0.7398773856441786,
+  "mean_dice_recomputed": 0.8000843532663094,
+  "iou_improvement_percentage_points": 15.96544270085003,
+  "improved_images": 9,
+  "worsened_images": 0,
+  "unchanged_images": 31,
+  "fallback_images": 10,
+  "zero_mask_images": 2,
+  "zero_iou_images": 3,
+  "images_iou_at_least_0_7": 30,
+  "independent_test": false,
+  "checks": {
+    "same_40_image_ids": true,
+    "policy_hash_matches_release": true,
+    "reported_aggregates_match_per_image_file": true,
+    "references_rechecked_here": false,
+    "predictions_rerun_here": false
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "split": "test",
+  "n": 40,
+  "mean_iou": 0.7398773856441785,
+  "mean_dice": 0.8000843532663093,
+  "area_mae_fraction": 0.023612375910502362,
+  "policy_sha256": "1ec85899041742eefd7bd957943fcbc51acd79781bfe248ac7ab4089cf78939c",
+  "independent_test": false
+}
