@@ -1,0 +1,17 @@
+{
+  "seed": 42,
+  "imgsz": 640,
+  "epochs": 40,
+  "batch": 8,
+  "patience": 10,
+  "detector": "yolo11n.pt",
+  "segmenter": "yolo11n-seg.pt",
+  "sam": "sam_b.pt",
+  "acceptance": {
+    "animal_recall_min": 0.99,
+    "empty_removal_min": 0.2,
+    "mask_iou_min": 0.7,
+    "event_count_mae_max": 1.0,
+    "p95_seconds_max": 2.0
+  }
+}

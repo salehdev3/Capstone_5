@@ -1,0 +1,8 @@
+{
+  "temperature": 1.0350978301309086,
+  "calibration_split": "val_calibrate",
+  "species_review_confidence": 0.6,
+  "checkpoint_sha256": "b68c7fbdda6b257fe735a33560851b71159b4f0799452d1ed1a280ca81ba2c98",
+  "version": "species_recovery_v1",
+  "test_used_for_calibration": false
+}

@@ -1,0 +1,10 @@
+{
+  "mask_map50": 0.7664034661861006,
+  "mask_map50_95": 0.48899226734769174,
+  "box_map50": 0.7435519348488413,
+  "box_map50_95": 0.4656937038211339,
+  "split": "val_select",
+  "n": 40,
+  "ap_confidence_floor": 0.001,
+  "model_sha256": "f19fbfb60b2b2d1f08de7ae9c69e4a425caf3e3c264bff98212159ece656d39d"
+}

@@ -1,0 +1,53 @@
+{
+  "scope": "M4 detector raw forward outputs only; no NMS, classification, M5 or SAM parity claim",
+  "source_detector_sha256": "ac38aaffe735bf7a6666866d2410f3601a93c6f9829ae6f68b7cd0117d1135e8",
+  "segmentation_policy_sha256": "1ec85899041742eefd7bd957943fcbc51acd79781bfe248ac7ab4089cf78939c",
+  "onnx_sha256": "d875b0c2b4c97f2140aa7d0d9e5863b21942b44c76c9d0465dc6bdef67078e2e",
+  "onnx_path": "/content/drive/MyDrive/CameraTrap_Phase2/phase2_results/member4_recovery_v2/detector.onnx",
+  "imgsz": 640,
+  "precision": "float32",
+  "opset": 17,
+  "dynamic": false,
+  "nms": false,
+  "providers": [
+    "CPUExecutionProvider"
+  ],
+  "torch_threads": 4,
+  "ort_threads": 4,
+  "rtol": 0.001,
+  "atol": 0.001,
+  "passed": true,
+  "cases": [
+    {
+      "input": "zeros",
+      "shape": [
+        1,
+        5,
+        8400
+      ],
+      "max_abs_error": 0.00018310546875,
+      "passed": true
+    },
+    {
+      "input": "constant",
+      "shape": [
+        1,
+        5,
+        8400
+      ],
+      "max_abs_error": 0.000396728515625,
+      "passed": true
+    },
+    {
+      "input": "seeded_random",
+      "shape": [
+        1,
+        5,
+        8400
+      ],
+      "max_abs_error": 0.00025177001953125,
+      "passed": true
+    }
+  ],
+  "max_abs_error": 0.000396728515625
+}

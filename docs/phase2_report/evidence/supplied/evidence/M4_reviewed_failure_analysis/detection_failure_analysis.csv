@@ -1,0 +1,13 @@
+﻿id,fp,fn,cause,improvement,reviewer
+5858bfbd-23d2-11e8-a6a3-ec086b02610b,1,0,Duplicate detection: an extra box covers part of the same animal.,Evaluate duplicate suppression settings on validation.,Saleh
+5858c0c6-23d2-11e8-a6a3-ec086b02610b,0,1,"Missed animal, likely affected by small size and similarity to the rocky background.",Evaluate higher input resolution and additional small-animal training examples.,Saleh
+585a6485-23d2-11e8-a6a3-ec086b02610b,1,0,Apparent background false positive in vegetation; the annotated animal is detected separately.,"Inspect the original crop to exclude an unannotated animal, then add confirmed hard negatives.",Saleh
+585c0351-23d2-11e8-a6a3-ec086b02610b,1,0,Extra small prediction near the front dog's tail; overlapping reference boxes suggest possible annotation ambiguity.,Inspect the original instance annotations and check whether a body part was annotated separately before attributing the error.,Saleh
+585dab3c-23d2-11e8-a6a3-ec086b02610b,1,0,False positive on a bright elongated foreground artifact; the animal on the left is detected.,Add reviewed glare and foreground-artifact negatives and evaluate on validation.,Saleh
+586436e8-23d2-11e8-a6a3-ec086b02610b,1,0,Apparent background false positive on blurred vegetation; no animal is clearly visible inside the predicted box.,Inspect the original image and add confirmed vegetation negatives to training.,Saleh
+58678cb1-23d2-11e8-a6a3-ec086b02610b,1,0,Background false positive on a bright foreground branch; the animal is detected.,Include reviewed infrared images with bright branches as hard negatives.,Saleh
+58678cd3-23d2-11e8-a6a3-ec086b02610b,1,0,Spurious oversized detection covers most of the image; severe blur reduces visual detail.,Evaluate blur augmentation and a validation-based review rule for unusually large detections.,Saleh
+58693472-23d2-11e8-a6a3-ec086b02610b,1,0,False positive on a blurred foreground obstruction; its identity is unclear.,Add reviewed lens-obstruction examples and evaluate an image-quality review rule.,Saleh
+586936a7-23d2-11e8-a6a3-ec086b02610b,1,0,Apparent background false positive below the detected animal in a low-contrast region.,Inspect the crop and evaluate additional low-light background negatives.,Saleh
+586adfa6-23d2-11e8-a6a3-ec086b02610b,1,1,Localization mismatch: the predicted box excludes the long tail included in the reference box.,Review consistency of tail annotation and evaluate localization improvements on validation.,Saleh
+586c873c-23d2-11e8-a6a3-ec086b02610b,1,0,Background false positive on a rock; the animal itself is detected.,Add reviewed rocky-background negatives to training and evaluate on validation.,Saleh

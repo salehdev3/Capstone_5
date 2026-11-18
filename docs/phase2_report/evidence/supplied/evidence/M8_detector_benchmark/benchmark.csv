@@ -1,0 +1,3 @@
+backend,p50,p95,p99,throughput,process_peak_rss_mb,batch,warmup,repeats,input_size,scope
+pytorch_cpu,0.1359849865000342,0.19222474415001328,0.2056921480298991,6.696273497990482,907.1015625,1,10,100,640,model forward only; cumulative process peak RSS
+onnx_cpu,0.2250511769999548,0.44198018644991066,0.4552191228300342,3.816748951202147,907.1015625,1,10,100,640,model forward only; cumulative process peak RSS

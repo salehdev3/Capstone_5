@@ -1,0 +1,12 @@
+{
+  "source_archive": "Phase2_Report_Inputs.zip",
+  "source_sha256": "51f369fac13ee8c822898145b3ff7b7386cf4f1264032bd7c007bb1cdadd5aad",
+  "present_package_entries_hash_checked": 42,
+  "additional_evidence": [
+    "Original supplied detector operating metrics",
+    "Detector checkpoint embedded 40-epoch history",
+    "Assistant continuation training log",
+    "User-supplied reviewed detection and segmentation visual galleries"
+  ],
+  "no_missing_metric_invented": true
+}

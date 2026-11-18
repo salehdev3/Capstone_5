@@ -1,0 +1,113 @@
+{
+  "n": 508,
+  "accuracy": 0.7421259842519685,
+  "macro_f1_all_training_classes": 0.4825167785271104,
+  "nll": 0.8288582449746321,
+  "ece": 0.05128045379406198,
+  "top3_accuracy": 0.8996062992125984,
+  "per_class": [
+    {
+      "species": "badger",
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 1
+    },
+    {
+      "species": "bird",
+      "precision": 0.9,
+      "recall": 1.0,
+      "f1": 0.9473684210526315,
+      "support": 9
+    },
+    {
+      "species": "bobcat",
+      "precision": 0.6190476190476191,
+      "recall": 0.6842105263157895,
+      "f1": 0.65,
+      "support": 57
+    },
+    {
+      "species": "cat",
+      "precision": 0.6,
+      "recall": 0.25,
+      "f1": 0.35294117647058826,
+      "support": 48
+    },
+    {
+      "species": "coyote",
+      "precision": 0.9555555555555556,
+      "recall": 0.7633136094674556,
+      "f1": 0.8486842105263158,
+      "support": 169
+    },
+    {
+      "species": "deer",
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 3
+    },
+    {
+      "species": "dog",
+      "precision": 0.6944444444444444,
+      "recall": 0.8620689655172413,
+      "f1": 0.7692307692307693,
+      "support": 29
+    },
+    {
+      "species": "fox",
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 1
+    },
+    {
+      "species": "opossum",
+      "precision": 0.65625,
+      "recall": 0.9655172413793104,
+      "f1": 0.7813953488372093,
+      "support": 87
+    },
+    {
+      "species": "rabbit",
+      "precision": 0.25,
+      "recall": 0.25,
+      "f1": 0.25,
+      "support": 4
+    },
+    {
+      "species": "raccoon",
+      "precision": 0.375,
+      "recall": 0.5357142857142857,
+      "f1": 0.4411764705882353,
+      "support": 28
+    },
+    {
+      "species": "rodent",
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0
+    },
+    {
+      "species": "skunk",
+      "precision": 0.9333333333333333,
+      "recall": 0.7368421052631579,
+      "f1": 0.8235294117647058,
+      "support": 19
+    },
+    {
+      "species": "squirrel",
+      "precision": 0.8596491228070176,
+      "recall": 0.9245283018867925,
+      "f1": 0.8909090909090909,
+      "support": 53
+    }
+  ],
+  "split": "historical_test",
+  "independent_test": false,
+  "checkpoint_sha256": "b68c7fbdda6b257fe735a33560851b71159b4f0799452d1ed1a280ca81ba2c98",
+  "policy_sha256": "0b2c17854947ebf15a4e99ba79505df1f032bd59e57d5d88eba6e0b5a9be8907",
+  "unknown_count": 0
+}

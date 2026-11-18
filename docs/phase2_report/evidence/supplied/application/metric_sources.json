@@ -1,0 +1,17 @@
+{
+  "segmentation": {
+    "path": "/content/drive/MyDrive/CameraTrap_Phase2/releases/Segmentation_M4_Guided_Recovery_v2/evaluations/20261118T064552907010Z/metrics.json",
+    "sha256": "b23abdbbaea4321dc40233f00bf349dfa995c52d60969e2d78ef7d9c4a3be5aa"
+  },
+  "species": {
+    "path": "/content/drive/MyDrive/CameraTrap_Phase2/phase2_results/species_recovery_v1/historical_test/metrics.json",
+    "sha256": "288cba5d9bcf147a54e355b10577fcd0d1f337030892c0925a260c906786b761"
+  },
+  "protocol": {
+    "path": "/content/drive/MyDrive/CameraTrap_Phase2/phase2_results/protocol.json",
+    "sha256": "dc0f599cfa6f3ea41f4ede96ac65c4d6f575b90db548d98cec02c047a6e82caf"
+  },
+  "classifier_sha256": "b68c7fbdda6b257fe735a33560851b71159b4f0799452d1ed1a280ca81ba2c98",
+  "segmentation_policy_sha256": "1ec85899041742eefd7bd957943fcbc51acd79781bfe248ac7ab4089cf78939c",
+  "test_scope": "Exposed historical/development data; separate unseen evaluation required for independent generalization claims."
+}

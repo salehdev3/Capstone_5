@@ -1,0 +1,231 @@
+id,split,reviewer,decision,reference_source,notes
+5a27d7f0-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,Correct
+58c1c356-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,Correct
+586c87d3-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,Human-corrected or rechecked SAM polygons,not clear
+59484703-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,Correct
+592f7257-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,Correct
+591fd21b-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,Correct
+58d7a32f-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,Correct
+58bb8a17-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,Correct
+59f462e2-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,Correct
+58ac0f44-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,Correct
+5a0c9d71-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,Correct
+59adfea9-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,Human-corrected or rechecked SAM polygons,fail segmentation
+58732ccc-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+586fde26-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+58b4a986-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+591b22e5-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59279c0b-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59e1021c-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+5a130ab1-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,Human-corrected or rechecked SAM polygons,fail segmentation
+586c8a15-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59fc8001-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+590b9d22-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,Human-corrected or rechecked SAM polygons,fail segmentation
+5a2c85a7-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59f461c8-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59ac6d21-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,Human-corrected or rechecked SAM polygons,fail segmentation
+591b25bc-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59be401c-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+5a0c9bc3-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59641f65-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+585dac58-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,Human-corrected or rechecked SAM polygons,head not segement
+58e93ab8-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59af9642-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59830697-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59641eda-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+58e40f25-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59180aef-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+597fefc3-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+58bb89f7-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+58b2eeca-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+5995ad4c-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+58b6651b-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+598ad0a0-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59849510-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+5a14a586-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+593ef66a-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+587eec8b-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59c4c09d-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59f12913-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,Human-corrected or rechecked SAM polygons,fail segmentation
+58cb1458-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+5994212c-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+58a52f5f-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59f94426-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+596bd8ce-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+5a217681-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+5a1caf0a-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+598c5c13-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+5a0495a2-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+5906f055-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+589b00fb-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+58823e20-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+5922ee03-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+596a4df3-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+58a530d8-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59279c2b-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+58b9d5b1-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59c17711-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,Human-corrected or rechecked SAM polygons,fail segmentation
+5a2637da-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+598deae8-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+58eacb0e-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+598f789a-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+598943b7-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+5914f030-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+594083dd-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+5a2af6aa-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+589cb438-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+5a17df5f-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+5a2637a4-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+58f29533-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,Human-corrected or rechecked SAM polygons,fail segmentation
+59ef8e03-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+592f7218-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+58ec583a-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59c66a87-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+5995acb9-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59439d6d-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+5a27d94c-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59fae493-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+591b23da-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+597b4791-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+588c155b-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59247b7d-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+58732cda-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+5976a408-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59a30c08-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59420fa6-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+589609d9-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59167937-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59ffbbf9-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+5976a261-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59167b75-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+RYD_009,train,Yousef,verified,Human-corrected or rechecked SAM polygons,just some of bounding not cover the segemnt
+59dc2723-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,Human-corrected or rechecked SAM polygons,not cover all animal!
+599d7ea6-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+5a296343-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,Human-corrected or rechecked SAM polygons,not cover the animal
+59c4bfc8-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+58d93246-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+593ef6c1-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59328bec-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59fc800f-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59f2c28e-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+593ef4c2-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+5a0b001c-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59b13070-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+5a096b7d-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59a17ce4-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+598c5c19-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+591b239c-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+58d614b5-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59e2a2da-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59d8ec4c-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+58b1300d-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+5883e877-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+58c036fb-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+58e40cb7-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+5a21763e-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+58e93b52-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,Human-corrected or rechecked SAM polygons,not bounding the all image.
+59adfeaf-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+5a0fd1e7-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+5892b703-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59974020-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,Human-corrected or rechecked SAM polygons,not clear
+5995b00c-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+5a0fd149-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59c99fd1-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,good bounding
+59edef90-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+5935a79d-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59f9453f-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+5862922b-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+58c4d613-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59f12997-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+5940839c-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+5a27da85-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+596bd994-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59b4865c-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+58e7249d-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59c17722-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+585c03e3-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+593ef535-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59ddc043-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+58f8ce9f-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59e10423-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+58bea4e6-23d2-11e8-a6a3-ec086b02610b,train,Yousef,verified,SAM proposal manually reviewed,
+59d0e396-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+5a1fe939-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+59a62b26-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+599290e7-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+59eab8ac-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+5995af38-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+5a2c8762-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+5a29638d-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+58678cef-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+59da8bc4-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+5a1641b5-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+58df6a41-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+598494dc-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+59e77d63-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+59d5b541-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+59b9376f-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+596a5004-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+59b93933-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+5976a1e7-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+5979bb5d-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+5a163f75-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,Human-corrected or rechecked SAM polygons,fail segmentation
+5971f937-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+5a296618-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+5987b492-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+598943f4-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,Human-corrected or rechecked SAM polygons,fail segmentation
+5a116bcc-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,Human-corrected or rechecked SAM polygons,fail segmentation
+59973f4e-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+59c319cc-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+5a27da69-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+59fc7f04-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,Human-corrected or rechecked SAM polygons,fail segmentation
+59aadcfc-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+59a7bde1-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,Human-corrected or rechecked SAM polygons,fail segmentation
+59d5b8d1-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+59f4610f-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+59eab894-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+5a049441-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,Human-corrected or rechecked SAM polygons,fail segmentation
+5a24a849-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+5a096977-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+598624de-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+59bca518-23d2-11e8-a6a3-ec086b02610b,val_select,Yousef,verified,SAM proposal manually reviewed,
+58b664ca-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,SAM proposal manually reviewed,
+586fddb6-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,Human-corrected or rechecked SAM polygons,fail segmentation
+58e0f7dd-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,Human-corrected or rechecked SAM polygons,bounding one
+5860ecd3-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,SAM proposal manually reviewed,
+592de468-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,SAM proposal manually reviewed,
+592479bf-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,Human-corrected or rechecked SAM polygons,fail segmentation
+58b9d6b2-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,SAM proposal manually reviewed,
+58b131ce-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,Human-corrected or rechecked SAM polygons,fail segmentation
+585a6491-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,SAM proposal manually reviewed,
+58732f6a-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,Human-corrected or rechecked SAM polygons,fail segmentation
+59862499-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,SAM proposal manually reviewed,
+593a5058-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,Human-corrected or rechecked SAM polygons,fail segmentation
+586fdcc3-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,Human-corrected or rechecked SAM polygons,fail segmentation
+5871868b-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,SAM proposal manually reviewed,
+5a049322-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,SAM proposal manually reviewed,
+58678cd3-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,Human-corrected or rechecked SAM polygons,fail segmentation
+59e2a2d1-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,SAM proposal manually reviewed,
+58ddd7fe-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,SAM proposal manually reviewed,
+59180b73-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,Human-corrected or rechecked SAM polygons,fail segmentation
+58bb8c19-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,SAM proposal manually reviewed,
+58cca4e1-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,SAM proposal manually reviewed,
+59641ee4-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,SAM proposal manually reviewed,
+59104acb-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,SAM proposal manually reviewed,
+58af77a1-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,Human-corrected or rechecked SAM polygons,fail segmentation
+591fd0ea-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,Human-corrected or rechecked SAM polygons,fail bounding
+588c129e-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,Human-corrected or rechecked SAM polygons,fail segmentation
+5991043a-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,SAM proposal manually reviewed,
+5a14a37d-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,SAM proposal manually reviewed,
+59f129f9-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,SAM proposal manually reviewed,
+59292e51-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,SAM proposal manually reviewed,
+592c4c68-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,SAM proposal manually reviewed,
+590d2d89-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,SAM proposal manually reviewed,
+58bd1a8d-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,SAM proposal manually reviewed,
+59adfea1-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,SAM proposal manually reviewed,
+59c4c0bb-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,SAM proposal manually reviewed,
+58f73c5c-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,Human-corrected or rechecked SAM polygons,fail segmentation
+58aa593f-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,Human-corrected or rechecked SAM polygons,fail segmentation
+587d4280-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,SAM proposal manually reviewed,
+587eea21-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,SAM proposal manually reviewed,
+59484473-23d2-11e8-a6a3-ec086b02610b,test,Yousef,verified,SAM proposal manually reviewed,

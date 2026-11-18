@@ -1,0 +1,15 @@
+{
+  "mae": 0.3194444444444444,
+  "events": 288,
+  "excluded_events": 47,
+  "scope": "All test events whose every retained frame has complete box supervision; counts are maxima over retained frames, not unique individuals or complete original source sequences.",
+  "independent_test": false,
+  "identity": {
+    "detector_sha256": "ac38aaffe735bf7a6666866d2410f3601a93c6f9829ae6f68b7cd0117d1135e8",
+    "confidence": 0.045,
+    "nms": 0.3,
+    "imgsz": 640,
+    "manifest_sha256": "d3bfb6ba0c9d31412f9d603a6f63ae7c4890f458c5d2aa2a87d7653bb882bb53",
+    "count_definition": "all M4 outputs at fixed floor; classification and mask filtering do not change pipeline count"
+  }
+}
