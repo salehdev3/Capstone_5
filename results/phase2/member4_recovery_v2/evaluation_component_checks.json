@@ -1,0 +1,16 @@
+{
+  "source_module_sha256": "6838f2c5c495918127d05ddc56429a4054534133895dd5f4bbdf9e23d64cf1df",
+  "checks": {
+    "exclude_entire_event_if_any_retained_positive_frame_has_incomplete_boxes": true,
+    "maximum_simultaneous_count_not_frame_sum": true,
+    "include_empty_event_false_positive_errors": true,
+    "reject_missing_predictions_in_complete_events": true
+  },
+  "frozen_metadata_scope": {
+    "retained_test_frames": 554,
+    "complete_box_retained_test_events": 288,
+    "excluded_events": 47
+  },
+  "full_model_evaluation_executed_here": false,
+  "scope": "Structural and synthetic tests only; actual inference and timing require user Colab images and initialized models."
+}

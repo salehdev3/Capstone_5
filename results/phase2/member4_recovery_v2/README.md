@@ -17,3 +17,13 @@ Component checks confirm exact Phase-1 preprocessing on three crops, one-to-one 
 `tools/member4_service_colab.py` uses the initialized pipeline and reads three validation events directly from the frozen manifest, avoiding session-dependent `included`/`IMAGES`. Uses a dynamically bound loopback port, instance-specific health checks and serialized inference. Actual requests, metadata, outputs, overlays and elapsed time are saved under timestamped `member4_recovery_v2/http_demos/` in Drive. Legacy `service_test.json` and `demo_record.json` point to the executed demo. This is not a video recording or a latency benchmark.
 
 Local component checks passed using a synthetic pipeline probe, including real loopback HTTP. Actual neural inference and user-runtime performance remain to be executed in Colab.
+
+## Application evaluation
+
+`tools/member4_evaluation_colab.py` loads the initialized pipeline and updated demo. Its module binds classifier and segmentation metrics to the actual installed model/policy hashes, recomputes fixed-detector counts, and uses unchanged original acceptance targets (including the Phase-1 species F1/ECE criteria). It does not read old generic segmentation_metrics.json or rely on stale in-memory metrics/test_records.
+
+Count inference uses 554 retained supervised test frames; 288 events have complete supervision over every retained frame, and 47 events are excluded. Counts use the same unchanged detector path as the pipeline, independent of classification/mask filtering, avoiding unnecessary classifier/SAM execution across the full count set. Empty-event errors remain included. Input image hashes and detector-policy identity are cached; source pixels must match the frozen manifest.
+
+Full-pipeline timing separately executes three warmups and 20 validation-case replays, includes all inference stages (including repeated M4 within masks), and excludes HTTP transport. The fixed functional-case mixture is not representative production traffic, and 20-sample p95/p99 are descriptive. Memory is cumulative process peak RSS.
+
+Outputs are timestamped under member4_recovery_v2/evaluations. Legacy report filenames point to the current evaluation. NO-GO indicates unmet preset deployment performance criteria, not a course-completion grade. Local event logic checks passed on synthetic cases and frozen metadata; actual model scores/timings were not generated in the assistant workspace.
