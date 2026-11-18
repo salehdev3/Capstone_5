@@ -4,6 +4,13 @@ import subprocess, sys, json, hashlib, urllib.request, importlib.util, time
 subprocess.run([sys.executable, '-m', 'pip', 'install', '-q',
                 'ultralytics==8.3.221', 'onnx', 'onnxruntime'], check=True)
 
+try:
+    from google.colab import drive
+except ImportError:
+    drive = None
+if drive is not None:
+    drive.mount('/content/drive')
+
 ROOT = Path(globals().get('ROOT', '/content/drive/MyDrive/CameraTrap_Phase2'))
 OUT = Path(globals().get('OUT', ROOT/'phase2_results'))
 OUT.mkdir(parents=True, exist_ok=True)
