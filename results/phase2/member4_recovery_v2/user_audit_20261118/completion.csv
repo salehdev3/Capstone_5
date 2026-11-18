@@ -1,0 +1,39 @@
+requirement,evidence,present,verified,details
+M4_current_detector,/content/drive/MyDrive/CameraTrap_Phase2/releases/Segmentation_M4_Guided_Recovery_v2/detector.pt,True,True,File present; specified semantic checks passed
+M5_current_segmenter,/content/drive/MyDrive/CameraTrap_Phase2/releases/Segmentation_M4_Guided_Recovery_v2/selected.pt,True,True,File present; specified semantic checks passed
+species_current_checkpoint,/content/drive/MyDrive/CameraTrap_Phase2/models/species_recovery_v1/best.pt,True,True,File present; specified semantic checks passed
+species_current_policy,/content/drive/MyDrive/CameraTrap_Phase2/models/species_recovery_v1/policy.json,True,True,File present; specified semantic checks passed
+M5_current_policy,/content/drive/MyDrive/CameraTrap_Phase2/releases/Segmentation_M4_Guided_Recovery_v2/refinement_policy.json,True,True,File present; specified semantic checks passed
+M5_inference_helper,/content/drive/MyDrive/CameraTrap_Phase2/releases/Segmentation_M4_Guided_Recovery_v2/predict_refined.py,True,True,File present; specified semantic checks passed
+M4_thresholds,/content/drive/MyDrive/CameraTrap_Phase2/phase2_results/threshold_sweep.csv,True,True,File present; content requires human review
+M4_AP,/content/drive/MyDrive/CameraTrap_Phase2/phase2_results/detection_ap.json,True,True,File present; content requires human review
+M4_data_protocol,/content/drive/MyDrive/CameraTrap_Phase2/phase2_results/protocol.json,True,True,File present; content requires human review
+M8_detector_benchmark,/content/drive/MyDrive/CameraTrap_Phase2/phase2_results/benchmark.csv,True,True,File present; content requires human review
+species_history,/content/drive/MyDrive/CameraTrap_Phase2/phase2_results/species_recovery_v1/history.csv,True,True,File present; content requires human review
+species_reload,/content/drive/MyDrive/CameraTrap_Phase2/phase2_results/species_recovery_v1/checkpoint_reload.json,True,True,File present; specified semantic checks passed
+species_historical_test,/content/drive/MyDrive/CameraTrap_Phase2/phase2_results/species_recovery_v1/historical_test/metrics.json,True,True,File present; specified semantic checks passed
+M5_verified_230_reference_masks,/content/drive/MyDrive/CameraTrap_Phase2/segmentation/reference_release.json,True,True,File present; specified semantic checks passed
+M5_reference_review,/content/drive/MyDrive/CameraTrap_Phase2/segmentation_masks/review.csv,True,True,File present; content requires human review
+M8_acceptance.csv,/content/drive/MyDrive/CameraTrap_Phase2/phase2_results/member4_recovery_v2/evaluations/20261118T131856739055Z/acceptance.csv,True,True,File present; content requires human review
+M8_decision.json,/content/drive/MyDrive/CameraTrap_Phase2/phase2_results/member4_recovery_v2/evaluations/20261118T131856739055Z/decision.json,True,True,File present; content requires human review
+M8_MODEL_CARD.md,/content/drive/MyDrive/CameraTrap_Phase2/phase2_results/member4_recovery_v2/evaluations/20261118T131856739055Z/MODEL_CARD.md,True,True,File present; content requires human review
+M8_event_counts.csv,/content/drive/MyDrive/CameraTrap_Phase2/phase2_results/member4_recovery_v2/evaluations/20261118T131856739055Z/event_counts.csv,True,True,File present; content requires human review
+M8_event_metrics.json,/content/drive/MyDrive/CameraTrap_Phase2/phase2_results/member4_recovery_v2/evaluations/20261118T131856739055Z/event_metrics.json,True,True,File present; content requires human review
+M8_pipeline_benchmark.json,/content/drive/MyDrive/CameraTrap_Phase2/phase2_results/member4_recovery_v2/evaluations/20261118T131856739055Z/pipeline_benchmark.json,True,True,File present; content requires human review
+M8_pipeline_latencies.csv,/content/drive/MyDrive/CameraTrap_Phase2/phase2_results/member4_recovery_v2/evaluations/20261118T131856739055Z/pipeline_latencies.csv,True,True,File present; content requires human review
+M8_metric_sources.json,/content/drive/MyDrive/CameraTrap_Phase2/phase2_results/member4_recovery_v2/evaluations/20261118T131856739055Z/metric_sources.json,True,True,File present; content requires human review
+M8_detection_operating_metrics.json,/content/drive/MyDrive/CameraTrap_Phase2/phase2_results/member4_recovery_v2/evaluations/20261118T131856739055Z/detection_operating_metrics.json,True,True,File present; content requires human review
+M8_ONNX_detector_parity,/content/drive/MyDrive/CameraTrap_Phase2/phase2_results/member4_recovery_v2/onnx_parity.json,True,True,File present; specified semantic checks passed
+M8_HTTP_full_stage_execution,/content/drive/MyDrive/CameraTrap_Phase2/phase2_results/member4_recovery_v2/http_demos/20261118T131133364132Z/service_test.json,True,True,File present; specified semantic checks passed
+M8_HTTP_demo_record,/content/drive/MyDrive/CameraTrap_Phase2/phase2_results/member4_recovery_v2/http_demos/20261118T131133364132Z/demo_record.json,True,True,File present; content requires human review
+M5_v2_test_overlap,/content/drive/MyDrive/CameraTrap_Phase2/releases/Segmentation_M4_Guided_Recovery_v2/evaluations/20261118T064552907010Z/metrics.json,True,True,File present; specified semantic checks passed
+M5_v2_per_image.csv,/content/drive/MyDrive/CameraTrap_Phase2/releases/Segmentation_M4_Guided_Recovery_v2/evaluations/20261118T064552907010Z/per_image.csv,True,True,File present; content requires human review
+M5_v2_predictions.json,/content/drive/MyDrive/CameraTrap_Phase2/releases/Segmentation_M4_Guided_Recovery_v2/evaluations/20261118T064552907010Z/predictions.json,True,True,File present; content requires human review
+M5_v2_protocol.json,/content/drive/MyDrive/CameraTrap_Phase2/releases/Segmentation_M4_Guided_Recovery_v2/evaluations/20261118T064552907010Z/protocol.json,True,True,File present; content requires human review
+M4_reviewed_failure_analysis,/content/drive/MyDrive/CameraTrap_Phase2/phase2_results/detection_failure_analysis.csv,True,True,File present; specified semantic checks passed
+M5_v2_reviewed_failure_analysis,/content/drive/MyDrive/CameraTrap_Phase2/phase2_results/member4_recovery_v2/segmentation_failure_analysis_v2.csv,True,False,Complete human review field: cause
+M5_operating_policy_mask_AP,/content/drive/MyDrive/CameraTrap_Phase2/releases/Segmentation_M4_Guided_Recovery_v2/evaluations/20261118T064552907010Z/operating_mask_ap.json,True,True,File present; specified semantic checks passed
+Phase2_report_PDF,/content/drive/MyDrive/CameraTrap_Phase2/submission/Phase2_Report.pdf,False,False,Missing file
+Final_presentation_PDF,/content/drive/MyDrive/CameraTrap_Phase2/submission/Final_Presentation.pdf,False,False,Missing file
+Recorded_demo_video,/content/drive/MyDrive/CameraTrap_Phase2/submission/Demo.mp4,False,False,Missing file
+M8_WandB_evidence_link,/content/drive/MyDrive/CameraTrap_Phase2/phase2_results/member4_recovery_v2/wandb_link.json,False,False,Missing file
