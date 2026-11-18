@@ -1,0 +1,13 @@
+{
+  "mean_iou": 0.8239696630179356,
+  "mean_dice": 0.8889481462385718,
+  "n": 40,
+  "split": "val_select",
+  "area_mae_fraction": 0.0008552765750502,
+  "policy_sha256": "1ec85899041742eefd7bd957943fcbc51acd79781bfe248ac7ab4089cf78939c",
+  "zero_mask_images": 0,
+  "fallback_images": 2,
+  "test_status": "v2 not yet evaluated on test; v1 development test IoU 0.5802229586356782 preserved",
+  "independent_test_evaluated": false,
+  "mask_AP_for_three_stage_pipeline": "not evaluated"
+}
