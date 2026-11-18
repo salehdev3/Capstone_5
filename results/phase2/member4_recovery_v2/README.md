@@ -27,3 +27,13 @@ Count inference uses 554 retained supervised test frames; 288 events have comple
 Full-pipeline timing separately executes three warmups and 20 validation-case replays, includes all inference stages (including repeated M4 within masks), and excludes HTTP transport. The fixed functional-case mixture is not representative production traffic, and 20-sample p95/p99 are descriptive. Memory is cumulative process peak RSS.
 
 Outputs are timestamped under member4_recovery_v2/evaluations. Legacy report filenames point to the current evaluation. NO-GO indicates unmet preset deployment performance criteria, not a course-completion grade. Local event logic checks passed on synthetic cases and frozen metadata; actual model scores/timings were not generated in the assistant workspace.
+
+## Version-aware evidence audit
+
+`tools/member4_audit_colab.py` checks installed model identities, current application and full-stage HTTP evidence, the 230-mask review/reference release, current-version failure-review fields, export parity, history and historical test records. It creates a separate v2 failure-review CSV with blank human-review fields; old v1 review is not silently transferred. Missing report, presentation, video and uploaded W&B link remain explicit incomplete items. File presence is not content approval.
+
+When available, accepted-policy predictions and frozen mask references are evaluated with COCO instance-mask AP. This is AP of the deployed accepted outputs, including confidence/quality/fallback filtering, not a low-floor native model AP sweep. No test images are rerun or used to change policy. An unavailable AP result remains a missing item, not a fabricated score.
+
+The curated Drive ZIP includes actual learned detector/M5/species checkpoints, their policies, available evidence, demo overlays and package checksums. The public pretrained SAM weight is referenced by official URL/checksum rather than duplicated. No raw dataset, credentials or arbitrary old-run contents are archived. Local packaging does not depend on W&B success; a separate explicit upload function backs up the completed ZIP. Rerun the audit after resolving missing items to produce a fresh timestamped package.
+
+Local checks used synthetic mask fixtures and an intentionally incomplete filesystem: reference-bound AP, honest incomplete status, preserved missing reviews, checkpoint inclusion and checksum-verified ZIP creation all passed. Actual user Drive audit and final mask AP still require execution in Colab.
