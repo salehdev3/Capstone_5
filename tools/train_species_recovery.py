@@ -182,13 +182,15 @@ def install(root,run):
         else:
             temp=target.with_suffix(target.suffix+'.tmp');shutil.copyfile(source,temp);temp.replace(target)
     alias=Path(root)/'models/species';alias.mkdir(parents=True,exist_ok=True)
-    # Never replace an existing original checkpoint or its calibration policy.
-    for name in ('best.pt','policy.json'):
-        target=alias/name
-        if not target.exists():
-            temp=target.with_suffix(target.suffix+'.tmp');shutil.copyfile(versioned/name,temp);temp.replace(target)
-        elif digest(target)!=digest(versioned/name):
-            print('Preserved existing classifier file:',target,flush=True)
+    # Treat checkpoint and calibration as a pair; never mix new weights with an old policy.
+    conflict=any((alias/name).exists() and digest(alias/name)!=digest(versioned/name) for name in ('best.pt','policy.json'))
+    if conflict:
+        print('Preserved existing default classifier files. Use the versioned SPECIES_PT and SPECIES_POLICY paths below.',flush=True)
+    else:
+        for name in ('best.pt','policy.json'):
+            target=alias/name
+            if not target.exists():
+                temp=target.with_suffix(target.suffix+'.tmp');shutil.copyfile(versioned/name,temp);temp.replace(target)
     save_json(versioned/'installation.json',dict(checkpoint_sha256=digest(versioned/'best.pt'),policy_sha256=digest(versioned/'policy.json'),
         note='New retrained recovery version. Phase-1 report, old metrics and all detector/segmenter weights are unchanged.'))
     print('SPECIES_PT =',repr(str(versioned/'best.pt')),flush=True)

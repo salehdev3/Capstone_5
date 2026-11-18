@@ -1,6 +1,6 @@
 {
   "manifest_sha256": "d3bfb6ba0c9d31412f9d603a6f63ae7c4890f458c5d2aa2a87d7653bb882bb53",
-  "training_source_sha256": "209ffd62aa9358c5bff44ddf8239285c54d435d22eb28910b222e390d230f547",
+  "training_source_sha256": "283bcf3eedf2e54f21a1d22cded0f117d99f97953ed5b6bfd239fd9b9b9fee1f",
   "metadata_zip_sha256": "4f14b43168be69b915c74436d6de31931f169c3800f08d7051d220f11a72a2aa",
   "frozen_crop_counts": {
     "train": 2819,
