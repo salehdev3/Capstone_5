@@ -11,3 +11,9 @@ The complete segmentation pipeline still includes PyTorch M4/M5 and SAM. Neither
 Species inference requires the actual Phase-1 checkpoint, its ordered classes and matching temperature policy. Missing checkpoints block readiness; Phase-1 result tables and detector weights cannot substitute. The loader can retrieve a missing calibration policy only when the checkpoint SHA matches one of the original Phase-1 frozen/full models.
 
 Component checks confirm exact Phase-1 preprocessing on three crops, one-to-one mask matching, event maximum counting and readiness blocking when classifier files are absent. Full species and end-to-end inference were not verified locally because the trained classifier is unavailable in the assistant workspace. HTTP service, complete pipeline timing, deployment decision and evidence audit still need execution/update.
+
+## Local HTTP demo
+
+`tools/member4_service_colab.py` uses the initialized pipeline and reads three validation events directly from the frozen manifest, avoiding session-dependent `included`/`IMAGES`. Uses a dynamically bound loopback port, instance-specific health checks and serialized inference. Actual requests, metadata, outputs, overlays and elapsed time are saved under timestamped `member4_recovery_v2/http_demos/` in Drive. Legacy `service_test.json` and `demo_record.json` point to the executed demo. This is not a video recording or a latency benchmark.
+
+Local component checks passed using a synthetic pipeline probe, including real loopback HTTP. Actual neural inference and user-runtime performance remain to be executed in Colab.
