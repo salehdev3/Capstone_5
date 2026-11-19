@@ -2,14 +2,10 @@
   "provenance": {
     "source": "User-pasted Colab execution output on 2026-11-19; transcribed summary, not the original exported JSON",
     "evaluation_folder": "/content/drive/MyDrive/CameraTrap_Phase2/phase2_results/member4_recovery_v2/onnx_decision_parity/20261119T070317993000Z",
-    "original_export_files_received": false,
-    "pending_files": [
-      "onnx_decision_parity.json",
-      "metrics.csv",
-      "per_image.csv",
-      "environment.json"
-    ],
-    "scope": "Fixed square 640 FP32 selection-validation comparison at confidence .045 and NMS .30. No AP or new historical test result."
+    "original_export_files_received": true,
+    "pending_files": [],
+    "scope": "Fixed square 640 FP32 selection-validation comparison at confidence .045 and NMS .30. No AP or new historical test result.",
+    "superseded_by_original_exports": "docs/onnx_parity/full_validation_20261119T070317993000Z"
   },
   "results": {
     "raw_pass": true,

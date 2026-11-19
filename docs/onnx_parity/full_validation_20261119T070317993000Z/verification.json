@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "scope": "Independent cross-file consistency and frozen-manifest coverage checks on uploaded outputs; no inference rerun or binary ONNX inspection.",
+  "frames": 1208,
+  "matched_detections": 1626,
+  "unique_ids_and_full_manifest_coverage": true,
+  "per_image_and_aggregate_metrics_consistent": true,
+  "original_export_hashes_match_prior_raw_parity": true,
+  "reported_decision_tolerances_satisfied": true,
+  "files": {
+    "metrics.csv": "abcb355256ae7c3382991372e6f0649f4d2a4860100cbc2d2932cd2acb3c9fb0",
+    "environment.json": "204b56297c5712ecb4121b7c6be5cf54ae74f2eda9990f9c8d1be0a57980b5bf",
+    "per_image.csv": "77cd7dc661a4e4eb24f31b6d3643762f08dceb779704d149dd4396128fd9a027",
+    "onnx_decision_parity.json": "303e8159e2be273df4b77dc4d3dc86718bf1ae19ad3a81b12c3a8c917c59c95f"
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "protocol": {
+    "split": "val_select",
+    "frames": 1208,
+    "full_retained_validation_frames": 1208,
+    "full_validation_evaluated": true,
+    "imgsz": 640,
+    "batch": 1,
+    "precision": "float32",
+    "confidence": 0.045,
+    "nms_iou": 0.3,
+    "max_det": 300,
+    "preprocessing": "Identical BGR decode; LetterBox 640x640 auto=False scaleup=True; RGB CHW contiguous float32 /255. Equivalent to rect=False, not default native rectangular inference.",
+    "metric_matching": "Confidence-ordered greedy one-to-one animal-box IoU >= 0.5; same function and references for both backends.",
+    "decision_tolerance": {
+      "same_counts_and_classes": true,
+      "matched_iou_min": 0.999,
+      "box_max_abs_pixels": 0.1,
+      "confidence_max_abs": 0.0001
+    },
+    "metric_absolute_tolerance": 1e-06,
+    "independent_test": false,
+    "scope": "Export equivalence on the explicitly recorded selection-validation IDs (see per_image.csv and full_validation_evaluated); images are pixel-verified; no model, threshold or acceptance-target changes. Not a new test score, timing benchmark, or segmentation/classifier parity.",
+    "manifest_sha256": "d3bfb6ba0c9d31412f9d603a6f63ae7c4890f458c5d2aa2a87d7653bb882bb53",
+    "detector_sha256": "ac38aaffe735bf7a6666866d2410f3601a93c6f9829ae6f68b7cd0117d1135e8",
+    "onnx_sha256": "d875b0c2b4c97f2140aa7d0d9e5863b21942b44c76c9d0465dc6bdef67078e2e"
+  },
+  "raw_pass": true,
+  "raw_max_abs": 0.00946044921875,
+  "frames": 1208,
+  "frames_decision_pass": 1208,
+  "decision_pass": true,
+  "native_detections": 1626,
+  "onnx_detections": 1626,
+  "matched_detections": 1626,
+  "matched_fraction": 1.0,
+  "max_box_error_pixels": 0.000518798828125,
+  "max_confidence_error": 4.5299530029296875e-06,
+  "metrics": {
+    "pytorch": {
+      "tp": 1027,
+      "fp": 599,
+      "fn": 97,
+      "precision": 0.6316113161131611,
+      "recall": 0.9137010676156584,
+      "f1": 0.746909090909091,
+      "animal_recall": 0.9937332139659804,
+      "empty_removal": 0.25274725274725274,
+      "animal_frames": 1117,
+      "empty_frames": 91,
+      "frames": 1208
+    },
+    "onnx": {
+      "tp": 1027,
+      "fp": 599,
+      "fn": 97,
+      "precision": 0.6316113161131611,
+      "recall": 0.9137010676156584,
+      "f1": 0.746909090909091,
+      "animal_recall": 0.9937332139659804,
+      "empty_removal": 0.25274725274725274,
+      "animal_frames": 1117,
+      "empty_frames": 91,
+      "frames": 1208
+    }
+  },
+  "metric_absolute_differences": {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "animal_recall": 0.0,
+    "empty_removal": 0.0
+  },
+  "metric_pass": true,
+  "passed": true
+}

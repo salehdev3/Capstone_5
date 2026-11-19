@@ -9,7 +9,7 @@ English report following the supplied four-member Phase 2 template (M4, M5, M8).
 
 The submitted Phase 1 report is unchanged. The recovered species classifier is a newly trained Phase 2 checkpoint, not the original Phase 1 weights. Recovery-v2 mask test results are development evidence after earlier test inspection; they are not an independent unseen test. The report retains the measured NO-GO deployment verdict.
 
-Final presentation and recorded demo video remain separate deliverables. The supplied complete Colab output reports ONNX decision/operating-metric parity PASS on all 1,208 validation frames with 1,626 matched detections. The original exported summary, per-image CSV, metrics CSV and environment JSON are pending archival; the transcribed source is explicitly labelled in `docs/onnx_parity/full_validation_reported.json`. Full-test error taxonomy and verified day/night analysis are not claimed as measured. Review the provisional self-assessment before submission.
+Final presentation and recorded demo video remain separate deliverables. ONNX decision/operating-metric parity passes on all 1,208 validation frames with 1,626 matched detections. Original exported summary, per-image CSV, metrics CSV, environment JSON, SHA256 checksums and independent consistency verification are archived in `docs/onnx_parity/full_validation_20261119T070317993000Z/`. Full-test error taxonomy and verified day/night analysis are not claimed as measured. Review the provisional self-assessment before submission.
 
 Build: run `pdflatex -interaction=nonstopmode -halt-on-error main.tex` twice.
 
