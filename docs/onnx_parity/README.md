@@ -1,0 +1,11 @@
+# Detector ONNX decision and metric parity
+
+Run `notebooks/Member4_ONNX_Decision_Parity.ipynb` in Colab after mounting the project's Drive. CPU is sufficient. It uses the fixed detector, confidence .045 and NMS IoU .30; no training, threshold tuning or historical test rerun.
+
+The full evaluation uses all **1,208 retained selection-validation frames**, including 91 empty images. Images are checked against the frozen manifest's decoded-pixel hashes. Both backends receive the identical square FP32 1x3x640x640 tensor and use identical external NMS. This matches a fixed-shape export contract (`rect=False`), and does not establish equality to a native runtime that uses different rectangular padding.
+
+Predeclared tolerances: same detection counts/classes, matched IoU >= .999, maximum box-coordinate error <= .1 input pixels, confidence error <= .0001, and absolute operating-metric differences <= 1e-6. Raw tensors also use rtol=atol=.001. Hungarian matching associates backend outputs; confidence-ordered greedy IoU >= .5 matching measures detection precision/recall/F1 against the frozen references. Frame animal recall and empty removal are also compared. AP is not calculated by this tool.
+
+Outputs are saved in a new timestamped Drive directory under `phase2_results/member4_recovery_v2/onnx_decision_parity/`. Existing evaluations are preserved. A parity failure is retained and reported; thresholds are never adjusted to obtain a pass. This compares the detector only; classifier, M5 and SAM remain PyTorch.
+
+`local_validation_40/`, when present, contains an initial run on the 40 available reviewed-mask validation images, a positive-only subset. It cannot measure empty-frame removal or replace full validation. The remaining source images could not be downloaded in the assistant environment because both public storage endpoints returned HTTP 403. Use the full Colab run for the complete evaluation evidence.

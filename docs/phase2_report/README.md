@@ -9,7 +9,7 @@ English report following the supplied four-member Phase 2 template (M4, M5, M8).
 
 The submitted Phase 1 report is unchanged. The recovered species classifier is a newly trained Phase 2 checkpoint, not the original Phase 1 weights. Recovery-v2 mask test results are development evidence after earlier test inspection; they are not an independent unseen test. The report retains the measured NO-GO deployment verdict.
 
-Final presentation and recorded demo video remain separate deliverables. Post-NMS ONNX decision parity, full-test error taxonomy and verified day/night analysis are not claimed as measured. Review the provisional self-assessment before submission.
+Final presentation and recorded demo video remain separate deliverables. ONNX decision/metric parity passes on a 40-positive-image validation subset; the full 1,208-frame Colab comparison is pending. Full-test error taxonomy and verified day/night analysis are not claimed as measured. Review the provisional self-assessment before submission.
 
 Build: run `pdflatex -interaction=nonstopmode -halt-on-error main.tex` twice.
 
