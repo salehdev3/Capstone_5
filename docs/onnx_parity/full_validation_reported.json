@@ -1,0 +1,64 @@
+{
+  "provenance": {
+    "source": "User-pasted Colab execution output on 2026-11-19; transcribed summary, not the original exported JSON",
+    "evaluation_folder": "/content/drive/MyDrive/CameraTrap_Phase2/phase2_results/member4_recovery_v2/onnx_decision_parity/20261119T070317993000Z",
+    "original_export_files_received": false,
+    "pending_files": [
+      "onnx_decision_parity.json",
+      "metrics.csv",
+      "per_image.csv",
+      "environment.json"
+    ],
+    "scope": "Fixed square 640 FP32 selection-validation comparison at confidence .045 and NMS .30. No AP or new historical test result."
+  },
+  "results": {
+    "raw_pass": true,
+    "raw_max_abs": 0.00946044921875,
+    "frames": 1208,
+    "frames_decision_pass": 1208,
+    "decision_pass": true,
+    "native_detections": 1626,
+    "onnx_detections": 1626,
+    "matched_detections": 1626,
+    "matched_fraction": 1.0,
+    "max_box_error_pixels": 0.000518798828125,
+    "max_confidence_error": 4.5299530029296875e-06,
+    "metrics": {
+      "pytorch": {
+        "tp": 1027,
+        "fp": 599,
+        "fn": 97,
+        "precision": 0.6316113161131611,
+        "recall": 0.9137010676156584,
+        "f1": 0.746909090909091,
+        "animal_recall": 0.9937332139659804,
+        "empty_removal": 0.25274725274725274,
+        "animal_frames": 1117,
+        "empty_frames": 91,
+        "frames": 1208
+      },
+      "onnx": {
+        "tp": 1027,
+        "fp": 599,
+        "fn": 97,
+        "precision": 0.6316113161131611,
+        "recall": 0.9137010676156584,
+        "f1": 0.746909090909091,
+        "animal_recall": 0.9937332139659804,
+        "empty_removal": 0.25274725274725274,
+        "animal_frames": 1117,
+        "empty_frames": 91,
+        "frames": 1208
+      }
+    },
+    "metric_absolute_differences": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "animal_recall": 0.0,
+      "empty_removal": 0.0
+    },
+    "metric_pass": true,
+    "passed": true
+  }
+}

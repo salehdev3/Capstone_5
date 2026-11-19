@@ -9,3 +9,9 @@ Predeclared tolerances: same detection counts/classes, matched IoU >= .999, maxi
 Outputs are saved in a new timestamped Drive directory under `phase2_results/member4_recovery_v2/onnx_decision_parity/`. Existing evaluations are preserved. A parity failure is retained and reported; thresholds are never adjusted to obtain a pass. This compares the detector only; classifier, M5 and SAM remain PyTorch.
 
 `local_validation_40/`, when present, contains an initial run on the 40 available reviewed-mask validation images, a positive-only subset. It cannot measure empty-frame removal or replace full validation. The remaining source images could not be downloaded in the assistant environment because both public storage endpoints returned HTTP 403. Use the full Colab run for the complete evaluation evidence.
+
+## Full Colab result supplied on 19 November 2026
+
+The user's execution output reports PASS: 1,208/1,208 frames, 1,626/1,626 matched detections, no decision mismatches and zero differences in precision, recall, F1, animal recall and empty removal. Both backends produce TP/FP/FN 1027/599/97. Maximum box error is .000518798828125 input pixels; confidence error is 4.5299530029296875e-06. Raw maximum absolute error .00946044921875 passes the combined relative/absolute tolerance; it is not an absolute-only .001 check.
+
+`full_validation_reported.json` transcribes the user-pasted output and labels its provenance. It is not represented as the original generated summary. Archive the original `onnx_decision_parity.json`, `metrics.csv`, `per_image.csv` and `environment.json` from Drive evaluation `20261119T070317993000Z` before final packaging. These validation parity values use fixed square preprocessing and do not replace the earlier detector test/acceptance metrics.

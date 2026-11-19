@@ -276,13 +276,26 @@ Only the detector is exported: FP32, static $1\times3\times640\times640$, opset 
 \par\noindent\begin{tabularx}{\linewidth}{@{}Y l Y@{}}\toprule
 Check & Result & Scope\\\midrule
 Raw detector tensors & Pass & Shape $1\times5\times8400$, finite, all three probes within tolerance\\
-Post-NMS decisions & 40-image subset: pass & 53/53 detections matched; full 1,208-frame comparison pending\\
-Evaluation-set metric parity & 40-image subset: pass & Precision/recall/F1 identical; full validation and empty-frame parity pending; AP parity not measured\\
+Post-NMS decisions & Pass & 1,626/1,626 detections matched across all 1,208 validation frames\\
+Evaluation-set metric parity & Pass & Precision/recall/F1, animal recall and empty removal identical; AP parity not measured\\
 FP16 / INT8 parity & Not used & CPU FP32 selected\\
 Full-pipeline ONNX parity & Not applicable & Classifier, M5 and SAM remain PyTorch\\\bottomrule
 \end{tabularx}\par
 
-A subsequent export-equivalence check used the 40 locally available positive selection-validation images with identical square $640\times640$ letterboxing (\texttt{rect=False}), confidence .045 and NMS .30. All 53 detections match at IoU $\geq .999$; maximum coordinate difference is $6.10\times10^{-5}$ input pixels and confidence difference $1.28\times10^{-6}$. Both backends give TP/FP/FN 37/16/4, precision .698113, recall .902439 and F1 .787234. Raw outputs also satisfy the combined absolute/relative tolerance. This positive-only subset cannot evaluate empty removal. Full 1,208-frame validation parity remains pending because the other images were unavailable locally. A Colab notebook is supplied for that run. The shared square preprocessing does not establish parity to native inference using different rectangular padding. Evidence: \texttt{docs/onnx\_parity/local\_validation\_40/}.
+The complete Colab export-equivalence run reports PASS on all 1,208 retained selection-validation images (1,117 animal frames, 91 empty frames). Both backends receive identical square $640\times640$ letterboxing (\texttt{rect=False}), confidence .045 and NMS .30. All 1,626 detections match at IoU $\geq .999$, with zero frame-level decision mismatches. Maximum coordinate difference is .000519 input pixels; maximum confidence difference is $4.53\times10^{-6}$. Raw outputs pass $|a-b|\leq .001+.001|b|$; their maximum absolute difference .00946045 does not imply failure of the combined tolerance.
+
+\begin{center}\begin{tabular}{lrr}\toprule
+Operating metric & PyTorch & ONNX\\\midrule
+TP / FP / FN & 1,027 / 599 / 97 & 1,027 / 599 / 97\\
+Precision & .631611 & .631611\\
+Box recall & .913701 & .913701\\
+F1 & .746909 & .746909\\
+Animal-frame recall & .993733 & .993733\\
+Empty removal & .252747 & .252747\\\bottomrule
+\end{tabular}\end{center}
+Absolute differences are zero for all five operating metrics. These are validation parity results, not new test scores or AP measurements. Shared square preprocessing differs from native rectangular inference used in earlier experiments, so these values do not replace earlier operating-point or acceptance results. Classifier, M5 and SAM are outside this parity claim.
+
+The complete results above are transcribed from the supplied Colab execution output, evaluation \texttt{20261119T070317993000Z}. Original exported summary, per-image evidence, metrics CSV and environment JSON remain to be archived with the report. The earlier independently executed 40-positive-image subset and the supplied full-run summary are retained in \texttt{docs/onnx\_parity/}.
 
 \subsection{Benchmark}
 Hardware is Colab CPU, reported Intel Xeon at 2.00 GHz, four inference threads. A CUDA-enabled package build does not imply GPU inference. Host hardware can vary between sessions.
@@ -341,7 +354,7 @@ Detection conversion/training/AP/operating metrics & Present; full-test FP taxon
 Small-object / night analysis & Small proxy and grayscale groups present; verified IR/night labels unavailable\\
 Masks/training/overlap/applicable AP & Present; reference concerns and development-test reuse disclosed\\
 Service/stage timing/release/model card & Present; local functional service, not production hosting\\
-ONNX parity & Raw tensor checks present; 40-positive-image post-NMS/metric check passes; full validation pending\\
+ONNX parity & Raw tensor checks present; full validation post-NMS/operating-metric check passes; original export files pending archival\\
 Image/video outputs & Image gallery present; video execution/recorded fallback not evidenced at freeze\\
 Acceptance decision & 4/7 targets pass; unattended deployment NO-GO\\
 Open-world extension & Not applicable, four-member team\\\bottomrule
@@ -352,7 +365,7 @@ Open-world extension & Not applicable, four-member team\\\bottomrule
 Component & Maximum & Provisional self-score & Known gap\\\midrule
 Detection M4 & 15 & 12 & Recall/small objects; complete taxonomy/video evidence\\
 Segmentation M5 & 15 & 12 & Reference noise, development reuse and AP scope\\
-Integration M8 & 15 & 12 & Latency/species targets and full-validation ONNX parity pending\\\midrule
+Integration M8 & 15 & 12 & Latency/species targets and original full-run ONNX evidence pending archival\\\midrule
 Total & 45 & 36 & Instructor determines actual grade\\\bottomrule
 \end{tabularx}\par
 These provisional self-scores are a report self-assessment, not an instructor award or a claim that all requirements passed.
