@@ -336,6 +336,28 @@ The new model uses 2,819 train, 1,124 selection-validation and 483 calibration c
 \fig{species_training.png}{1}{Recovery classifier train/selection-validation curves: 224-pixel crops, 14 classes, seed 42; argmax metrics. Temperature is subsequently fitted on the separate calibration split, not these curves or test.}
 On 508 historical test crops: accuracy .742126, macro-F1 .482517, top-3 accuracy .899606 and ECE .051280. Fourteen training classes are averaged even though rodent has zero test support. Several rare classes have zero F1. On calibration data, ECE rises from .06081 to .06899 despite NLL-based temperature fitting; temperature scaling is not claimed to improve every ECE estimate. Fresh-model reload verifies saved-logit parity on two calibration inputs.
 
+\section{V3 optimization experiments}
+V3 is evaluated as an experimental alternative to the measured Recovery-v2 deployment. All following accuracy/overlap comparisons use selection-validation data, not a new test. YOLO11s and YOLO11s-seg use 960-pixel inputs, AdamW, moderate augmentation and validation early stopping; baseline standalone YOLO11n models use 640 pixels. The detector stopped after 62 epochs (best recorded native AP at epoch 50), segmentation after 38, and species after 11 (selected epoch 4). Six previously documented training-only mask-polygon removals are reused; validation references remain unchanged.
+
+\begin{center}\small\begin{tabular}{lrr}\toprule
+Validation measure & Baseline & V3 candidate\\\midrule
+Detector mAP50 & .90900 & .92780\\
+Detector mAP50--95 & .52314 & .54739\\
+Species accuracy (1,124 crops) & .76157 & .76868\\
+Species macro-F1 (14 classes) & .36854 & .37783\\
+Standalone mask mean IoU (40 images) & .60631 & .65504\\\bottomrule
+\end{tabular}\end{center}
+Detector AP improves, but the predeclared triage rule selects the original detector at square input 640/confidence .05/NMS .30: validation animal-frame recall .99105 and empty removal .27473. Thus improved AP does not imply that the new detector was selected for triage. This experimental setting does not replace the deployed v2 operating point or its test results.
+
+The V3 direct segmenter improves on the best standalone baseline evaluated in this run (threshold grid .05/.10/.20/.35/.50), while its .65504 mean IoU remains below the full Recovery-v2 M4+M5+SAM validation value .82397. A CPU full-pipeline benchmark on the same five validation functional cases gives p95 2.08529 s versus 9.07134 s for v2, a 77.0\% reduction. The candidate uses direct M5 masks and executes the detector once; mask quality is a material trade-off. The 20-repeat benchmark, after three warmups, excludes HTTP. A separate real five-image HTTP request returned status 200. These are candidate results, not acceptance of a replacement release.
+
+\fig{v3_classifier_diagnostics.png}{1}{V3 classifier fitting/support diagnostics. Left: unaugmented fixed 512-crop training subset and all 1,124 selection-validation crops, input 224, argmax, before temperature calibration. Right: counts by fixed species vocabulary; thresholds not applicable. Validation temperature is fitted separately on calibration data.}
+At selected epoch 4, unaugmented training-subset accuracy is .94922 versus validation .76868 (18.05 percentage-point gap). Later training accuracy increases without validation improvement, consistent with overfitting; early stopping retains the earlier checkpoint. Direct masks similarly have train-subset IoU .80880 versus validation .65504, a 15.38-point gap. These subset comparisons are diagnostics, not a certification that fitting problems are absent.
+
+Five classes have no validation references: badger, deer, fox, rodent and skunk. Under the existing all-14-class macro-F1 definition with zero F1 for unsupported classes, the maximum on this split is $9/14=.64286$, even with perfect classification of represented classes. Therefore a 90\% all-class validation macro-F1 cannot be demonstrated on this release. Supported-class macro-F1 .58774 is recorded only as a diagnostic, not substituted for the original metric. Classifier accuracy can still exceed 90\%, but the present result does not. Additional reviewed, camera/event-disjoint class coverage is needed for a credible all-class assessment.
+
+V3 model/policy hashes, validation sweeps, confusion matrix, fitting histories and CPU/HTTP evidence are archived under \texttt{results/phase2/optimization\_v3\_review/}. The deployment decision and historical test results above continue to describe v2. Next experiments prioritize representative class coverage and reference-mask quality before further tuning; no new >90\% result is claimed.
+
 \section{Obstacles and responses}
 \par\noindent\begin{tabularx}{\linewidth}{@{}Y l Y Y@{}}\toprule
 Obstacle & Module & Impact & Response / limitation\\\midrule

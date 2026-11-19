@@ -158,7 +158,8 @@ def report():
     pdf=tex.parent/'Phase2_Report.pdf';assert pdf.read_bytes().startswith(b'%PDF');sources.add(pdf)
     archive=tex.parent/'Phase2_Report_Overleaf.zip';sources.add(archive)
     with zipfile.ZipFile(archive) as z:assert z.testzip() is None and z.read('main.tex')==tex.read_bytes()
-    return 'English template report PDF, 13 referenced figure files and matching editable source archive'
+    return 'English template report PDF, all referenced figures and matching editable source archive'
+
 
 def reproducibility():
     for name in ['Phase2_Final_Presentation_English.ipynb','Member4_ONNX_Decision_Parity.ipynb','Detection_Size_Breakdown.ipynb']:

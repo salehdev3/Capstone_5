@@ -1,0 +1,5 @@
+{
+  "best_sha256": "60dfc13188fec981424105452db51e44a00ca5fd3530b8d6a2397653d460b4b2",
+  "task": "segmentation",
+  "selection": "native validation AP; later overlap/operating-point comparison required"
+}

@@ -1,0 +1,440 @@
+[
+  {
+    "id": "585dac58-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.87988281 0.86077642]"
+  },
+  {
+    "id": "5862922b-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.74707031 0.16198125]"
+  },
+  {
+    "id": "586c87d3-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.33886719 0.87282461]"
+  },
+  {
+    "id": "58732cda-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.92285156 0.58099061]"
+  },
+  {
+    "id": "587eec8b-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.95703125 0.78313255]"
+  },
+  {
+    "id": "588c155b-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Self-intersection[0.45117188 0.87282461]"
+  },
+  {
+    "id": "58a52f5f-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.52832031 0.75502008]"
+  },
+  {
+    "id": "58ac0f44-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.6796875 0.38554215]"
+  },
+  {
+    "id": "58b4a986-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Self-intersection[0.88378906 0.99732262]"
+  },
+  {
+    "id": "58b6651b-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Self-intersection[0.0625 0.57429719]"
+  },
+  {
+    "id": "58c036fb-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.4453125 0.56894243]"
+  },
+  {
+    "id": "58cb1458-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.15332031 0.6987952]"
+  },
+  {
+    "id": "58d614b5-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.70019531 0.72958499]"
+  },
+  {
+    "id": "58e40f25-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.82617188 0.53012049]"
+  },
+  {
+    "id": "58eacb0e-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.55664062 0.54216868]"
+  },
+  {
+    "id": "58f29533-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.49609375 0.40696117]"
+  },
+  {
+    "id": "59167937-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.43554688 0.83534139]"
+  },
+  {
+    "id": "591b22e5-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.2109375 0.76706827]"
+  },
+  {
+    "id": "59247b7d-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Self-intersection[0.16992188 0.548983828184583]"
+  },
+  {
+    "id": "59279c0b-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.25097656 0.74564928]"
+  },
+  {
+    "id": "59279c2b-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.79882812 0.67871487]"
+  },
+  {
+    "id": "59328bec-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.57519531 0.53681391]"
+  },
+  {
+    "id": "593ef535-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Self-intersection[0.14257812 0.79116464]"
+  },
+  {
+    "id": "593ef66a-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Self-intersection[0.23535156 0.86345381]"
+  },
+  {
+    "id": "5940839c-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.49902344 0.57697457]"
+  },
+  {
+    "id": "59420fa6-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Self-intersection[0.25 0.92771083]"
+  },
+  {
+    "id": "59484703-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.80078125 0.80187416]"
+  },
+  {
+    "id": "5976a408-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.40039062 0.98661309]"
+  },
+  {
+    "id": "59849510-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Self-intersection[0.92578125 0.54484606]"
+  },
+  {
+    "id": "598c5c19-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.38769531 0.77911645]"
+  },
+  {
+    "id": "598f789a-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.6875 0.3493976]"
+  },
+  {
+    "id": "5995b00c-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.77148438 0.63319945]"
+  },
+  {
+    "id": "59974020-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.73242188 0.51432294]"
+  },
+  {
+    "id": "599d7ea6-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.55664062 0.99732262]"
+  },
+  {
+    "id": "59a30c08-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.49511719 0.51004016]"
+  },
+  {
+    "id": "59ac6d21-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 1,
+    "reason": "Self-intersection[0.952202632203019 0.70520883]"
+  },
+  {
+    "id": "59adfeaf-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.5546875 0.708166]"
+  },
+  {
+    "id": "59b4865c-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Self-intersection[0.27929688 0.58232933]"
+  },
+  {
+    "id": "59c4bfc8-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.75878906 0.7389558]"
+  },
+  {
+    "id": "59c4bfc8-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 1,
+    "reason": "Self-intersection[0.95214844 0.64792502]"
+  },
+  {
+    "id": "59dc2723-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Self-intersection[0.05664062 0.61713523]"
+  },
+  {
+    "id": "59f12913-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.75488281 0.61311913]"
+  },
+  {
+    "id": "59f461c8-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.30078125 0.79785812]"
+  },
+  {
+    "id": "59f9453f-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Self-intersection[0.28417969 0.59036142]"
+  },
+  {
+    "id": "59fae493-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.27929688 0.52744311]"
+  },
+  {
+    "id": "59fae493-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 1,
+    "reason": "Self-intersection[0.3203125 0.53145915]"
+  },
+  {
+    "id": "59fc8001-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Self-intersection[0.52929688 0.2811245]"
+  },
+  {
+    "id": "59fc800f-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.55664062 0.69210172]"
+  },
+  {
+    "id": "59ffbbf9-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Self-intersection[0.59082031 0.83266401]"
+  },
+  {
+    "id": "5a0c9bc3-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.7890625 0.708166]"
+  },
+  {
+    "id": "5a0c9d71-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.83789062 0.65863454]"
+  },
+  {
+    "id": "5a0fd149-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.57714844 0.37617135]"
+  },
+  {
+    "id": "5a0fd1e7-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.44628906 0.97724229]"
+  },
+  {
+    "id": "5a217681-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Self-intersection[0.40527344 0.53776044]"
+  },
+  {
+    "id": "5a2637a4-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.51269531 0.42436412]"
+  },
+  {
+    "id": "5a2637da-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.75976562 0.60374832]"
+  },
+  {
+    "id": "5a296343-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 1,
+    "reason": "Ring Self-intersection[0.2421875 0.51539493]"
+  },
+  {
+    "id": "5a2af6aa-23d2-11e8-a6a3-ec086b02610b",
+    "split": "train",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.46289062 0.50334674]"
+  },
+  {
+    "id": "58df6a41-23d2-11e8-a6a3-ec086b02610b",
+    "split": "val_select",
+    "polygon": 0,
+    "reason": "Self-intersection[0.19628906 0.51807231]"
+  },
+  {
+    "id": "596a5004-23d2-11e8-a6a3-ec086b02610b",
+    "split": "val_select",
+    "polygon": 0,
+    "reason": "Self-intersection[0.49902344 0.80187416]"
+  },
+  {
+    "id": "5976a1e7-23d2-11e8-a6a3-ec086b02610b",
+    "split": "val_select",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.34472656 0.25970548]"
+  },
+  {
+    "id": "599290e7-23d2-11e8-a6a3-ec086b02610b",
+    "split": "val_select",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.6953125 0.47255689]"
+  },
+  {
+    "id": "59973f4e-23d2-11e8-a6a3-ec086b02610b",
+    "split": "val_select",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.58984375 0.58500671]"
+  },
+  {
+    "id": "59a62b26-23d2-11e8-a6a3-ec086b02610b",
+    "split": "val_select",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.10742188 0.58232933]"
+  },
+  {
+    "id": "59b9376f-23d2-11e8-a6a3-ec086b02610b",
+    "split": "val_select",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.5859375 0.42034805]"
+  },
+  {
+    "id": "59b93933-23d2-11e8-a6a3-ec086b02610b",
+    "split": "val_select",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.21386719 0.58634537]"
+  },
+  {
+    "id": "59e77d63-23d2-11e8-a6a3-ec086b02610b",
+    "split": "val_select",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.68847656 0.45113787]"
+  },
+  {
+    "id": "59eab894-23d2-11e8-a6a3-ec086b02610b",
+    "split": "val_select",
+    "polygon": 0,
+    "reason": "Self-intersection[0.45117188 0.53681391]"
+  },
+  {
+    "id": "59f4610f-23d2-11e8-a6a3-ec086b02610b",
+    "split": "val_select",
+    "polygon": 0,
+    "reason": "Self-intersection[0.98046875 0.6064257]"
+  },
+  {
+    "id": "59fc7f04-23d2-11e8-a6a3-ec086b02610b",
+    "split": "val_select",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.65722656 0.42570281]"
+  },
+  {
+    "id": "5a163f75-23d2-11e8-a6a3-ec086b02610b",
+    "split": "val_select",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.71191406 0.52878177]"
+  },
+  {
+    "id": "5a1641b5-23d2-11e8-a6a3-ec086b02610b",
+    "split": "val_select",
+    "polygon": 0,
+    "reason": "Self-intersection[0.89465335748531 0.54484606]"
+  },
+  {
+    "id": "5a1fe939-23d2-11e8-a6a3-ec086b02610b",
+    "split": "val_select",
+    "polygon": 0,
+    "reason": "Ring Self-intersection[0.69238281 0.4029451]"
+  }
+]

@@ -11,6 +11,6 @@ counts,verified,Event-count application measure,288 supervised retained events; 
 benchmark,verified,Warmup and full-pipeline benchmark,20 full-pipeline timings after 3 warmups; p50/p95/p99 and throughput reconstructed,docs/phase2_report/evidence/supplied/application/
 ONNX,verified,Full validation raw/decision/operating-metric parity,"1,208 validation frames; 1,626 matched detections; original exports/hash identities consistent",docs/onnx_parity/full_validation_20261119T070317993000Z/
 decision,verified,Fixed criteria and documented decision,All 7 fixed criterion calculations agree with the documented decision; values preserved,docs/phase2_report/evidence/supplied/application/
-report,verified,Compiled English report and matching source,"English template report PDF, 13 referenced figure files and matching editable source archive",docs/phase2_report/
+report,verified,Compiled English report and matching source,"English template report PDF, all referenced figures and matching editable source archive",docs/phase2_report/
 source,verified,Code/notebook static reproducibility,"Notebook cells parse, critical loader hashes match modules, Phase 1 report preserved; runtime replay is a separate task",notebooks/
 backup,verified,Archived W&B receipt,Committed W&B artifact receipt and run URL archived; no new upload claimed,docs/phase2_report/evidence/supplied/evidence/M8_WandB_evidence_link/

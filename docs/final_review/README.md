@@ -16,7 +16,7 @@ Review of the current measured baseline before further optimization. No results 
 | Warmup and full-pipeline benchmark | 20 full-pipeline timings after 3 warmups; p50/p95/p99 and throughput reconstructed |
 | Full validation raw/decision/operating-metric parity | 1,208 validation frames; 1,626 matched detections; original exports/hash identities consistent |
 | Fixed criteria and documented decision | All 7 fixed criterion calculations agree with the documented decision; values preserved |
-| Compiled English report and matching source | English template report PDF, 13 referenced figure files and matching editable source archive |
+| Compiled English report and matching source | English template report PDF, all referenced figures and matching editable source archive |
 | Code/notebook static reproducibility | Notebook cells parse, critical loader hashes match modules, Phase 1 report preserved; runtime replay is a separate task |
 | Archived W&B receipt | Committed W&B artifact receipt and run URL archived; no new upload claimed |
 

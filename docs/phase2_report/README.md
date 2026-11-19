@@ -16,3 +16,5 @@ Build: run `pdflatex -interaction=nonstopmode -halt-on-error main.tex` twice.
 Image panels are derived camera-trap evaluation illustrations. Dataset attribution: Caltech Camera Traps / LILA, CDLA-Permissive, https://lila.science/datasets/caltech-camera-traps .
 
 The separate Small/Medium/Large detector recall table is derived from the saved fixed operating-point outputs; original CSV, extraction protocol and population/aggregate verification are archived under `evidence/detection_size_breakdown/`. No training or historical inference was repeated.
+
+The V3 experiment section compares actual new validation results and candidate CPU/HTTP evidence. It distinguishes standalone masks from the deployed SAM pipeline and explains the fixed all-class macro-F1 support ceiling. Archived experiment summaries are under `results/phase2/optimization_v3_review/`. No new historical test metrics replace v2.

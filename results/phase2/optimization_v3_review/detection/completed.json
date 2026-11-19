@@ -1,0 +1,5 @@
+{
+  "best_sha256": "d9403728c5b53ca0355f369e0ffcf55d6f3f13e9f711d48d59215a05a86d1601",
+  "task": "detection",
+  "selection": "native validation AP; later overlap/operating-point comparison required"
+}
