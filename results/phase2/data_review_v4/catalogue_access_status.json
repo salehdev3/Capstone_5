@@ -1,0 +1,6 @@
+{
+  "status": "not_downloaded",
+  "reason": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+  "colab_stage": "Plan training candidates",
+  "scope": "No extra image or class coverage is claimed."
+}

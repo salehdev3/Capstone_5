@@ -1,0 +1,11 @@
+{
+  "images": 190,
+  "images_with_geometry_findings": 71,
+  "invalid_polygons": 73,
+  "conservative_suggestions": 12,
+  "minimum_suggestion_raster_iou": 0.9960460416483613,
+  "named_human_reviews_completed": 0,
+  "original_sources_changed": false,
+  "test_references_in_queue": false,
+  "scope": "Train/validation source audit and optional geometry-only suggestions, not approved corrections."
+}

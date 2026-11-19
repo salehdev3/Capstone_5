@@ -1,0 +1,31 @@
+{
+  "manifest_sha256": "d3bfb6ba0c9d31412f9d603a6f63ae7c4890f458c5d2aa2a87d7653bb882bb53",
+  "frames": 6037,
+  "classes": [
+    "badger",
+    "bird",
+    "bobcat",
+    "cat",
+    "coyote",
+    "deer",
+    "dog",
+    "fox",
+    "opossum",
+    "rabbit",
+    "raccoon",
+    "rodent",
+    "skunk",
+    "squirrel"
+  ],
+  "missing_validation_classes": [
+    "badger",
+    "deer",
+    "fox",
+    "rodent",
+    "skunk"
+  ],
+  "all_class_validation_macro_f1_ceiling": 0.6428571428571429,
+  "planning_floor": 100,
+  "planning_floor_scope": "Planning target, not an adequacy guarantee or training requirement.",
+  "scope": "Counts are human-box known-class crop counts. No split reassignment or new collection has occurred."
+}
