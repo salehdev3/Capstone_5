@@ -10,11 +10,6 @@
     "target": "submission/Demo.mp4 and detector video execution receipt"
   },
   {
-    "id": "size_breakdown",
-    "required": "Run notebooks/Detection_Size_Breakdown.ipynb to derive separate small/medium/large recall rows from the saved fixed predictions; state the original size definition.",
-    "target": "detection size-bin CSV and report table"
-  },
-  {
     "id": "clean_replay",
     "required": "Run the existing Initialize Member 4 and HTTP batch cells in a fresh session with the saved weights; preserve the new execution receipt.",
     "target": "timestamped fresh-runtime service receipt"

@@ -1,8 +1,8 @@
 {
   "scope": "Archived-evidence consistency and static source review; no new runtime execution, deployment approval or course-grade claim.",
-  "verified_groups": 14,
+  "verified_groups": 15,
   "review_required_groups": [],
-  "submission_actions": 5,
+  "submission_actions": 4,
   "phase1_preserved": true,
-  "baseline_commit": "56274e755bd068567209be1b432c461bb0c226f8"
+  "baseline_commit": "549d8a281d2ed64edf64539f8cd0f2fb998a2115"
 }

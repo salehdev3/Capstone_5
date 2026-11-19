@@ -131,13 +131,15 @@ Appearance group & Frames & Box P & Box R & Box F1\\\midrule
 Grayscale proxy & 269 & .8367 & .9389 & .8849\\
 Colour proxy & 285 & .6258 & .8293 & .7133\\\bottomrule
 \end{tabular}\end{center}
-Grayscale appearance is not verified nighttime/infrared ground truth. The archived size proxy is normalized box area times $640^2<32^2$, not exact COCO area after letterboxing. All five such small objects are missed. Medium/large are merged because separate results were not exported.
-\begin{center}\begin{tabular}{lrr}\toprule
-Size proxy & Instances & Recall@op.\\\midrule
-Small & 5 & .0000\\
-Medium + large & 503 & .8946\\\bottomrule
+Grayscale appearance is not verified nighttime/infrared ground truth. Size bins use normalized reference-box area times $640^2$: Small $<32^2$, Medium $[32^2,96^2)$, Large $\geq96^2$. This preserves the original size proxy rather than exact area after letterboxing.
+\begin{center}\begin{tabular}{lrrr}\toprule
+Size proxy & Instances & Matched & Recall@op.\\\midrule
+Small & 5 & 0 & .0000\\
+Medium & 154 & 132 & .8571\\
+Large & 349 & 318 & .9112\\\midrule
+All & 508 & 450 & .8858\\\bottomrule
 \end{tabular}\end{center}
-The combined recall is derived as $450/503$. Five small instances are insufficient for a stable population estimate.
+The table is derived from the saved fixed-detector predictions on the same 554 retained test frames, confidence .045/NMS .30, using the original one-to-one IoU $\geq .5$ matching. No inference, threshold selection or training was repeated. Bin counts were independently checked against the frozen manifest; matched totals reproduce TP/FP/FN 450/170/58. Five small instances are insufficient for a stable population estimate. Source checksums and the extraction protocol accompany the table.
 
 \subsection{Error analysis}
 Saleh reviewed 12 test-gallery frames with 11 FP and two FN counts; one localization error contributes both. This breakdown is for the gallery only, not all 170 FP. Wrong-species classification is not applicable to the single-class detector.
@@ -350,7 +352,7 @@ Drive mount conflicts / upload waits & M8 & Backup/receipt delays & Preserve loc
 The supplied audit passes 35/38 checks. Learned weights, policies, reference/failure reviews, metrics, HTTP execution, timing and W\&B receipt are present. The remaining artifacts at that snapshot are report PDF, final presentation PDF and recorded demo video. This report supplies the first; slides/video must be added and the audit rerun. File presence is not content approval or grading completeness.
 \par\noindent\begin{tabularx}{\linewidth}{@{}Y Y@{}}\toprule
 Evidence & Status at report freeze\\\midrule
-Detection conversion/training/AP/operating metrics & Present; full-test FP taxonomy and separate medium/large recall not exported\\
+Detection conversion/training/AP/operating metrics & Present; Small/Medium/Large recall table and extraction protocol archived\\
 Small-object / night analysis & Small proxy and grayscale groups present; verified IR/night labels unavailable\\
 Masks/training/overlap/applicable AP & Present; reference concerns and development-test reuse disclosed\\
 Service/stage timing/release/model card & Present; local functional service, not production hosting\\

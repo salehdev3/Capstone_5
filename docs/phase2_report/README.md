@@ -14,3 +14,5 @@ Final presentation and recorded demo video remain separate deliverables. ONNX de
 Build: run `pdflatex -interaction=nonstopmode -halt-on-error main.tex` twice.
 
 Image panels are derived camera-trap evaluation illustrations. Dataset attribution: Caltech Camera Traps / LILA, CDLA-Permissive, https://lila.science/datasets/caltech-camera-traps .
+
+The separate Small/Medium/Large detector recall table is derived from the saved fixed operating-point outputs; original CSV, extraction protocol and population/aggregate verification are archived under `evidence/detection_size_breakdown/`. No training or historical inference was repeated.

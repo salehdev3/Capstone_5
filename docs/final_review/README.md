@@ -6,6 +6,7 @@ Review of the current measured baseline before further optimization. No results 
 | --- | --- |
 | Frozen grouped dataset | 6,037 frozen frames; camera/event/decoded-pixel split separation checked |
 | Detector training and operating-point evidence | 40 training epochs, 15 archived threshold combinations and native low-floor test AP |
+| Separate Small/Medium/Large recall | Small/Medium/Large populations 5/154/349; matched totals reconstruct 450/508 detections from fixed cached outputs |
 | Human annotation review records | 100 animal-box image reviews and 230 reference-mask reviews with named reviewers |
 | Segmentation evaluation and operating-mask AP | Recovery-v2 development evaluation: 40 images; IoU 0.739877; accepted-output mask AP archived |
 | Reviewed detector and mask examples | 12 reviewed detector examples and 12 reviewed Recovery-v2 mask examples |

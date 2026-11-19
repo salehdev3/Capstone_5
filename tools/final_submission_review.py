@@ -48,6 +48,24 @@ def detection():
     sweeps=table(BASE/'evidence/M4_thresholds/threshold_sweep.csv');assert len(sweeps)==15
     return '40 training epochs, 15 archived threshold combinations and native low-floor test AP'
 
+def size_breakdown():
+    folder=ROOT/'docs/phase2_report/evidence/detection_size_breakdown'
+    protocol=read(folder/'protocol.json');frame=table(folder/'detection_size_recall.csv');identity=protocol['identity']
+    assert hashlib.sha256(json.dumps(identity,sort_keys=True).encode()).hexdigest()==protocol['identity_sha256']
+    rows=[r for r in manifest() if r['split']=='test' and not(r['animal'] and (r.get('incomplete_boxes',True) or not r['boxes']))]
+    counts=dict(Small=0,Medium=0,Large=0)
+    for r in rows:
+        for box in r['boxes']:
+            b=box['xyxy'];area=(b[2]-b[0])*(b[3]-b[1])*640**2
+            counts['Small' if area<32**2 else 'Medium' if area<96**2 else 'Large']+=1
+    assert {r['size']:int(r['instances']) for r in frame}==counts
+    for r in frame:close(float(r['recall']),int(r['matched'])/int(r['instances']))
+    assert sum(int(r['instances']) for r in frame)==508 and sum(int(r['matched']) for r in frame)==protocol['tp']==450
+    assert len(protocol['source_checksums'])==len(rows)==554
+    assert {Path(k).stem for k in protocol['source_checksums']}=={r['id'] for r in rows}
+    for name,expected in read(folder/'verification.json')['files'].items():assert sha(folder/name)==expected
+    return 'Small/Medium/Large populations 5/154/349; matched totals reconstruct 450/508 detections from fixed cached outputs'
+
 def reviews():
     frame=table(ROOT/'results/phase2/member1/detection_review.csv');assert len(frame)==100 and len({r['id'] for r in frame})==100
     assert all(r['decision']=='verified' and r['reviewer'].strip() for r in frame)
@@ -161,12 +179,12 @@ def wandb():
 
 def main():
     OUT.mkdir(parents=True,exist_ok=True)
-    items=[('data','Frozen grouped dataset','releases/species_recovery/phase1_training_metadata.zip',dataset_check),('M4','Detector training and operating-point evidence','docs/phase2_report/evidence/',detection),('reviews','Human annotation review records','docs/phase2_report/evidence/supplied/evidence/',reviews),('M5','Segmentation evaluation and operating-mask AP','docs/phase2_report/evidence/supplied/segmentation/',segmentation),('analysis','Reviewed detector and mask examples','docs/phase2_report/evidence/supplied/evidence/',failure_reviews),('species','New classifier calibration/reload and historical evaluation','docs/phase2_report/evidence/supplied/',species),('HTTP','Executed full-stage HTTP batch','docs/phase2_report/evidence/supplied/http_demo/',http),('counts','Event-count application measure','docs/phase2_report/evidence/supplied/application/',counting),('benchmark','Warmup and full-pipeline benchmark','docs/phase2_report/evidence/supplied/application/',latency),('ONNX','Full validation raw/decision/operating-metric parity','docs/onnx_parity/full_validation_20261119T070317993000Z/',onnx),('decision','Fixed criteria and documented decision','docs/phase2_report/evidence/supplied/application/',acceptance),('report','Compiled English report and matching source','docs/phase2_report/',report),('source','Code/notebook static reproducibility','notebooks/',reproducibility),('backup','Archived W&B receipt','docs/phase2_report/evidence/supplied/evidence/M8_WandB_evidence_link/',wandb)]
+    items=[('data','Frozen grouped dataset','releases/species_recovery/phase1_training_metadata.zip',dataset_check),('M4','Detector training and operating-point evidence','docs/phase2_report/evidence/',detection),('M4_sizes','Separate Small/Medium/Large recall','docs/phase2_report/evidence/detection_size_breakdown/',size_breakdown),('reviews','Human annotation review records','docs/phase2_report/evidence/supplied/evidence/',reviews),('M5','Segmentation evaluation and operating-mask AP','docs/phase2_report/evidence/supplied/segmentation/',segmentation),('analysis','Reviewed detector and mask examples','docs/phase2_report/evidence/supplied/evidence/',failure_reviews),('species','New classifier calibration/reload and historical evaluation','docs/phase2_report/evidence/supplied/',species),('HTTP','Executed full-stage HTTP batch','docs/phase2_report/evidence/supplied/http_demo/',http),('counts','Event-count application measure','docs/phase2_report/evidence/supplied/application/',counting),('benchmark','Warmup and full-pipeline benchmark','docs/phase2_report/evidence/supplied/application/',latency),('ONNX','Full validation raw/decision/operating-metric parity','docs/onnx_parity/full_validation_20261119T070317993000Z/',onnx),('decision','Fixed criteria and documented decision','docs/phase2_report/evidence/supplied/application/',acceptance),('report','Compiled English report and matching source','docs/phase2_report/',report),('source','Code/notebook static reproducibility','notebooks/',reproducibility),('backup','Archived W&B receipt','docs/phase2_report/evidence/supplied/evidence/M8_WandB_evidence_link/',wandb)]
     for key,label,path,fn in items:check(key,label,path,fn)
     with (OUT/'verified_evidence.csv').open('w',newline='') as f:
         writer=csv.DictWriter(f,fieldnames=list(checks[0]));writer.writeheader();writer.writerows(checks)
     verified=[r for r in checks if r['status']=='verified'];review=[r for r in checks if r['status']!='verified']
-    actions=[dict(id='presentation',required='Prepare the final 15–20 minute presentation PDF; every member presents their contribution.',target='submission/Final_Presentation.pdf'),dict(id='demo',required='Record an end-to-end demo fallback and include detector execution on images and a video clip, as listed in the supplied template.',target='submission/Demo.mp4 and detector video execution receipt'),dict(id='size_breakdown',required='Run notebooks/Detection_Size_Breakdown.ipynb to derive separate small/medium/large recall rows from the saved fixed predictions; state the original size definition.',target='detection size-bin CSV and report table'),dict(id='clean_replay',required='Run the existing Initialize Member 4 and HTTP batch cells in a fresh session with the saved weights; preserve the new execution receipt.',target='timestamped fresh-runtime service receipt'),dict(id='submission_package',required='Install the reviewed report and presentation in submission/, add the recorded demo, rerun the existing Drive audit and freeze the final package.',target='versioned Drive submission ZIP')]
+    actions=[dict(id='presentation',required='Prepare the final 15–20 minute presentation PDF; every member presents their contribution.',target='submission/Final_Presentation.pdf'),dict(id='demo',required='Record an end-to-end demo fallback and include detector execution on images and a video clip, as listed in the supplied template.',target='submission/Demo.mp4 and detector video execution receipt'),dict(id='clean_replay',required='Run the existing Initialize Member 4 and HTTP batch cells in a fresh session with the saved weights; preserve the new execution receipt.',target='timestamped fresh-runtime service receipt'),dict(id='submission_package',required='Install the reviewed report and presentation in submission/, add the recorded demo, rerun the existing Drive audit and freeze the final package.',target='versioned Drive submission ZIP')]
     (OUT/'required_actions.json').write_text(json.dumps(actions,indent=2))
     (OUT/'audit_status.json').write_text(json.dumps(dict(scope='Archived-evidence consistency and static source review; no new runtime execution, deployment approval or course-grade claim.',verified_groups=len(verified),review_required_groups=review,submission_actions=len(actions),phase1_preserved=True,baseline_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()),indent=2))
     frozen={str(p.relative_to(ROOT)):sha(p) for p in sorted(sources) if p.is_file()}
