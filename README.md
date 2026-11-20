@@ -2,6 +2,10 @@
 
 Project 5 — AI251P Applied Computer Vision. Phase 1: data preparation (M1), CNN classification (M2), transfer learning and experiment tracking (M3).
 
+## Phase 2 — one-cell final sprint
+
+[Open the final-sprint notebook in Colab](https://colab.research.google.com/github/salehdev3/Capstone_5/blob/phase-2/notebooks/Phase2_Final_Sprint_One_Cell.ipynb). Select a GPU and run its single code cell with the existing project Drive account. It reuses completed YOLO runs, trains/calibrates a new classifier, selects operating policies, measures quality/CPU/GPU latency, executes HTTP and ONNX checks, and generates report/slides/video drafts and an evidence package. Progress is resumable in Drive. Metrics and deployment decisions remain measured outcomes; team visual review is separate. [Workflow and scope](experiments/final_sprint/README.md).
+
 ## Project files
 
 - [Unified presentation](notebooks/Phase1_Final_Presentation.ipynb): data preparation, scratch CNN, frozen/full ResNet-50, evaluation and reporting in one session.

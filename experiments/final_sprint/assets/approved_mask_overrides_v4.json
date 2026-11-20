@@ -1,0 +1,714 @@
+{
+  "version": "reviewed_mask_overrides_v4",
+  "source_manifest_sha256": "d3bfb6ba0c9d31412f9d603a6f63ae7c4890f458c5d2aa2a87d7653bb882bb53",
+  "approved_overrides": {
+    "59247b7d-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "f03a6768ded3d8be135e05fb93c221297879e44929fb135f79e494ba8e4b68a6",
+      "image_pixel_sha256": "072d6d7e4751d08079f4e5d3ba42cdab25d594c19f703b555fb0e0775c776b9a",
+      "label_sha256": "1352b8a89bcc6864dfb437973ff92b9975b0efd065ca97207f2b2da03eb04215",
+      "review_sha256": "ca771882b782301b28f8c5cc63924e1358458ac12b461ff7c187ae3288973d97",
+      "topology_exception": true
+    },
+    "588c155b-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "cab79adf5c5c742330a1cced91c1922e40eff031210f7455ad36efcbbfadec70",
+      "image_pixel_sha256": "641a925b83f4ae2e8bc2e88e6f21644ffbbafd4e3b06d7e8740ac3d16a632349",
+      "label_sha256": "4b73dc59b0a2dadaea640e657e7bd1ae3e7a74f25bebe714b1ff647fee3b06d1",
+      "review_sha256": "eea57f7a81c7fba7208fc8935760eeb653bde67027d16e7f5bc61be5e8a8e481",
+      "topology_exception": false
+    },
+    "59a62b26-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "val_select",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "ea7970d1ce45af3703497eed59573f8d3a9ffac47433037fc151079a3f7f24b5",
+      "image_pixel_sha256": "3a1153fe82a5f6cbcbc3183b546cdf9fd1407ba2e63b89e9f2809a170451f1a8",
+      "label_sha256": "2b8bae4ac3400b56c9c445695a38017553e1c6c52ba0f22c7ecf74bda4f66bbd",
+      "review_sha256": "c4e3929b148db2ef2f00ada24b9ec054c06014e16d4ed983e418f127af885023",
+      "topology_exception": false
+    },
+    "59eab894-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "val_select",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "7dfde5b6ac50798b3aff18adda6d2b72eecf7f5a47d73a768c172c788844532f",
+      "image_pixel_sha256": "b1ec5152bf27c374457f4b6577043a4ba9c2d4428384c863a20c82c11317ffb7",
+      "label_sha256": "6fa66dfdb48a449a93e51b9616e5f79d3a1b531c3d0bf1ee53454f108a6173d5",
+      "review_sha256": "d6667bed1845068b92a2e29ce61ed699b367681f38fa8d06be9997bad82f7c03",
+      "topology_exception": false
+    },
+    "59849510-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "119cfa30a80568aa0221b777e49cd6993aeaa2ba9b3d95e2a81d9ca52b0c82df",
+      "image_pixel_sha256": "ae8f482a2b46a6a3c62f499a7c7b87b5d34b1ffb0185e6f3a36832de1343d540",
+      "label_sha256": "321c759b0cc909acbeda904a2ebe9f5191f59f4ca0a7ada134a0109bb8d22ebf",
+      "review_sha256": "c83f1bbf699d44c472863eb0962991895f3490cd7fd10cd55da4452f8d46dc0f",
+      "topology_exception": true
+    },
+    "58cb1458-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "4111b9d3cc7674fa574005fc8e0cf6dae13b0adf2863e5caedaa72f2a8323f0a",
+      "image_pixel_sha256": "3961aed0a92c6c5916ed16a859c9ffbab629bf99549183082934f22984b8d25b",
+      "label_sha256": "021d1dcae4687b96405eef11d3b08033c1de7da35661ee5e80c5eb8e70b7e953",
+      "review_sha256": "778bd73f733ea6e644cb11d5fe28395f04e70cc6b279cb1f6632585dab256d6d",
+      "topology_exception": false
+    },
+    "5976a408-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "7fa6586d7b5eac1413bc463a4f9adc50cebe96071865740520ede68e7c009c89",
+      "image_pixel_sha256": "8f15c877a86b9f12f9830c414c9d0c273d4b8684e1dbcd19fcc01a89a95a2dd2",
+      "label_sha256": "d703903145e3accd0102bd048fcccc9b0a259f71366a51bd9b96ae1fde871fdb",
+      "review_sha256": "b784e67d8581ed4ae2653d4b0c243d8fa8391d357c0036580195c79f4e0523c1",
+      "topology_exception": false
+    },
+    "5a2637da-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "2bd1faa915451de48e9698217130fa70d0cb69278057f097f5b4708f21aa2484",
+      "image_pixel_sha256": "3af6c1b1823571e37a8e4f8153aa86ff4034520705ef51c434dd47595434a732",
+      "label_sha256": "9df576bffa91caeb9ca41b7842fce1379bcc11564ee6d1ff89c2f48bf095b871",
+      "review_sha256": "86a88520da03e26b95f00ab6ed1993ffe54993274254f1801be369a1788d2d1a",
+      "topology_exception": false
+    },
+    "58b4a986-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "02f5358df6436426a0c4e06bb08c7fb655f009fbdcb3499d6d19db46556f874f",
+      "image_pixel_sha256": "e8f8a5e6c4358b39b10e002d853499a96b16de47c9245267a94fc2eeae4d3d9c",
+      "label_sha256": "47e12d751663e0c1ff984894b6a019e385afd813d0e2155167aafb0f22dcd163",
+      "review_sha256": "979a53b62a15a5c951eca4e2f2be4da132f54e2000d1ea811457efd7a3521099",
+      "topology_exception": false
+    },
+    "5a0c9bc3-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "13fa9e5700eaaa5286223525bdc082b9dbd03d68645c77643b9d749859a011fc",
+      "image_pixel_sha256": "d6a6908118b1133c5a035aa37f820969e9de9074980c407cf7ecb187bca8411f",
+      "label_sha256": "7f263f9525c4219d676a93203fa9644c9172d086645895f639d9cea35f5d4f97",
+      "review_sha256": "36f718df9258fa0734e4d5f319630b37f453e7222b0e31c5d6bfcfac8e4e57d6",
+      "topology_exception": true
+    },
+    "59ac6d21-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "ddcd63a6a0a3ca2434935947fb94c61bc8def1c7500a18244fe13c082ed34162",
+      "image_pixel_sha256": "85862bce1ac259dd61105969a07cefcd7005612e9843f8a489873724e4253b84",
+      "label_sha256": "860f5e226edefc4fc17ba0491643afc079683ed3af21aa2d48d91e3ea3f55329",
+      "review_sha256": "2b59acc646bd2ba3d686295b2a4506693c066aa51542f0a33bd3a2f1f2d9f04f",
+      "topology_exception": true
+    },
+    "5a1641b5-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "val_select",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "6029302b1205bffac07aa29b2b07ffa5650400e0fe0678d236f171131f432272",
+      "image_pixel_sha256": "775d8cc3b531af20c309de69d33df7336764635b724cde624c4e0b3afb7a747d",
+      "label_sha256": "5e8d4f47bc0a19cab127ab9f155f7545b8f34ebfe89ae9bf2013b83533efed75",
+      "review_sha256": "2fabedb7d333a81d7de7e3d765e382e75c5961602f153cb855897b7dc3b45319",
+      "topology_exception": false
+    },
+    "59fc7f04-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "val_select",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "2756fc2be30a2073392eff4152e7eab1c28a0668c2b73ba40e774590f5d0f27b",
+      "image_pixel_sha256": "a9227c598dbb12ff58c72f6607cbf4fd8b5e9f71403fbdab36fee2de4a22f8bd",
+      "label_sha256": "cac196302cb940173e1bca5f49633b0c817375a2c9323dc5f2bc0df3a572e840",
+      "review_sha256": "73560b0dd2a2ef2dbd3fce73415a5b9b26405dad92eddcc4e92cafe1d5187b81",
+      "topology_exception": true
+    },
+    "593ef66a-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "5c3329640e060c3b6d2269071f619de333eb3d76537a6cf0238979fc9d883026",
+      "image_pixel_sha256": "ed5bb063ae97db1b7226626edbd1c9bae3672a89fb3adb6faa3a934eb509303b",
+      "label_sha256": "c391625706a0fb3a9b6f85dddcb5e90a12f32a77d2d7fffde2a810375d6b4499",
+      "review_sha256": "f069e26287becf55646db5831c4d48c4a0af01133927209d051584e12f3ff100",
+      "topology_exception": false
+    },
+    "598f789a-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "081c8bf8a77d904b020aaeb185e4ff9de7d62b099626c6d14fe7401695ba2d14",
+      "image_pixel_sha256": "6ef3abbbc734b38311a6c5dc78883b8e3e6d22c74facbf233b08f73e5b7de191",
+      "label_sha256": "196e59b24f009518313f9e0e9c3e1acc596b6148e5cdd330fb5d3c6b623f66ec",
+      "review_sha256": "05108a6acd050c940124f3fa14c8aef0261a1c5b142bf35a30448a12d3c0e96d",
+      "topology_exception": false
+    },
+    "59f4610f-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "val_select",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "9077eff4355bf5eac671d8a381467696ae9f7884f7e338ca729acf65198959e1",
+      "image_pixel_sha256": "7207d1fdfee5109532f706b54e6381d1387167244a2af0b493a47b5da91a04ac",
+      "label_sha256": "0f09cff97411801b231aea9422f3611d24f85c75c11f3dfdb1802f4210a27d64",
+      "review_sha256": "2945e8c957da2ddb045b908ec1d4406b550f4b79ab474b2feb20937406abd2ff",
+      "topology_exception": false
+    },
+    "5995b00c-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "bdb2a9b42387bf3abb7d34fb0118ec37f3deaa4f5ad5f698724ea2a98dc468ff",
+      "image_pixel_sha256": "21a23ba029e9de3047aa7bf3c908a87cac6a14996db8a3024a724b64b1486c39",
+      "label_sha256": "b67afd188a7ea79b0b4cd60d33e56f100898de2cc591c9bb0d4ed548e1c584d1",
+      "review_sha256": "9c45b64fdc456d6b83996850a5041cb3151c3a0639b44614c682b59bffe88ede",
+      "topology_exception": false
+    },
+    "59973f4e-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "val_select",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "8b4c8ef626041b47ef1719d8b0bf115c8c8fc534d1070dbdfb42ad5442a53358",
+      "image_pixel_sha256": "753b215ca25826c0bfc4f06ea648b1a7ecdd484e04342230de89a60c929c96d1",
+      "label_sha256": "269ea064c70c23d304bb3896dbafaea00d2e84d54ffbaf77650b6b918102b13c",
+      "review_sha256": "dc522b5edbf1e14975afd962ec8c98bd112dd720498b905f31ca40bb988a3433",
+      "topology_exception": true
+    },
+    "5a1fe939-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "val_select",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "78ede3cf34d5d1be678f4ea31d6034958c4fb8b5694a89a151c1989eee0f7a07",
+      "image_pixel_sha256": "322ac0bd3fb326ccdfada05675986ebe13597e928d60e4a8e53d768d613c54b2",
+      "label_sha256": "d068f63a2e7e2f27e332123ca680c5703ca8d04a91e9b5bd88fe431d15958b60",
+      "review_sha256": "f55aa3b73b845de8d12a303f9dee58b5fa8aa9cc3572ce4b314d2b786ca5a776",
+      "topology_exception": false
+    },
+    "59328bec-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "4a9289b6df1d554f011ad724b46013e97b8b4ffa71c612d238cc088245a6f076",
+      "image_pixel_sha256": "05e868609bd1d9c73714a0ddc8dafb613b685abbf50df44f4b5d62eb228e1379",
+      "label_sha256": "80637e110ad3da9ec949713b16810d52e9f62b232b8f071e21516f844f7e87bb",
+      "review_sha256": "575d090c402407222f9e3b980e5b9656c787d0de21b00710b482e229fe5d88a9",
+      "topology_exception": false
+    },
+    "599d7ea6-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "fee41ce1ee962f31fb003cbcaf19ddd77257262ca9f430e16841e0ab509d2f86",
+      "image_pixel_sha256": "716cff6aa158b5641d2a81778ea61924f1cfbeeef55b5d02ebfa9cdbbdc9709e",
+      "label_sha256": "e65cf393035da012bfee7d603d0ae0b7849528d9cacc05488bbbe9479e7495b2",
+      "review_sha256": "d2e7f0af23b83a8cc2e7ad9e50752f035fe2588002cec4197c512592439c5382",
+      "topology_exception": false
+    },
+    "59f461c8-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "7fd7a11f0f78f4b244d5670895844c8a7c8d8cc649ece62d76ddf7c38d602234",
+      "image_pixel_sha256": "ee7d0ecaba102e4b1f52cade92be417e6c3a7b624911e6a81fc59c6602861d03",
+      "label_sha256": "207f2f0bad619a24e7efdb52c21fa752bf2568e5c588dd2b9f09382425530092",
+      "review_sha256": "63c61dba0516ece04928d05eae2d469b691a4818b4338b6b75c4cebf06e2c18d",
+      "topology_exception": false
+    },
+    "5a296343-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "117228c9ef8e6aaa60822b6ef7f9fdefc36fa7ba15c731440e640098005d5ce8",
+      "image_pixel_sha256": "36df6926dce36074ffeef6231a37d00e765ffc6b2f489473c7c73939dd248648",
+      "label_sha256": "ec7228de44382c248d3ee1da87c89db483135fad2534379f74b4480c0fe564c2",
+      "review_sha256": "59d10650e398eab279f92b267c0b8ea26a018130ad109ac0f8b69a89ecb0beca",
+      "topology_exception": false
+    },
+    "59fae493-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "9bf3e89f80630889ce4ffe7cbab0659126a9a0af86ddcaf383576d38cbc9c2d0",
+      "image_pixel_sha256": "4be68853b1c0d1d61d156d4b553b41901c9ea3f9518ab8ca87feb6ed79b8ce60",
+      "label_sha256": "e5452275c9790590f0cf72104443a64822fa70323183aaf717859dd7e2efc413",
+      "review_sha256": "9522d879d64d4192d2436ebb250b5c80a1966a8a4c560ec5b5d557dc1a22d22c",
+      "topology_exception": false
+    },
+    "59adfeaf-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "aeca47c87b79c6f18418f4f88df9d93774e1980c39a7d7b31d8f32327d0fc4ac",
+      "image_pixel_sha256": "baa5a47bb57e158cd6b35f366cf043fa0166135e133f166ab1957117d7817b70",
+      "label_sha256": "0390a05514d2f4558f245271c803727e8b03eea85f7fffbc71d76bc6f848098c",
+      "review_sha256": "947ea6f0f7f4399e5532f78cda8ca7afe6db39cc9026c2e93b6b4347de960a52",
+      "topology_exception": false
+    },
+    "59b4865c-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "113da12026a044820b556fb157004779715a27de83acc344ec5111a7a1b1ca86",
+      "image_pixel_sha256": "7e981feafbb3f47af99edbafd8b388742d3a164389723f6303adc4487fd9c349",
+      "label_sha256": "3e6a3be164afa077b5e1b38db9e1b948fd6555e2c7a11eee6abe8dbe4dd49949",
+      "review_sha256": "35b30f64cf18ab8f1d9a6964de773570956f029a659d8223f4b74da50807e750",
+      "topology_exception": false
+    },
+    "59420fa6-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "99a3ad7247713db515d412dc0254f9a19eeee3b9d9421777e6fb4612bec240c2",
+      "image_pixel_sha256": "944fb5fbd2822719f887f09723f03a10e7d1a673c2244d8e09d90ac89c4fa4bb",
+      "label_sha256": "0b3b811b5370b4caec0cf384a34ef107f68e35261f5de63d4f8f7d3f54eb4519",
+      "review_sha256": "9a89e1026f104ccdc693727b59cb8ceeddf97289dc3621d6b02b6eda2611ba8c",
+      "topology_exception": false
+    },
+    "59974020-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "36c1ebda3f153356c91cb95a4be03d76b024e29fd91aa18903da75477a11b8d3",
+      "image_pixel_sha256": "ff965360805d4b86705c592d66c4ee53bfa78d0df4968a835b47f8289c19bd9e",
+      "label_sha256": "eaae73a1524bcec685c5bbd51c95a9d17b48d5a2086d7b97f16901d71280c666",
+      "review_sha256": "36708193025479156e2d74c273d9793635f2e6c7f80ab329e819dd190faf88dc",
+      "topology_exception": false
+    },
+    "59a30c08-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "ec82244d51c22b1785e020bea73b4f4f5271a66872c3cd646f34826a4950568e",
+      "image_pixel_sha256": "77cda30ed7c701bb37c8df52a2e537a4a4cccf1fcf9df819e1361815043c8ba0",
+      "label_sha256": "6ec444de0f683ec493f12e910424fbd8a9680244091bc5c26525af6d64869f3b",
+      "review_sha256": "e9ce979b2544a105ff8a759a5ad68162af867cb7dfb139f7b17414a1c101a3b0",
+      "topology_exception": false
+    },
+    "593ef535-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "811a344bb6d0d033d22474c7750b7129d17f0f91658db2a297919884a5a94b72",
+      "image_pixel_sha256": "a394e8b09169d98bdb4e36c2aae4be106c058e853144d8333cf570e5b4e54f5d",
+      "label_sha256": "7cec69460c37da48aef733c4aa1c559d2b721c7d476a5e9baaae7b9778da180e",
+      "review_sha256": "2f0b2de19a7c787a0c2d06b58c09b273c22a43cbd012807ccb717b1bfdef9c9d",
+      "topology_exception": true
+    },
+    "5a2637a4-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "b6461c15cfb44ea8d3e0a05ba09e31438c74e22146cf7b85ed5364d60b696498",
+      "image_pixel_sha256": "e4df1e32022b92ed602f20277b92d91ef77aa389e8e340cd3085997761274de1",
+      "label_sha256": "bbee2e90c4cf8c8b3a924b7885d6fc10b5ea35a21ae7ebb8e2ea7fbe957a47d1",
+      "review_sha256": "e603f078e5d04c0209cf25cd96a2dd0067f1868923e76d894be879f3d41c9fa2",
+      "topology_exception": true
+    },
+    "58c036fb-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "95371c3ae067bab0ea3e6991333b8f5742ba2e7cf3c995e8ec433ec71b094a5d",
+      "image_pixel_sha256": "2de2ee4b863704a073d2a950ac263a1167d8a8359e3b91d2bb868868e9a8d384",
+      "label_sha256": "31b976c95abb6c5b0359cb35315e786094463bc4be67c57976d4e3d0760d85e7",
+      "review_sha256": "9911e4f1a05778f960d956737007fab8f8e86a5d8ef13e6c5f0e430ff08221a1",
+      "topology_exception": true
+    },
+    "599290e7-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "val_select",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "0b2e7d35ebf03ab92406c6b3e4719aede917530431873a89370b003b9ee1d06a",
+      "image_pixel_sha256": "4cc85c642149d7c56a4a42a49d8b88aafadfc41072820a83659e087a1fd29088",
+      "label_sha256": "9a752f5d59f795aedba63b7626e27f71b9c5cef7cd29eb1bc39539c42e78da2e",
+      "review_sha256": "b79beac3864fc64d8d41752487cb5d0012e350abb56b5e2c6b9070f55aea2923",
+      "topology_exception": false
+    },
+    "58a52f5f-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "4567ef1204223c130944a1febe166f1134be6f4a4e3865ff88ea241de30f066c",
+      "image_pixel_sha256": "6616c226dfb513e66faac5056e16dc64f17a8eb632c46fd55de736ba49ae321e",
+      "label_sha256": "0bf47b8038ca5ad60410c9503ac15dc9da2d0862daa43ec18cf0f905b76d2e13",
+      "review_sha256": "6846ef3de39c02b4eed8ea7eee2432456f616307b6f15ab5e365e696806cb17e",
+      "topology_exception": true
+    },
+    "5a217681-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "0add5f6704a75a6ea8f83fa792b33e0690a01948686d319ccc5c37e181d54da7",
+      "image_pixel_sha256": "90d82a8c9fa8e66a03829784deddbf3928844cade4a304aba95c03243b1426d2",
+      "label_sha256": "0d4f30ab1cf0bd7a5f0d9ba8511707c8dad7f43e7cc7552e9b110243dd34651b",
+      "review_sha256": "d6cc2b10bec283239a176e403847423c3425dd04ec49b49cbc41fe944f49e80d",
+      "topology_exception": false
+    },
+    "5a0c9d71-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "586776e07561c91037d04f9ce1d7f2303c4c4a42c0b14b08c3d1ab4980810c74",
+      "image_pixel_sha256": "75e2f40aaccda646609421fc0889fa8b945d1efa406f5cb61d27d0cb9f8e8554",
+      "label_sha256": "335370a0b4eb6215716f76fd56273938fac6ce7592a6697a3184dad1f323a761",
+      "review_sha256": "f216f49965bee5b9cb16da28e0a64ee74e214bb1158d4d563c71f4ecc3f990d5",
+      "topology_exception": false
+    },
+    "59ffbbf9-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "3071c1b308e449c3935855c1970395fd7894637c732651655803094898d8ef1a",
+      "image_pixel_sha256": "1de52abf421600043725d808dcabdc34f2fcd54610119f3da3d993b3a5616681",
+      "label_sha256": "bb0d8770ce9181cbcf6d1a54841d37b4bbeefda1084231d6bb7dc90a547f4cd2",
+      "review_sha256": "62f1e75741c0570a23103c2c4a01fe19dbce80beeb0b37f367d95ccdbd16f823",
+      "topology_exception": true
+    },
+    "59f9453f-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "6bd38347281bcbcbfce71f16aef63ac65cb17d92ed8a07b85826390270cfcae2",
+      "image_pixel_sha256": "0209779f5e97ec99287eca89c1147e2ffbfc9edabe8294746c1700495944e093",
+      "label_sha256": "261964c58db5be65a688f2b6239779dfad0ee0732588b8c8589280cc18094f83",
+      "review_sha256": "3eff34cbbfe4fc4e7a24f590c4a9304d4a302389548f0a4ffc3df8ca39315481",
+      "topology_exception": false
+    },
+    "58e40f25-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "d0b9a176123bf71b7df88f6f9a0c76da6032cb3d61dc797ba32ddb4697cbe6bc",
+      "image_pixel_sha256": "7e8d9a906c0dbc66cb14e6580645390f70310ccf65d8964516b840563a326f1a",
+      "label_sha256": "2837a7e06fd9b9810f97337d8912c243f25157e8dc89e96669a738be7d010744",
+      "review_sha256": "9460bad20cab96a836a76b20019360927b89e32e5c7278c22490f95b60921b1d",
+      "topology_exception": true
+    },
+    "58b6651b-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "aa05475aef028735eb0ec88c8d90235aa2e5c24ff2b12dcdae8d8d4b80358fc3",
+      "image_pixel_sha256": "769e9ac797b3b6a0f4997c824a9cdd62ec2be78ddf6c20dde4547a8f0fb3bd8f",
+      "label_sha256": "0ededf1247164020f3e0e0f2f9b8852a11d6a53c7e9069b87f4d7dc36da8ed36",
+      "review_sha256": "69d66b396c29eccde8338c5f5cf596f049346f4a90cf6b2fc1bb6c34d0e2eb36",
+      "topology_exception": false
+    },
+    "5940839c-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "5a0855bea206d22257c2008b1d51d087a2aaa3519659e0850fc5cf876c1638e9",
+      "image_pixel_sha256": "fdb224a26f11a40a25530f4d7df293026b5b908a9600d7addac0104b69b383e8",
+      "label_sha256": "6185772a55b604ace9eefc3dc9a56d655af4c9ad478daee7235950c782734fd2",
+      "review_sha256": "f2feacb3bc8537a3c7601d43a0524632a947c851998a0cc43ce0761f05fd16b3",
+      "topology_exception": false
+    },
+    "58f29533-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "f04731afdc2b40ce3a5466b1ad1e7350c9984843b92df3eb283ccd5cc07c8d8b",
+      "image_pixel_sha256": "4b4524e8a3288151cae471a8e1394dfe3d1288a4ed5d0f9e69c32f97f6dd5c21",
+      "label_sha256": "ab6b3b82b8981ed974ea3bf7b188d0abfbcdfaf27df979749f675446160cbd17",
+      "review_sha256": "a2d0be24c46956199ff06efca9eacc7e04be6eac2f5f2a895f632c4c81034715",
+      "topology_exception": false
+    },
+    "59484703-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "69ea52f8e6a80ff7d9bba5a597246117a51789a8e65ed71edb0fabebf1de0540",
+      "image_pixel_sha256": "ce3cab110a9cec4cbfb899a63c8ee4b97fd988d527ce3d6da4fccff2a8cddbd9",
+      "label_sha256": "d7cb277b4a923f65acb661f59de4a7a113aa9f65919c549108f48aa94c268916",
+      "review_sha256": "3ef99c682ef0cb92e956aa6ce7a723ff90ed6c963a81e0cefd48ad19f4b3c5ee",
+      "topology_exception": false
+    },
+    "5a2af6aa-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "3968a94ecada79cb6deb2c83727c28ff3b8e32dac55cac9f09e5b6c8d8d3390b",
+      "image_pixel_sha256": "794176118a82eac623c5b3cf5e982892a1142680ff2eccbe7d5c6b10a8ea0f71",
+      "label_sha256": "03f719b28dd15189083c7f671641e5006c5958e2b588559f66f9840cae361613",
+      "review_sha256": "4fcdd31d7a57e3210050ccbf6d91264c39dd0debcd232ec9e37a204a34bfe24c",
+      "topology_exception": false
+    },
+    "591b22e5-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "9e56ed55bb8df998b183b822ee615dedb3650bba88c9ae8f678fd7185f01a494",
+      "image_pixel_sha256": "8bdc05805c6ad319d2bf6bf32a439a7d0c1ef9a035fed88911327374d07db841",
+      "label_sha256": "56092d5efc421ed67bea0fd27667ccc36d7668e3c3bea038206525f242400cde",
+      "review_sha256": "2730bba7745707ed34bb1b7d6b1901f083819fea64adfb348b06be2c69b4b5a7",
+      "topology_exception": false
+    },
+    "586c87d3-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "085f23d585d6b1d1b43e7c52ceb7a331a16369b4d4e6c7f5c2af27d34ff63d4a",
+      "image_pixel_sha256": "2d677f13e1ec94af5196ad40ae4e0fbf19705e7997b51e598ee1aff83d6e7f02",
+      "label_sha256": "8f244988f4117d758a105e49d6ce4d9b0f4bf7a5e271365eaf1f1fedf4f0595b",
+      "review_sha256": "9dd09f7a85cf81dff000d8c3176af750fcc86eb6f0ff8756f3dc39080ade7aca",
+      "topology_exception": true
+    },
+    "59b93933-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "val_select",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "cdd7087276353da30d0600c2f451d0cae6bd8d924427ec0a9848afd7ae5bf712",
+      "image_pixel_sha256": "20b18aef24ed2d262254a6455ff81d98dea5bdccd36b18ed602610803523c85e",
+      "label_sha256": "3b0e03531459f13c21f53a33c76e17e8e5a55be7afcd243b77e78cbcc659d012",
+      "review_sha256": "2c67c5c67dd31bc7fbeb84bea4ff80edc466d79526c18a25c92f1ac377b30438",
+      "topology_exception": true
+    },
+    "596a5004-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "val_select",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "2f79dc6f59e9a6d765d807cf47381a70b0c3bb67ccde896d32afd577d8887e8e",
+      "image_pixel_sha256": "2cc0fa47d0f14fe520325a5e497f017cb91eb00f8e0b526e6c92165470ed7da1",
+      "label_sha256": "1968a653e1be4df5d79e8c4141bf705bb7b3cab53c1056ff1bb11d773bc63f69",
+      "review_sha256": "1a973a0979decb9f9578a337b8d3f68ddff44166dea60a46b17ab12028488ec4",
+      "topology_exception": false
+    },
+    "58eacb0e-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "a36690320d396b718bd57ff91fbf8b5aa20fc90756bec30585eacb7505639dd7",
+      "image_pixel_sha256": "45de11621376b2e6f440d06ec71f68542f421ee7420c3a734c2691d56dfb4713",
+      "label_sha256": "631df6b8206d4b13be34feab2b30071b079c0cc95376424f9142a9e2d7e26948",
+      "review_sha256": "b8a9192b384fb8f9dbc4733ac9dc2c56246a92995c1c494cc637c9e3b9c886db",
+      "topology_exception": true
+    },
+    "59279c0b-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "b9c15d9430e52ac578bd9e7424aedf0450f6b6a9cec269dc23809e97634cfef2",
+      "image_pixel_sha256": "4b63d93f2139b8b89f9d4e3ebb920e87aaaaebcedadff09d3453218162c5b373",
+      "label_sha256": "286304fb6f0451b62bbe2b1bb4b30a4ac77556f3d3f322bc026a09ad168c74ab",
+      "review_sha256": "d0bc2334319e1685116611afe52d01536e68eeeb707b9eb74a56c38693b6e11c",
+      "topology_exception": false
+    },
+    "5a163f75-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "val_select",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "33fea272c4e7a64d887782a11817f551689f3444cfc5fa4ffdebc4ba51b8728d",
+      "image_pixel_sha256": "af96e041c546571ad55c822cb3270a3c6c7156e9d698f67e7bdefbb19dbb8f1a",
+      "label_sha256": "2e40a2d5ce496ea5fb3cdd304159a2fe03f26e5e6646b8fb0bab4943ddb08685",
+      "review_sha256": "b10675cc6781aec68fecddd2b4875504248eafd9e7a8dab5d71235ff1015610a",
+      "topology_exception": false
+    },
+    "5976a1e7-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "val_select",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "1c2514fa78f8057eea45fee8c315fc476c1f31f6521ea2ad776aca2becda5874",
+      "image_pixel_sha256": "601e5d97a016e46c9f2ce0964006d29a6828834381981fbfc331ac52c5c42793",
+      "label_sha256": "8a563f6ea93deb37adb8db4c50589a4885ae0337f612ab347087b66f795765ce",
+      "review_sha256": "91fa7d35354beb818df8a9783610ebb31a11815b45789ca406c4d3de516d3721",
+      "topology_exception": true
+    },
+    "5862922b-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "e5b110c5b9c81504730de8b719868fa5fa5f457aaf54e22fbaf70c2e8c6cc73c",
+      "image_pixel_sha256": "d6b461f46e2e3849a47e428e83b5b4ce0d09d4ef5c9d946bd84ce9041bcbfa26",
+      "label_sha256": "b47e423ec7c17344e57f81165bed84a2fc3886d559a3057e8dc2d10292e5e8cb",
+      "review_sha256": "a2c0b75548f82a2e33f3ecd45dbb970af459ef683501cc1ae28cdb5bdebd208f",
+      "topology_exception": true
+    },
+    "5a0fd1e7-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "8c79889da4f2ea7ee9dc8b62045140d97b08465064f98dd13b1abb1b5a98e5c9",
+      "image_pixel_sha256": "9815a0f594e953ec7c3f5a15481a5595ead1bb594fcb6ebc7eea5311398ca42e",
+      "label_sha256": "149802ae4dfcd81846af894a3149941ae568c7afcfd00d67319c8a350dd9d210",
+      "review_sha256": "a83aa67bcba9563affa250799936bde5763d73a975789ebc28977c7c919c7d57",
+      "topology_exception": false
+    },
+    "59167937-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "c73791c9a537ec05af3f437f06ea78c8c6f2ae61278ece7d53c2e028d8424371",
+      "image_pixel_sha256": "0980c8f5181f03378dbfdbd26e4f2187bdeac86614d49cf2fd1a9c3ef9a9764d",
+      "label_sha256": "d22a68430ff7ec5c79ec99ec9f68f12dbb7b2fbe35ca4d2a88b1b0a16ff5d19a",
+      "review_sha256": "957325773a4ed29acb8110cffda8255ff4ce2c5b955fa50f16ea95aa554fdcf0",
+      "topology_exception": false
+    },
+    "59fc800f-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "3e594f38ce59286dc413e837d8f715476f1eb64502a3f99038cfd6b751f897f8",
+      "image_pixel_sha256": "93ae26f55c953e3ac9d319a3fd2216327ed15e023e59f866d33d42e5e501177f",
+      "label_sha256": "8e5828f0ae3832e0b53dcdfd6721af012eb7e9cf4c3ce1b4f9f819fde1bdf8aa",
+      "review_sha256": "3b01e52d149794f0ae95ffae9bcdc61930a4512435bddeb78c98efd154c3cdf2",
+      "topology_exception": false
+    },
+    "58df6a41-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "val_select",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "e23fc1ce15c5331e2649a7cdf766964fea6e965cb2312856a5cac29a4f21d019",
+      "image_pixel_sha256": "20cdf57cd33dbf536403eb2bf4d4ce70491cfca7ed2364eeed0c18ccee2e1d5b",
+      "label_sha256": "91f2fe94dfb2b44aa5a5fad0bfa7c2809391d3379ad890b1a7d9dc50e091baf1",
+      "review_sha256": "0b1b31c5014801a7bff588098b93dc2139fe540aaa43536416ad084ca012525d",
+      "topology_exception": true
+    },
+    "5a0fd149-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "a132afd871a65c9a50913bae8069a5b92e02c04335ec7188d95995b400e5feae",
+      "image_pixel_sha256": "b61b6920ca2508f1b03701cef5969730c949a8bd06e81d4582e22789ea4f2fa9",
+      "label_sha256": "5bfa932e52306a8790b8d4f65e672b6244221a72cc362ad560bfca521c9c3b9c",
+      "review_sha256": "17dad0ef976be8c87bc5115629a5e444f89f0781e742f40172a78e22e6e2ba94",
+      "topology_exception": false
+    },
+    "59fc8001-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "d1a2e572a2b08310197e571422a5c3305de96f632e2408a3530184c96c682adf",
+      "image_pixel_sha256": "42c4c81277b3f2b32e3a3f5dd548e1d9207ca8b4d76b867ab9d0fddb2fad373e",
+      "label_sha256": "ed463875fc34973261e8f8513f56aa9c57fcff687400bf14e838bf820c3f3634",
+      "review_sha256": "3ce68d3bd0c8196f9b5a7363ab6a91a7d442114d33a0799b97379d6a47ebc250",
+      "topology_exception": true
+    },
+    "598c5c19-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "8ce4d62bdc1749652720b86388e50417de05e3c17f9ef1bedb9c5a0b616f6501",
+      "image_pixel_sha256": "69bdd6a7930100456e71636e3416542cf0d35c2c24922fe3f01c14a342180ed6",
+      "label_sha256": "f63ad5033160128d6cfcea292731879ab124bd6a9dedbbb59d552e0f2d0c90e6",
+      "review_sha256": "54ac95f90789cb5b308d86f868d3fe17ec06daca124799ab369c586a1256a392",
+      "topology_exception": false
+    },
+    "585dac58-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "original_reference_explicitly_reapproved",
+      "source_label_sha256": "f97849dde145aa4c0552628dd3d2d5ffddac04725398b73ac998fc09b8bb2cd9",
+      "image_pixel_sha256": "60da80540af6918388cb3083d9d65cbde51f34ba9fb19b45a40c2447627ca040",
+      "label_sha256": "9abc39b53253941228469a606a04728aa5eb6a9b038b3782b8d98b21975125ac",
+      "review_sha256": "4cbbbc1996d815a59d411561a44b69a13e97cce9b14360f0a302d71f0b5f2d16",
+      "topology_exception": true
+    },
+    "58ac0f44-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "8bef866b06372307ae7446dc74c6338f56029b220cc15c20c3e145d819085717",
+      "image_pixel_sha256": "3c7c194cb4fcb717155f5ff823e9e1dbab870c4acf6e7734424eca138821ead1",
+      "label_sha256": "657192911db49b37d3dcdeba70e708b02b565a32b6e93beb611ffce64d1c2fa9",
+      "review_sha256": "ce90bb1efde8e656d79e915e052395235843736f644dc625679e9247f310a73f",
+      "topology_exception": true
+    },
+    "59279c2b-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "4b235ebade7d601311bbac48c22f0cf84d473f77b2b4b9475385ee53c4eb6908",
+      "image_pixel_sha256": "d2f0611b35a7934ed900eebc800c5ebb5cb4d0fa4bdbfe8d8e59a3d58d5678f7",
+      "label_sha256": "5637e51db1edd687a7a7832c0b1d78422755d026f3922c123be9f56ba53c9a12",
+      "review_sha256": "14a109a4b82e2649bc88005aa68687f641f46641b4c15b0fc8a06453958045fe",
+      "topology_exception": false
+    },
+    "587eec8b-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "12799b304b81256298d59aeccb9cb38ce6f1799c3ebd79eef90460701d2ae64a",
+      "image_pixel_sha256": "b30288971e83e0bc428f164582876092d266594e0da709d0a3adc95f689eaf4c",
+      "label_sha256": "fb2c4967f1e0333bfd8902059c1b344405a3e3836e6f39ef20a59dc4e1616464",
+      "review_sha256": "98e4a4fd8702c8260727d738db195633be3000af7c9ac898e55a4c27697e1251",
+      "topology_exception": false
+    },
+    "59f12913-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "c0a8a50714723f8f1adb51baede60cf74a898472c82c4e9b21fd9073caee6b36",
+      "image_pixel_sha256": "2caebbef2383c898bdd8d384c351d699a88a1edf1a5f6c51f15259c35815114e",
+      "label_sha256": "5b48029878a6989f810757cb9c341ac81d5d4e1691cb21046ebca3013d3185bd",
+      "review_sha256": "681f48a12b1463f1fa6a0b8dd6245f6f6e1d2d658821b6fdaa8e1fb6de354809",
+      "topology_exception": false
+    },
+    "58d614b5-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "065720ced6e9e1dec59d7add488be1146048ef52fc3cbc94dc9966a49c29d559",
+      "image_pixel_sha256": "2366c86fbe800719c2c5c08741c8ec38019e36686fcea4ed97990a24868477b0",
+      "label_sha256": "18d1a6631253c6eedd4d2ef9f38a719ea702848c390ca88ef234edfdeb8806f2",
+      "review_sha256": "222efeed7c385f9dce4a091b9469872b3d5a0365f424e6a48dc6f9187b27a59e",
+      "topology_exception": true
+    },
+    "59c4bfc8-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "6ba34749c8c8807f17df767bcc29cd26bf2496783511426a0993d15855439f2f",
+      "image_pixel_sha256": "5f2ad5fded23506cb96694edf1b6c68693a32572cd0b9e3bc54537b42a298916",
+      "label_sha256": "e7dec96693d1ea1bc91fa6d012c4077d08dc8287626dfe9bc88746204600fbde",
+      "review_sha256": "9a5224c5aa2de4e16678beaf92524f10fde4b564b58c1f0985350f98a5fd93eb",
+      "topology_exception": true
+    },
+    "58732cda-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "0ccdd2fc3f480b0231ed876bffe70ef24129cb7a356f5591837c73be08a3ed8e",
+      "image_pixel_sha256": "fdd923a0d0cca841d1ada2363337c6e59b97e612634ea7d18529396a639ff6ed",
+      "label_sha256": "3df2308a426e9154472efb8e3211e60b0523e90da48f13e695187661f1f8a000",
+      "review_sha256": "1fc8ca165f708ae5fb9d7aade07a50082d3647da1b275b8baf7ffccd6f8e6ca6",
+      "topology_exception": true
+    },
+    "59b9376f-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "val_select",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "65a94646b80a9188f71e95fa84b2a092fe2eb12841081dc8e370735317548012",
+      "image_pixel_sha256": "d13b7b022082302eb4676951d1a3186fa1ab6c7f00c1c4c3543954d542512cc7",
+      "label_sha256": "d04430247365191750bf582535c556eb8c0034ed93387376660d85e89ac0cd58",
+      "review_sha256": "9be4539facf7ce97ccf74f244dbe4c76f228f9525147660756a56f03d696877a",
+      "topology_exception": true
+    },
+    "59dc2723-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "train",
+      "reviewer": "Yousef",
+      "method": "SAM_human_boxes_explicit_human_approval",
+      "source_label_sha256": "d55322270cb78ede4bc95bf4ae740360f17c3be0dc0ee6af2a264f88712117f6",
+      "image_pixel_sha256": "ceacb15a2fb63da46d549993f4bee37d8a871bdd66f2788166cb3c5f6356f405",
+      "label_sha256": "d2f7610382cf9a6bc006516551fe1b9cc22f5f41226c86cc8e66d99681504fbc",
+      "review_sha256": "254f9754479e92719efa82bd969e05d1743a86234ce3fac60e7b433b1eab57f3",
+      "topology_exception": false
+    }
+  },
+  "unresolved": {
+    "59e77d63-23d2-11e8-a6a3-ec086b02610b": {
+      "split": "val_select",
+      "reason": "Human rejected all reviewed alternatives; no replacement accepted"
+    }
+  },
+  "scope": "70 named approved replacement/reconfirmed masks only; not a complete 190-image dataset release. Other references and the unresolved validation image are not silently deleted or approved. Original mask/image sources remain unchanged.",
+  "new_training_or_accuracy_claim": false
+}

@@ -1,0 +1,29 @@
+{
+  "archive_sha256": "9315dc335e2d1bdf6f2adfa2ed3aad5c5a3195420dd739c694626268f6be7020",
+  "files": {
+    "README.md": "818a95b3df3ed1777efe989ce85a29f9a976856f9687bbe6ea0c3e1fd72fe129",
+    "artifacts.py": "270b30a4d494f2c52f19d913a66e880ed598fcb66b5ee98bddab3be189d5ac4e",
+    "assets/DejaVuSans-Bold.ttf": "a4c5bc453ca281d90ea079e596da7ae0dfeb5777497c29ec254e76d97ff6f890",
+    "assets/DejaVuSans.ttf": "57f73e11f51999432bf7ab22ce55b6f945d5eca1bf824404cfa9ec2e3718c84e",
+    "assets/FONT_LICENSE.txt": "e81d9dced49fea2a7d576cbea283873de58563c5d488f954deb282843c3ea79c",
+    "assets/Previous_Phase2_Report.pdf": "ee9b8afa66007505f6a6335590080d5e29668b688d79dcf64abc878dd3733b64",
+    "assets/approved_mask_overrides_v4.json": "8c64ee892e3c42311a6ec22c938001e8bd0dc94cb1ad009937a7e2adac47a7e9",
+    "assets/phase1_comparison.csv": "68718172e31f7ae15ab8031402a3528b151b4dcb52237f3a9346e4764a980943",
+    "backup.py": "f3395d9c0fc526ab8b8da942aeca24d64a6a95fbfe0f25a0e88c31586d22bfc8",
+    "charts.py": "d0db4ed512cc1fb3545a690c144187a9d6b14bac12d5758450ba21a47afbc456",
+    "common.py": "f620f6367d6e1d0d01df7f10810a0d6e776332cf481a0208e085d55e712294f5",
+    "evaluate.py": "b59dd8965243982d2c51118b5bf33e473e96d3ecf4cd8e77da0f8ac3da393ed9",
+    "legacy_audit.py": "bffdf56b7f3a1b6714b26acdd7293641426f8cdb3a99a165fda4b014ca3731aa",
+    "legacy_evaluation.py": "6838f2c5c495918127d05ddc56429a4054534133895dd5f4bbdf9e23d64cf1df",
+    "legacy_optimize.py": "01b6c6a2d5c0eccb709bd7292af413eb93707d92f8b8e38f3bb8a1a6aabf6f02",
+    "legacy_service.py": "3c351637ba5a7d313628a3aba93816e5bebb345a8db00063652153f951e1bf54",
+    "parity.py": "2728a2326a15e069a60be221590844a971928e5b879bb01ee288c00865c13a53",
+    "requirements.txt": "06986cb5034e75f89b0f024be139e4c1d7aa7f79ee05746da978e579c6344240",
+    "runner.py": "fdbc0e2733142ee789fb84bbafb7bb5fba1b5fd0fea299706820197eef3d68ad",
+    "runtime.py": "9dd83d7d2d076386f6dc67f38c00548fe386b2e4e224f7e47656122eb665bea5",
+    "service.py": "6ca49537644506e56d595a821b08455daa7c9da27e0cdf90f1bda6e197c87ede",
+    "train.py": "0f84a3873a086cfe1882bf0e2d4042825bd42f886a4d0c6346375f2239baed36",
+    "validation_status.json": "d73f458f258f5b4a731f6308cfc80ceee55e0de0d16ecc5c39b2ea9fc2157ff0",
+    "video.py": "58ad210deff2e3db4493528147f3f2211ac7780d03dce697aa1d0afeee395b69"
+  }
+}
