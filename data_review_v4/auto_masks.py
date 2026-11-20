@@ -42,7 +42,7 @@ def save_approved_draft(review,item,proposal,workflow,name,path):
  dest=review/'labels'/item['split']/(item['id']+'.txt');dest.parent.mkdir(parents=True,exist_ok=True);tmp=dest.with_suffix('.tmp');tmp.write_text(text);tmp.replace(dest)
  workflow.save(review/'history'/item['id']/(data['timestamp']+'.json'),data);workflow.save(review/'reviews'/(item['id']+'.json'),data);return data
 
-def generate(root,review,workflow,limit=None,only_id=None):
+def generate(root,review,workflow,limit=None,only_id=None,only_ids=None):
  import torch
  from ultralytics import SAM
  root,review=Path(root),Path(review);rows=workflow.load_manifest(root/'phase1_source/data/cct20_team_v2/manifest.json');byid={r['id']:r for r in rows}
@@ -62,6 +62,8 @@ def generate(root,review,workflow,limit=None,only_id=None):
  queue=list(__import__('csv').DictReader((review/'queue.csv').open()))
  if only_id is not None:
   queue=[q for q in queue if q['id']==only_id];assert len(queue)==1
+ if only_ids is not None:
+  ids=set(only_ids);queue=[q for q in queue if q['id'] in ids];assert {q['id'] for q in queue}==ids
  dest=review/'auto_proposals';dest.mkdir(exist_ok=True)
  config=dict(version='sam_human_box_drafts_v1',sam_sha256=policy['sam_sha256'],imgsz=640,prompts='Human reference boxes and their center points; not detector predictions or prior-mask IoU selection',test_used=False)
  if (dest/'config.json').exists():assert json.loads((dest/'config.json').read_text())==config
@@ -134,3 +136,59 @@ def approve_next(review,workflow):
  else:
   data=dict(reviewer=result['reviewer'],observation='Explicitly rejected automatic SAM proposal after visual comparison.',decision='needs_correction',polygons=item['original'],complete_animals_confirmed=False,method='SAM_human_boxes_human_rejected',automatic_proposal_sha256=workflow.sha(proposal_path));workflow.save_review(review,item,data)
  workflow.save(review/'auto_approvals'/(item['id']+'.json'),dict(**result,id=item['id'],proposal_sha256=workflow.sha(proposal_path),timestamp=datetime.now(timezone.utc).isoformat()));print('Saved:',result['decision'],item['id']);return result
+
+def remaining_geometry(review):
+ import csv
+ review=Path(review);queue=list(csv.DictReader((review/'queue.csv').open()));result=[]
+ for r in queue:
+  if int(r['geometry_findings'])<=0 or (review/'auto_approvals'/(r['id']+'.json')).exists():continue
+  prior=review/'reviews'/(r['id']+'.json')
+  if prior.exists() and json.loads(prior.read_text()).get('decision')=='verified':continue
+  result.append(r)
+ return result
+
+def approve_geometry_batch(root,review,workflow):
+ from IPython.display import display,Javascript
+ from google.colab.output import eval_js
+ review=Path(review);queue=remaining_geometry(review)
+ if not queue:print('All geometry-queue images already have saved decisions.');return
+ pending=[r['id'] for r in queue if not (review/'auto_proposals'/(r['id']+'.json')).exists()]
+ print('Remaining geometry-review images:',len(queue),'| drafts to generate:',len(pending),flush=True)
+ if pending:generate(root,review,workflow,only_ids=pending)
+ cards=[];evidence={}
+ for i,r in enumerate(queue,1):
+  ident=r['id'];item=json.loads((review/'items'/(ident+'.json')).read_text());p=review/'auto_proposals'/(ident+'.json');proposal=refresh_cached_topology(p,item,workflow)
+  assert proposal['source_label_sha256']==item['label_sha256'] and proposal['config_sha256']==workflow.sha(review/'auto_proposals/config.json')
+  with Image.open(item['image']) as im:
+   im=im.convert('RGB');assert hashlib.sha256(im.tobytes()).hexdigest()==item['pixel_sha256']
+   comparison=Image.new('RGB',(1200,530),'white')
+   for x,title,polygons,color in [(0,'CURRENT / ORANGE',item['original'],(255,120,0,95)),(600,'PROPOSAL / GREEN',proposal['polygons'],(0,200,70,95))]:
+    base=im.convert('RGBA');layer=Image.new('RGBA',base.size);draw=ImageDraw.Draw(layer)
+    for poly in polygons:draw.polygon([(a*base.width,b*base.height) for a,b in poly],fill=color,outline=color[:3]+(255,))
+    view=Image.alpha_composite(base,layer).convert('RGB');view.thumbnail((600,495));comparison.paste(view,(x,30));ImageDraw.Draw(comparison).text((x+10,10),title,fill='black')
+   buffer=io.BytesIO();comparison.save(buffer,format='JPEG',quality=75)
+  cards.append(dict(id=ident,index=i,split=r['split'],image='data:image/jpeg;base64,'+base64.b64encode(buffer.getvalue()).decode(),enabled=proposal['approval_enabled'],warnings=proposal['warnings'],masks=proposal['mask_count'],expected=proposal['expected_animals']))
+  evidence[ident]=dict(item=item,path=p,sha=workflow.sha(p),proposal=proposal)
+  if i%10==0:print('Gallery prepared:',i,'/',len(queue),flush=True)
+ reviewer=(review/'reviewer_name.txt').read_text() if (review/'reviewer_name.txt').exists() else ''
+ print('Gallery ready. Review all comparisons, choose decisions, then use the batch approval button.',flush=True)
+ script=Path(__file__).with_name('approve_batch.js').read_text();display(Javascript('window.approveMaskBatch = '+script+';'))
+ result=eval_js('window.approveMaskBatch('+json.dumps(dict(cards=cards,reviewer=reviewer))+')')
+ if result is None:print('Closed without saving batch decisions.');return
+ assert result['reviewer'].strip() and result.get('inspection_confirmed') is True
+ chosen=result['decisions'];assert chosen and len({r['id'] for r in chosen})==len(chosen)
+ # Validate the complete submitted decision list before writing any approval.
+ for r in chosen:
+  assert r['id'] in evidence and r['decision'] in ('approve','reject');e=evidence[r['id']]
+  assert workflow.sha(e['path'])==e['sha'] and workflow.sha(e['item']['source_label'])==e['item']['label_sha256']
+  if r['decision']=='approve':assert e['proposal']['approval_enabled']
+ workflow.save(review/'batch_intents'/(datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')+'.json'),result)
+ for i,r in enumerate(chosen,1):
+  e=evidence[r['id']];item=e['item'];proposal=e['proposal']
+  if r['decision']=='approve':save_approved_draft(review,item,proposal,workflow,result['reviewer'],e['path'])
+  else:workflow.save_review(review,item,dict(reviewer=result['reviewer'],observation='Explicitly rejected in automatic-proposal gallery batch review.',decision='needs_correction',polygons=item['original'],complete_animals_confirmed=False,method='SAM_human_boxes_batch_human_rejected',automatic_proposal_sha256=e['sha']))
+  workflow.save(review/'auto_approvals'/(r['id']+'.json'),dict(id=r['id'],decision=r['decision'],reviewer=result['reviewer'],proposal_sha256=e['sha'],batch_review=True,timestamp=datetime.now(timezone.utc).isoformat()))
+  print('Saved',i,'/',len(chosen),r['decision'],r['id'],flush=True)
+ (review/'reviewer_name.txt').write_text(result['reviewer'])
+ print('Batch saved. Approved:',sum(r['decision']=='approve' for r in chosen),'| rejected:',sum(r['decision']=='reject' for r in chosen),'| left pending:',len(cards)-len(chosen))
+ return result
