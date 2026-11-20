@@ -1,0 +1,15 @@
+{
+  "version": "reference_drafts_round3",
+  "model": "SAM2.1-t",
+  "model_sha256": "3c1e81ca9b037dd39d70a014ddb9a813d6c4c4e12555420db7eaff31689bd4e3",
+  "model_url": "https://github.com/ultralytics/assets/releases/download/v8.3.0/sam2.1_t.pt",
+  "input_size": 1024,
+  "prompt": "Human box plus five distributed positive points in original reference foreground inside the box",
+  "variants": [
+    "original_pixels",
+    "CLAHE_L_clip2_grid8"
+  ],
+  "source_scope": "Train/validation annotation assistance only; no test or model score; every variant requires human approval",
+  "device": "cpu",
+  "torch": "2.9.1+cpu"
+}

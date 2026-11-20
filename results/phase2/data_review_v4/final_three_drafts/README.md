@@ -1,0 +1,7 @@
+# Unapproved final-three annotation alternatives
+
+Six masks were actually generated locally using the recorded pretrained SAM2.1-t checkpoint on three original train/validation images, with decoded pixels checked against the frozen manifest. Each image has variant A from original pixels and variant B from CLAHE luminance preprocessing. Prompts are human boxes plus five distributed points from the old reference foreground clipped to each box. Inference uses 1024 input pixels; actual generation seconds and predicted SAM quality are in each draft. No model training or test evaluation was performed.
+
+These drafts are NOT verified labels. Human review must choose A/B, explicitly retain the original if visually correct, or reject. The review display enhances contrast and zooms for visibility while preserving the actual dataset images. Crop extents include all candidate/reference/human-box extents; they do not hide outlying masks. A/B/original choices are not preselected. Choosing an original reference records re-approval, not an automated correction. The unchanged raster/topology caveats remain explicit in saved records.
+
+Configuration and draft SHA256 checksums are recorded in artifact_checksums.json. The helper was tested with the actual three pixel-checked images and all six checksummed drafts, including browser rendering and mixed A/B/original UI decisions; no real dataset approval was fabricated by these tests.
