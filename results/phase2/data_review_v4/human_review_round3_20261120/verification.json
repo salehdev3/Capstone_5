@@ -1,0 +1,17 @@
+{
+  "uploaded_archive_sha256": "626298e331f55beda10b1694cb1f2e58fb830b2b949ec5577c8f68e0bd2a1885",
+  "round3_images": 3,
+  "round3_approved": 2,
+  "round3_rejected": 1,
+  "cumulative_approved": 70,
+  "approved_training": 56,
+  "approved_validation": 14,
+  "unresolved_validation_ids": [
+    "59e77d63-23d2-11e8-a6a3-ec086b02610b"
+  ],
+  "unchanged_other_references": 119,
+  "reviewer": "Yousef",
+  "scope": "Integrity and named-review provenance verification, not independent visual/model evaluation.",
+  "override_archive_sha256": "44d378c35d9b5d10efc2687866797d2f504ad5da543fc5b2b575431e8f2ca292",
+  "full_reference_release_ready": false
+}
