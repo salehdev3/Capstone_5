@@ -1,0 +1,21 @@
+{
+  "training_images": 150,
+  "instances": 167,
+  "validation_images": 40,
+  "mean_iou": {
+    "baseline": 0.7031999620508653,
+    "0.45": 0.6656324882588122,
+    "0.5": 0.6823026863111885,
+    "0.55": 0.689793232319275,
+    "0.6": 0.6849676484657078,
+    "0.65": 0.668591918179487
+  },
+  "sam192_margin_validation": {
+    "0.2": 0.6497321384340762,
+    "0.3": 0.6646112363459846,
+    "0.65": 0.6790712915053183
+  },
+  "sam256_bf16_validation": 0.7608819595605449,
+  "scope": "Local validation on 40 frozen mask references, using retained detector outputs supplied in validation_review.zip. CPU end-to-end latency and historical test are separate.",
+  "sam224_float_validation": 0.7357435258550626
+}

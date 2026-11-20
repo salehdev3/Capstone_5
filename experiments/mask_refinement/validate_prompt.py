@@ -1,5 +1,5 @@
 """Compare SAM crop context on identical saved detector outputs and validation labels."""
-import sys
+import argparse
 import json
 import zipfile
 from pathlib import Path
@@ -11,7 +11,14 @@ from ultralytics.utils import torch_utils
 from train_validate import raster
 from crop_sam import crop_polygon
 
-dataset, archive, weights, destination = map(Path, sys.argv[1:5])
+parser = argparse.ArgumentParser()
+for name in ('dataset','archive','weights','destination'):
+    parser.add_argument(name,type=Path)
+parser.add_argument('--bf16',action='store_true')
+parser.add_argument('--size',type=int,default=192)
+parser.add_argument('--margins',type=float,nargs='+',default=[.2,.3,.65])
+args = parser.parse_args()
+dataset,archive,weights,destination = args.dataset,args.archive,args.weights,args.destination
 torch_utils.NUM_THREADS = 1
 torch.set_num_threads(1)
 cv2.setNumThreads(1)
@@ -19,11 +26,10 @@ sam = SAM(str(weights))
 with zipfile.ZipFile(archive) as z:
     frames = json.loads(z.read('validation_crop_float_192/masks/predictions.json'))
 report = {}
-use_bf16 = "--bf16" in sys.argv
-if use_bf16:
+if args.bf16:
     from bf16_encoder import enable_bf16_encoder
     enable_bf16_encoder(sam)
-for margin in ([.45] if weights.name == "sam_b.pt" and "--bf16" in sys.argv else [.2,.3,.65]):
+for margin in args.margins:
     scores = []
     for frame in frames:
         ident = frame['id']
@@ -33,7 +39,7 @@ for margin in ([.45] if weights.name == "sam_b.pt" and "--bf16" in sys.argv else
                         (dataset/'labels/val_select'/f'{ident}.txt').read_text().splitlines()],w,h)
         objects = frame['objects']
         primary = [o for o in objects if o['detector_confidence'] >= .4] or sorted(objects,key=lambda o:-o['detector_confidence'])[:1]
-        polygons = [crop_polygon(sam,im,o['box'],256 if use_bf16 else 192,margin) for o in primary]
+        polygons = [crop_polygon(sam,im,o['box'],args.size,margin) for o in primary]
         pred = raster([p for p in polygons if p],w,h)
         scores.append(float((pred&truth).sum()/(pred|truth).sum()))
     report[str(margin)] = float(np.mean(scores))
