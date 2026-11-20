@@ -1,8 +1,9 @@
 """Run from a fresh Python process with the final-sprint source on PYTHONPATH."""
 import shutil
 import sys
+import hashlib
+from PIL import Image
 import tempfile
-import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -26,7 +27,7 @@ def main(root):
     out = old.parent / "fast_candidate" / stamp
     out.mkdir(parents=True)
     print("Saving to", out, flush=True)
-    for name in ("candidate.py", "run_candidate.py"):
+    for name in ("crop_sam.py", "candidate.py", "run_candidate.py"):
         shutil.copy2(Path(__file__).with_name(name), out / name)
     cache = Path(tempfile.mkdtemp(prefix="camera_candidate_"))
     (cache / "images").mkdir()
@@ -35,25 +36,17 @@ def main(root):
     def stage_images(ids):
         from PIL import Image
         import hashlib
-        for ident in sorted(set(ids)):
+        ids = sorted(set(ids))
+        print("Checking", len(ids), "source images", flush=True)
+        for index, ident in enumerate(ids, 1):
             dest = image_path(cache, ident)
             if not dest.exists():
                 shutil.copyfile(image_path(root, ident), dest)
                 with Image.open(dest) as image:
                     assert hashlib.sha256(image.convert("RGB").tobytes()).hexdigest() == by_id[ident]["pixel_sha256"]
+            if index % 100 == 0:
+                print("Images", index, "/", len(ids), flush=True)
 
-    tiny = read(old / "mask_selection/m_v4_sam_t640/policy.json")["mask"]["sam"]
-    weights = out.parent / "sam2.1_t.pt"
-    if not weights.exists():
-        tmp = cache / weights.name
-        if Path(tiny["path"]).is_file():
-            shutil.copyfile(tiny["path"], tmp)
-        else:
-            urllib.request.urlretrieve("https://github.com/ultralytics/assets/releases/download/v8.3.0/sam2.1_t.pt", tmp)
-        assert sha(tmp) == tiny["sha256"]
-        shutil.copyfile(tmp, weights)
-    assert sha(weights) == tiny["sha256"]
-    tiny["path"] = str(weights)
     base = read(baseline)
     assert sha(Path(base["species_classifier"]["path"])) == base["species_classifier"]["sha256"]
     assert read(old / "classifier/completed.json")["checkpoint_sha256"] == base["species_classifier"]["sha256"]
@@ -80,27 +73,40 @@ def main(root):
     del net
     base.update(version="fast_candidate_v1", species_temperature=temperature(cz[:, :14]+offset, cy),
                 species_logit_offset=offset.tolist(), baseline_sha256=sha(baseline),
-                runtime_sha256={n: sha(out/n) for n in ("candidate.py",)})
+                runtime_sha256={n: sha(out/n) for n in ("candidate.py", "crop_sam.py")})
     val_labels = reference(root, rows, "val_select")
     stage_images([p.stem for p in val_labels] + DEMO_IDS)
     candidates = []
-    for size in (256, 320, 384):
-        dest = out / f"validation_{size}"
-        base["mask"].update(kind="sam_t", quality=0.0, sam=dict(tiny, size=size))
+    for mode, profile, size in (("frame", "int8", 448), ("crop", "float", 256), ("crop", "int8", 256), ("crop", "float", 192)):
+        base["mask_mode"] = mode
+        name = f"{mode}_{profile}_{size}"
+        dest = out / f"validation_{name}"
+        base["mask"]["sam"]["size"] = size
+        base["encoder_precision"] = profile
         save(dest / "policy.json", base)
-        p = FastPipeline(root, cache, dest / "policy.json")
+        try:
+            p = FastPipeline(root, cache, dest / "policy.json")
+        except (ImportError, AttributeError, NotImplementedError) as exc:
+            if profile != "int8":
+                raise
+            print("Optional quantization unavailable", exc, flush=True)
+            continue
         quality = mask_evaluate(p, val_labels, by_id, cache, dest / "masks")
         speed = benchmark(p, rows, cache, dest / "cpu")
-        candidates.append(dict(size=size, iou=quality["mean_iou"], seconds=speed["p95"]))
+        candidates.append(dict(name=name, size=size, iou=quality["mean_iou"], seconds=speed["p95"]))
+        print("Candidate", candidates[-1], flush=True)
         del p
+        if quality["mean_iou"] >= .7 and speed["p95"] <= 2:
+            break
     save(out / "validation.json", dict(candidates=candidates, species=metrics(z+offset, y, base["species_temperature"])))
     feasible = [c for c in candidates if c["iou"] >= .7 and c["seconds"] <= 2]
     if not feasible:
+        save(out / "status.json", dict(status="validation_gate_failed", candidates=candidates))
         print("Validation stopped before historical evaluation.", candidates, out, flush=True)
         return
     selected = max(feasible, key=lambda c: c["iou"])
     policy = out / "policy.json"
-    shutil.copyfile(out / f"validation_{selected['size']}" / "policy.json", policy)
+    shutil.copyfile(out / f"validation_{selected['name']}" / "policy.json", policy)
     p = FastPipeline(root, cache, policy)
     save(out / "freeze.json", dict(policy_sha256=sha(policy), independent_test=False, selected=selected))
     speed = benchmark(p, rows, cache, out / "cpu")
