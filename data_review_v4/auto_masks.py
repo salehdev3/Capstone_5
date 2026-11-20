@@ -42,7 +42,7 @@ def save_approved_draft(review,item,proposal,workflow,name,path):
  dest=review/'labels'/item['split']/(item['id']+'.txt');dest.parent.mkdir(parents=True,exist_ok=True);tmp=dest.with_suffix('.tmp');tmp.write_text(text);tmp.replace(dest)
  workflow.save(review/'history'/item['id']/(data['timestamp']+'.json'),data);workflow.save(review/'reviews'/(item['id']+'.json'),data);return data
 
-def generate(root,review,workflow,limit=None,only_id=None,only_ids=None):
+def generate(root,review,workflow,limit=None,only_id=None,only_ids=None,imgsz=640,point_method="box_center"):
  import torch
  from ultralytics import SAM
  root,review=Path(root),Path(review);rows=workflow.load_manifest(root/'phase1_source/data/cct20_team_v2/manifest.json');byid={r['id']:r for r in rows}
@@ -53,7 +53,7 @@ def generate(root,review,workflow,limit=None,only_id=None,only_ids=None):
   assert alternate.exists(),'Install the SAM weight from the existing project release first.';sam_path=alternate
  assert workflow.sha(sam_path)==policy['sam_sha256'],'SAM weight differs'
  device=0 if torch.cuda.is_available() else 'cpu';torch.set_num_threads(4)
- print('Automatic mask proposals | device:',device,'| input: 640 | no training',flush=True)
+ print('Automatic mask proposals | device:',device,'| input:',imgsz,'| no training',flush=True)
  global _SAM_CACHE
  key=(str(sam_path),str(device))
  if globals().get('_SAM_CACHE',{}).get('key')==key:sam=_SAM_CACHE['model']
@@ -65,7 +65,7 @@ def generate(root,review,workflow,limit=None,only_id=None,only_ids=None):
  if only_ids is not None:
   ids=set(only_ids);queue=[q for q in queue if q['id'] in ids];assert {q['id'] for q in queue}==ids
  dest=review/'auto_proposals';dest.mkdir(exist_ok=True)
- config=dict(version='sam_human_box_drafts_v1',sam_sha256=policy['sam_sha256'],imgsz=640,prompts='Human reference boxes and their center points; not detector predictions or prior-mask IoU selection',test_used=False)
+ config=dict(version='sam_human_box_drafts_v1',sam_sha256=policy['sam_sha256'],imgsz=imgsz,prompts='Human reference boxes and their center points; not detector predictions or prior-mask IoU selection' if point_method=='box_center' else 'Human reference boxes with an interior point from the old reference clipped to each human box; annotation proposal only; no test references',test_used=False)
  if (dest/'config.json').exists():assert json.loads((dest/'config.json').read_text())==config
  else:workflow.save(dest/'config.json',config)
  if limit is not None:queue=queue[:limit]
@@ -80,7 +80,17 @@ def generate(root,review,workflow,limit=None,only_id=None,only_ids=None):
    im=im.convert('RGB');assert hashlib.sha256(im.tobytes()).hexdigest()==item['pixel_sha256'];w,h=im.size
   boxes=np.array([b['xyxy'] for b in r['boxes']],float)*[w,h,w,h];assert len(boxes)>0
   points=[[[float((b[0]+b[2])/2),float((b[1]+b[3])/2)]] for b in boxes]
-  result=sam.predict(item['image'],bboxes=boxes.tolist(),points=points,labels=[[1] for _ in points],imgsz=640,conf=0.,device=device,verbose=False)[0]
+  assert point_method in ('box_center','reference_interior')
+  if point_method=='reference_interior':
+   import cv2
+   foreground=workflow.raster(item['original'],w,h)
+   for j,box in enumerate(boxes):
+    left,top=max(0,int(box[0])),max(0,int(box[1]));right,bottom=min(w,int(np.ceil(box[2]))),min(h,int(np.ceil(box[3])))
+    clipped=np.zeros((h,w),np.uint8);clipped[top:bottom,left:right]=foreground[top:bottom,left:right]
+    distance=cv2.distanceTransform(clipped,cv2.DIST_L2,3)
+    if distance.max()>0:
+     y,x=np.unravel_index(distance.argmax(),distance.shape);points[j]=[[float(x),float(y)]]
+  result=sam.predict(item['image'],bboxes=boxes.tolist(),points=points,labels=[[1] for _ in points],imgsz=imgsz,conf=0.,device=device,verbose=False)[0]
   selected={};warnings=[]
   if result.masks is not None:
    ids=result.boxes.cls.cpu().numpy().astype(int).tolist();scores=result.boxes.conf.cpu().numpy().tolist()
