@@ -29,6 +29,9 @@ class FastPipeline(Pipeline):
         logits[:, :14] += self.offset
         return result, logits
 
+    def predict_crop(self, image, box):
+        return crop_polygon(self.sam, image, box, self.config["mask"]["sam"]["size"])
+
     def process_frame(self, path, meta, with_masks=True):
         if self.config["mask_mode"] == "frame":
             return super().process_frame(path, meta, with_masks)
@@ -40,7 +43,7 @@ class FastPipeline(Pipeline):
             h, w = image.shape[:2]
             primary = [o for o in objects if o["detector_confidence"] >= self.config["mask"]["primary_conf"]]
             for obj in primary or [max(objects, key=lambda o: o["detector_confidence"])]:
-                polygon = crop_polygon(self.sam, image, obj["box"], self.config["mask"]["sam"]["size"])
+                polygon = self.predict_crop(image, obj["box"])
                 if polygon:
                     obj.update(polygon_normalized=polygon, relative_body_area=float(raster([polygon], w, h).mean()),
                                review=obj["confidence"] < 0.6)
