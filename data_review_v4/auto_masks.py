@@ -5,6 +5,43 @@ import base64,io,json,time,hashlib
 import numpy as np
 from PIL import Image,ImageDraw
 
+def touching_topology_safe(polygons,w,h,workflow):
+ """Check the displayed pixel masks; SAM's merged contour paths need not be simple polygons.
+
+ This does not certify polygon topology or anatomical correctness. Explicit human
+ approval applies to the unchanged rendered foreground; geometry findings remain recorded.
+ """
+ for points in polygons:
+  a=np.asarray(points,float)
+  if a.ndim!=2 or a.shape[1]!=2 or len(a)<3 or not np.isfinite(a).all() or (a<0).any() or (a>1).any():return False
+  if len(np.unique(a,axis=0))<3 or not workflow.raster([points],w,h).any():return False
+ return True
+
+def refresh_cached_topology(path,item,workflow):
+ path=Path(path);record=json.loads(path.read_text());polygons=record['polygons']
+ if record.get('mask_count')!=record.get('expected_animals') or not polygons:return record
+ findings=workflow.geometric_findings(polygons)
+ if not findings or not touching_topology_safe(polygons,item['width'],item['height'],workflow):return record
+ if record.get('raster_topology_validated'):return record
+ # Retain the exact mask foreground; record a distinct reviewable topology exception.
+ stamp=datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')
+ workflow.save(path.parent/'draft_history'/record['id']/(stamp+'.json'),record)
+ record['raster_topology_validated']=True;record['topology_review_required']=True;record['geometry_findings']=findings;record['approval_enabled']=True
+ record['warnings']=[x for x in record['warnings'] if not x.startswith('Unresolved geometry for animal')]
+ record['warnings'].append('SAM merged-contour topology is non-simple; the displayed pixel mask is unchanged. Approve accepts the visible animal boundaries after your inspection; geometry findings remain recorded.')
+ workflow.save(path,record);return record
+
+def save_approved_draft(review,item,proposal,workflow,name,path):
+ data=dict(reviewer=name,observation='Explicitly approved automatic SAM proposal after visual comparison with the image.',decision='verified',polygons=proposal['polygons'],complete_animals_confirmed=True,method='SAM_human_boxes_explicit_human_approval',topology_exception_confirmed=False,automatic_proposal=proposal,automatic_proposal_config=json.loads((review/'auto_proposals/config.json').read_text()),automatic_proposal_sha256=workflow.sha(path))
+ if not workflow.geometric_findings(proposal['polygons']):return workflow.save_review(review,item,data)
+ assert proposal.get('raster_topology_validated') and touching_topology_safe(proposal['polygons'],item['width'],item['height'],workflow),'Empty/out-of-bounds or non-finite mask remains; reject this draft'
+ assert workflow.sha(item['source_label'])==item['label_sha256'] and name.strip()
+ text='\n'.join('0 '+' '.join(f'{v:.17g}' for point in polygon for v in point) for polygon in proposal['polygons'])+'\n'
+ assert np.array_equal(workflow.raster(workflow.parse_labels(text),item['width'],item['height']),workflow.raster(proposal['polygons'],item['width'],item['height']))
+ data.update(topology_exception_confirmed=True,raster_topology_human_approved=True,observation='Explicitly approved automatic SAM mask including its disclosed touching/retraced raster topology after visual inspection.',id=item['id'],split=item['split'],source_label_sha256=item['label_sha256'],image_pixel_sha256=item['pixel_sha256'],timestamp=datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ'))
+ dest=review/'labels'/item['split']/(item['id']+'.txt');dest.parent.mkdir(parents=True,exist_ok=True);tmp=dest.with_suffix('.tmp');tmp.write_text(text);tmp.replace(dest)
+ workflow.save(review/'history'/item['id']/(data['timestamp']+'.json'),data);workflow.save(review/'reviews'/(item['id']+'.json'),data);return data
+
 def generate(root,review,workflow,limit=None,only_id=None):
  import torch
  from ultralytics import SAM
@@ -75,7 +112,7 @@ def approve_next(review,workflow):
   if not record.exists():chosen=q;break
  if chosen is None:print('All available queue images have an approval decision.');return
  proposal_path=review/'auto_proposals'/(chosen['id']+'.json');assert proposal_path.exists(),'Generate automatic proposals first (step 3).'
- proposal=json.loads(proposal_path.read_text());item=json.loads((review/'items'/(chosen['id']+'.json')).read_text());assert proposal['source_label_sha256']==item['label_sha256']
+ item=json.loads((review/'items'/(chosen['id']+'.json')).read_text());proposal=refresh_cached_topology(proposal_path,item,workflow);assert proposal['source_label_sha256']==item['label_sha256']
  assert proposal['config_sha256']==workflow.sha(review/'auto_proposals/config.json')
  print('Opening',chosen['id'],'— compare the images and click Approve or Reject.',flush=True)
  with Image.open(item['image']) as original:
@@ -93,8 +130,7 @@ def approve_next(review,workflow):
  (review/'reviewer_name.txt').write_text(result['reviewer'])
  if result['decision']=='approve':
   assert proposal['approval_enabled'],'Incomplete or invalid draft cannot be approved'
-  data=dict(reviewer=result['reviewer'],observation='Explicitly approved automatic SAM proposal after visual comparison with the image.',decision='verified',polygons=proposal['polygons'],complete_animals_confirmed=True,method='SAM_human_boxes_explicit_human_approval',topology_exception_confirmed=False,automatic_proposal=proposal,automatic_proposal_config=json.loads((review/'auto_proposals/config.json').read_text()),automatic_proposal_sha256=workflow.sha(proposal_path))
-  workflow.save_review(review,item,data)
+  save_approved_draft(review,item,proposal,workflow,result['reviewer'],proposal_path)
  else:
   data=dict(reviewer=result['reviewer'],observation='Explicitly rejected automatic SAM proposal after visual comparison.',decision='needs_correction',polygons=item['original'],complete_animals_confirmed=False,method='SAM_human_boxes_human_rejected',automatic_proposal_sha256=workflow.sha(proposal_path));workflow.save_review(review,item,data)
  workflow.save(review/'auto_approvals'/(item['id']+'.json'),dict(**result,id=item['id'],proposal_sha256=workflow.sha(proposal_path),timestamp=datetime.now(timezone.utc).isoformat()));print('Saved:',result['decision'],item['id']);return result
