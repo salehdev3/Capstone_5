@@ -358,6 +358,9 @@ Five classes have no validation references: badger, deer, fox, rodent and skunk.
 
 V3 model/policy hashes, validation sweeps, confusion matrix, fitting histories and CPU/HTTP evidence are archived under \texttt{results/phase2/optimization\_v3\_review/}. The deployment decision and historical test results above continue to describe v2. Next experiments prioritize representative class coverage and reference-mask quality before further tuning; no new >90\% result is claimed.
 
+\subsection*{Reviewed-mask continuation and composition checks}
+V4 applies 56 named approved training-mask updates and preserves all 40 validation label hashes. Training stops after 21 epochs; native validation mask AP selects epoch 13. Standalone validation IoU is .62450 versus V3 .65504. The initial SAM2 experiment uses the V3 guide and reaches .79745. A follow-up evaluates nine fixed complete detector/guide/SAM combinations, including both trained guides, on the same original references. The best old-detector/V3-guide/SAM-B result is IoU .82466 and Dice .88947, compared with baseline IoU .82396 and Dice .88894. The IoU difference is .0692 percentage points: 15 images improve, 19 worsen, six are unchanged. The deployed baseline is retained; no >90\% mask or independent-test improvement is claimed. GPU mask-helper timing excludes classification/HTTP and does not replace CPU p95. Records are archived in \texttt{results/phase2/}. Classification data coverage is the next priority.
+
 \section{Obstacles and responses}
 \par\noindent\begin{tabularx}{\linewidth}{@{}Y l Y Y@{}}\toprule
 Obstacle & Module & Impact & Response / limitation\\\midrule
