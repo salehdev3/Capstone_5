@@ -1,10 +1,10 @@
 import numpy as np
 
 
-def crop_polygon(sam, image, box, size):
+def crop_polygon(sam, image, box, size, margin=.45):
     h, w = image.shape[:2]
     box = np.asarray(box) * [w, h, w, h]
-    pad = np.maximum(8, .45 * (box[2:] - box[:2]))
+    pad = np.maximum(8, margin * (box[2:] - box[:2]))
     x, y = np.maximum(0, np.floor(box[:2] - pad)).astype(int)
     r, b = np.minimum([w, h], np.ceil(box[2:] + pad)).astype(int)
     if r <= x or b <= y:
