@@ -15,13 +15,14 @@
     "All 190 mask references audited and six training-only removals hash-checked",
     "No original test reference opened by reviewer workflow",
     "Synthetic save/approval/immutability and catalogue split/burst exclusion checks",
-    "Python and notebook syntax and pinned download hashes"
+    "Python and notebook syntax and pinned download hashes",
+    "Headless Chromium: panel/iframe sizing, visible Save, blank-field rejection, vertex drag and review result"
   ],
-  "colab_frontend_execution": "Requires user Colab run; browser interaction not executed locally",
+  "colab_frontend_execution": "Browser mechanics verified with mocked Colab iframe sizing; live Colab user interaction remains required.",
   "public_catalogue_access": "HTTP 403 in assistant environment; Colab planner supplied",
   "source_checksums": {
-    "workflow.py": "de0dd96242ccb576210101e3d19999d40152eb933dac56f7d71a6bc102bb4d18",
-    "mask_editor.js": "440b3d4f22764567339cade0b892a03c7a304ab5f0b473a4ff7af333be0a3f95",
+    "workflow.py": "f50303387e10f6929d4d1c949da59c20d8e44f0fd3ced130e7b5c0f338689f07",
+    "mask_editor.js": "c1b4691c36b34b47952c4a7b6cae1b39ac0525e8a4ac029e419b885a6c83095f",
     "collect.py": "571de9e2d77a90bbf227706ea6d4868f44ff8bd7d66ea3105aad428746c124de"
   }
 }

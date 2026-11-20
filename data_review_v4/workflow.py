@@ -156,12 +156,18 @@ def review_flagged(dest):
 
 def open_item(dest,ident,eval_js):
  import base64
+ print('Opening review image:', ident, flush=True)
  dest=Path(dest);item=json.loads((dest/'items'/(ident+'.json')).read_text());image=Path(item['image']);assert image.exists(),str(image)
+ print('Loading original photograph from Drive...', flush=True)
  with Image.open(image) as im:
   im=im.convert('RGB');assert hashlib.sha256(im.tobytes()).hexdigest()==item['pixel_sha256'];buf=io.BytesIO();im.save(buf,format='PNG')
  prior=dest/'reviews'/(ident+'.json');draft=dest/'drafts'/(ident+'.json');review=json.loads(draft.read_text()) if draft.exists() else json.loads(prior.read_text()) if prior.exists() else None
  payload=dict(id=ident,split=item['split'],reference=item['original'],image='data:image/png;base64,'+base64.b64encode(buf.getvalue()).decode(),polygons=review['polygons'] if review else item['original'],proposal=item['proposal'],proposal_iou=item['proposal_raster_iou'],reviewer=review['reviewer'] if review else (dest/'reviewer_name.txt').read_text() if (dest/'reviewer_name.txt').exists() else '',findings=item['findings'])
- html=Path(__file__).with_name('mask_editor.js').read_text();result=eval_js('('+html+')('+json.dumps(payload)+')')
+ from IPython.display import Javascript, display
+ html=Path(__file__).with_name('mask_editor.js').read_text()
+ print('Displaying editor below. Waiting for your Save or Close click; no training is running.', flush=True)
+ display(Javascript('window.dataReviewV4 = '+html+';'))
+ result=eval_js('window.dataReviewV4('+json.dumps(payload)+')')
  if result is None:print('Closed without saving.');return
  try:record=save_review(dest,item,result)
  except AssertionError as error:
