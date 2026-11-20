@@ -1,0 +1,8 @@
+{
+  "override_archive_sha256": "44d378c35d9b5d10efc2687866797d2f504ad5da543fc5b2b575431e8f2ca292",
+  "train": 150,
+  "validation": 40,
+  "training_updates": 56,
+  "validation_references": "original unchanged; one unresolved reference remains tracked",
+  "test_used": false
+}

@@ -1,0 +1,9 @@
+{
+  "model": "v3",
+  "path": "/content/drive/MyDrive/CameraTrap_Phase2/phase2_results/optimization_v3/segmentation/weights/best.pt",
+  "conf": 0.35,
+  "n": 40,
+  "mean_iou": 0.6550419786283646,
+  "mean_dice": 0.7200517107670509,
+  "area_mae_fraction": 0.002950702549782463
+}

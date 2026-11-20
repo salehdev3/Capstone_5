@@ -1,0 +1,14 @@
+{
+  "version": "mask_training_v4",
+  "seed": 42,
+  "epochs": 40,
+  "patience": 8,
+  "imgsz": 960,
+  "batch": 4,
+  "lr0": 0.0001,
+  "selection": "unchanged original 40-image val_select masks",
+  "approved_training_updates": 56,
+  "approved_validation_updates_used": 0,
+  "stretch_iou_target": 0.9,
+  "test_used": false
+}

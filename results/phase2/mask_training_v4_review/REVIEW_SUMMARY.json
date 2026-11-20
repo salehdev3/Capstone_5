@@ -1,0 +1,80 @@
+{
+  "source_archive_sha256": "203c2bee31a6ef250e07075396f728646ab689676d8ae554bd2c36997521165d",
+  "epochs": 21,
+  "best_native_ap_epoch": 13,
+  "native_best_mask_ap50": 0.83604,
+  "native_best_mask_ap50_95": 0.56458,
+  "approved_training_updates": 56,
+  "original_validation_labels_unchanged": 40,
+  "raw_mask_comparison": {
+    "v3": {
+      "conf": 0.35,
+      "mean_iou": 0.6550419786283646,
+      "mean_dice": 0.7200517107670509
+    },
+    "v4_best": {
+      "conf": 0.35,
+      "mean_iou": 0.6245000017353036,
+      "mean_dice": 0.7100040813951336
+    },
+    "v4_last": {
+      "conf": 0.5,
+      "mean_iou": 0.6156419483400533,
+      "mean_dice": 0.7023374132121386
+    }
+  },
+  "pipelines": [
+    {
+      "name": "v2_baseline",
+      "mean_iou": 0.8239635728113882,
+      "mean_dice": 0.8889444578144541,
+      "gpu_image_seconds_mean": 0.21181561614999964,
+      "n": 40,
+      "scope": "Original unchanged validation references. Timing includes all mask-helper operations on GPU, not full CPU species/HTTP pipeline or production benchmark."
+    },
+    {
+      "name": "v4_sam2_640_q0.0",
+      "mean_iou": 0.7736175045783538,
+      "mean_dice": 0.8581261033437076,
+      "gpu_image_seconds_mean": 0.10802705437498616,
+      "n": 40,
+      "scope": "Original unchanged validation references. Timing includes all mask-helper operations on GPU, not full CPU species/HTTP pipeline or production benchmark."
+    },
+    {
+      "name": "v4_sam2_640_q0.75",
+      "mean_iou": 0.740693621025035,
+      "mean_dice": 0.81871725716189,
+      "gpu_image_seconds_mean": 0.11137205552501542,
+      "n": 40,
+      "scope": "Original unchanged validation references. Timing includes all mask-helper operations on GPU, not full CPU species/HTTP pipeline or production benchmark."
+    },
+    {
+      "name": "v4_sam2_1024_q0.0",
+      "mean_iou": 0.7974500356544761,
+      "mean_dice": 0.8721457727970272,
+      "gpu_image_seconds_mean": 0.21170074894998833,
+      "n": 40,
+      "scope": "Original unchanged validation references. Timing includes all mask-helper operations on GPU, not full CPU species/HTTP pipeline or production benchmark."
+    },
+    {
+      "name": "v4_sam2_1024_q0.75",
+      "mean_iou": 0.7631585179001332,
+      "mean_dice": 0.8314647138784543,
+      "gpu_image_seconds_mean": 0.21587169204999554,
+      "n": 40,
+      "scope": "Original unchanged validation references. Timing includes all mask-helper operations on GPU, not full CPU species/HTTP pipeline or production benchmark."
+    }
+  ],
+  "selected_pipeline": "v2_baseline",
+  "target_met": false,
+  "trained_v4_checkpoint_sha256": "bb89f9a6ec1b19a48c60de266f0cf08171ca5798bdd34e75996f1b0eed3eaaa0",
+  "effective_sam_guidance": "V3 raw winner, not trained V4; the recorded per-candidate policy dictionaries inherit baseline filenames/hashes and must not be treated as deployable manifests.",
+  "scope": "GPU validation development comparison only. Mask-helper GPU time excludes species and HTTP and is not full CPU p95. No new test run or new deployment.",
+  "checks": [
+    "190 image/label audit rows and 56 approved training override hashes",
+    "40 unchanged validation hashes against original release",
+    "All standalone and full-pipeline CSV means and IDs",
+    "21 logged epochs and native AP-selected epoch 13",
+    "Old pipeline reproduced at mean IoU .8239635728113882"
+  ]
+}
