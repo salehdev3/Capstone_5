@@ -12,7 +12,7 @@ AI251P · Project 5 · Phase 1 and Phase 2
 
 ## Running the demonstration
 
-Open the demo in a fresh Colab runtime. Mount the team Google Drive account with the full `MyDrive/CameraTrap_Phase2` project folder. The evaluation policy and its matching checkpoints live in that Drive. The loader verifies the policy and model digests. Run both cells in order. The default demonstration sends all team-collected test images and lets you upload new photos. Select **cct_test** for the first 15 CCT20 test frames by image ID, or **validation** for five fixed validation frames. Set **DEMO_INPUT** to **photos** for personal images or **video** for one clip. Video mode samples up to five frames at one-second intervals as one event. Each uploaded photo becomes a separate event.
+Open the demo in a fresh Colab runtime. Mount the team Google Drive account with the full `MyDrive/CameraTrap_Phase2` project folder. The evaluation policy and its matching checkpoints live in that Drive. The loader verifies the policy and model digests. Run both cells in order. The default **cct_test** demonstration sends the first 15 CCT20 test frames by image ID. Select **team_test** to run the team-collected test images. Set **DEMO_INPUT** to **photos** for personal images or **video** for one clip. Video mode samples up to five frames at one-second intervals as one event. Each uploaded photo becomes a separate event.
 
 The response contains frame detections, species scores, segmentation polygons when available, event counts and stage timing. Each run writes a new directory under `CameraTrap_Phase2/presentation_demos/` containing the HTTP response, annotated frames and **Demo_Fallback.mp4**. Run the demonstration once before presenting to save the fallback in Drive.
 
@@ -22,7 +22,7 @@ The official notebook defaults to presentation mode. Optional training and evalu
 
 `phase2_results/integrated_species_cv/20261120T224149142114Z`
 
-The four original acceptance criteria passed on the historical data. Across all seven team targets, six passed. The guided mask policy reached mean IoU 0.662 on 40 historical images against a target of 0.70. The integrated full-pipeline CPU p95 was 1.879 s. See the Phase 2 report for operating points, metric definitions and cohort sizes. The detector export parity evidence applies to the documented component operating point.
+The four original acceptance criteria passed on the historical data. The guided mask policy reached mean IoU 0.662 on 40 historical images against a target of 0.70. The integrated full-pipeline CPU p95 was 1.879 s. See the Phase 2 report for operating points, metric definitions and cohort sizes. The detector export parity evidence applies to the documented component operating point.
 
 ## Presentation timing
 
