@@ -40,6 +40,22 @@ def cases(root):
     return selected
 
 
+
+def cct_test_cases(root, limit=5):
+    rows = read(root / "phase1_source/data/cct20_team_v2/manifest.json")
+    selected = sorted(
+        (r for r in rows if r.get("split") == "test" and r.get("source") == "CCT20"),
+        key=lambda r: r["id"],
+    )[:limit]
+    if not selected:
+        raise ValueError("No CCT20 test images found in the manifest.")
+    batch = [(root / "images" / (r["id"] + ".jpg"), r) for r in selected]
+    missing = [str(path) for path, _ in batch if not path.is_file()]
+    if missing:
+        raise FileNotFoundError("CCT20 test images missing from Drive:\n" + "\n".join(missing))
+    return batch
+
+
 def team_test_cases(root):
     rows = read(root / "phase1_source/data/cct20_team_v2/manifest.json")
     selected = [r for r in rows if r.get("split") == "test" and r.get("source") == "team_collected"]
