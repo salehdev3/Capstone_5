@@ -41,7 +41,7 @@ def cases(root):
 
 
 
-def cct_test_cases(root, limit=5):
+def cct_test_cases(root, limit=15):
     rows = read(root / "phase1_source/data/cct20_team_v2/manifest.json")
     selected = sorted(
         (r for r in rows if r.get("split") == "test" and r.get("source") == "CCT20"),
