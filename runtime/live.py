@@ -27,9 +27,17 @@ def initialize(root):
 
 def cases(root):
     rows = read(root / "phase1_source/data/cct20_team_v2/manifest.json")
-    lookup = {r["id"]: r for r in rows}
-    return [(root / "images" / (ident + ".jpg"), lookup[ident]) for ident in DEMO_IDS]
-
+    prefixes = ("58678cef", "596a5004", "5971f937", "59973f4e", "5a2c8762")
+    selected = []
+    for prefix in prefixes:
+        matches = [r for r in rows if r["id"].startswith(prefix) and r.get("split") == "val_select" and r.get("source") == "CCT20"]
+        if len(matches) != 1:
+            raise ValueError(f"Expected one CCT20 validation image for {prefix}; found {len(matches)}.")
+        image = root / "images" / (matches[0]["id"] + ".jpg")
+        if not image.is_file():
+            raise FileNotFoundError(f"Validation image missing from Drive: {image}")
+        selected.append((image, matches[0]))
+    return selected
 
 
 def team_test_cases(root):

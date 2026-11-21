@@ -36,9 +36,22 @@ def guided_polygon(student, threshold, sam, im, box, size):
         kwargs = dict(
             points=[[[float(px[j, i] - x), float(py[j, i] - y)]]], labels=[[1]]
         )
+    crop = im[y:b, x:r]
+    crop_h, crop_w = crop.shape[:2]
+    # SAM can produce zero-width masks on extremely narrow crops.
+    min_side = max(2, int(np.ceil(max(crop_h, crop_w) / 8)))
+    pad_x = max(0, min_side - crop_w)
+    pad_y = max(0, min_side - crop_h)
+    left, top = pad_x // 2, pad_y // 2
+    if pad_x or pad_y:
+        crop = cv2.copyMakeBorder(crop, top, pad_y - top, left, pad_x - left,
+                                  cv2.BORDER_REPLICATE)
+        if kwargs:
+            kwargs["points"][0][0][0] += left
+            kwargs["points"][0][0][1] += top
     result = sam.predict(
-        im[y:b, x:r],
-        bboxes=[(prompt_box - [x, y, x, y]).tolist()],
+        crop,
+        bboxes=[(prompt_box - [x, y, x, y] + [left, top, left, top]).tolist()],
         imgsz=size,
         device="cpu",
         conf=0.0,
@@ -50,4 +63,6 @@ def guided_polygon(student, threshold, sam, im, box, size):
     poly = result.masks.xy[0]
     if len(poly) < 3:
         return None
+    poly = poly - [left, top]
+    poly = np.clip(poly, [0, 0], [crop_w - 1, crop_h - 1])
     return np.clip((poly + [x, y]) / [w, h], 0, 1).tolist()
