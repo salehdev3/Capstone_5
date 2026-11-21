@@ -32,3 +32,44 @@ class GeneralAnimals(Pipeline):
             objects.append(item)
         return dict(id=meta["id"], event=meta["event"], count=len(objects), objects=objects,
                     timing=dict(total=time.perf_counter()-start), model="COCO YOLO11s-seg")
+
+
+class MultiScaleAnimals(GeneralAnimals):
+    """Combine whole-frame predictions with four overlapping crops."""
+    def __init__(self, weights="yolo11s-seg.pt"):
+        super().__init__(weights)
+        self.policy_sha256 = hashlib.sha256((self.policy_sha256 + ":tiles-v1").encode()).hexdigest()
+
+    def process_frame(self, path, meta):
+        import cv2
+        from torchvision.ops import batched_nms
+
+        start = time.perf_counter()
+        image = cv2.imread(str(path))
+        if image is None:
+            raise ValueError(f"Unreadable image: {path}")
+        h, w = image.shape[:2]
+        ch, cw = max(1, round(h * .6)), max(1, round(w * .6))
+        regions = [(0, 0, w, h)] + [(x, y, cw, ch) for y in (0, h-ch) for x in (0, w-cw)]
+        objects, classes = [], []
+        for x, y, width, height in regions:
+            pred = self.model.predict(image[y:y+height, x:x+width], **self.settings, verbose=False)[0]
+            for index, box in enumerate(pred.boxes):
+                a, b, c, d = box.xyxy[0].tolist()
+                # An object clipped by an interior crop edge has an incomplete outline.
+                if ((x and a < 2) or (y and b < 2) or
+                    (x+width < w and c > width-2) or (y+height < h and d > height-2)):
+                    continue
+                cls = int(box.cls.item())
+                item = dict(box=[(a+x)/w,(b+y)/h,(c+x)/w,(d+y)/h],
+                            species=pred.names[cls], confidence=float(box.conf.item()))
+                if pred.masks is not None:
+                    item["polygon_normalized"] = [[(px+x)/w,(py+y)/h] for px,py in pred.masks.xy[index].tolist()]
+                objects.append(item)
+                classes.append(cls)
+        if objects:
+            keep = batched_nms(torch.tensor([o["box"] for o in objects]),
+                               torch.tensor([o["confidence"] for o in objects]), torch.tensor(classes), .5)
+            objects = [objects[i] for i in keep.tolist()]
+        return dict(id=meta["id"], event=meta["event"], count=len(objects), objects=objects,
+                    timing=dict(total=time.perf_counter()-start), model="COCO YOLO11s-seg multiscale")
