@@ -216,6 +216,16 @@ class Pipeline:
             verbose=False,
         )[0]
         boxes = result.boxes.xyxyn.cpu().numpy()
+        # Reject degenerate or out-of-frame detections before cropping.
+        valid = (
+            np.isfinite(boxes).all(axis=1)
+            & (boxes[:, 0] < boxes[:, 2])
+            & (boxes[:, 1] < boxes[:, 3])
+            & (boxes[:, 0] < 1) & (boxes[:, 1] < 1)
+            & (boxes[:, 2] > 0) & (boxes[:, 3] > 0)
+        )
+        result = result[np.flatnonzero(valid).tolist()]
+        boxes = result.boxes.xyxyn.cpu().numpy()
         if self.animal is None:
             return result, np.empty((len(boxes), 0))
         z = self.animal.logits(im, boxes)

@@ -119,7 +119,7 @@ def crop(bgr, box):
     x1, y1, x2, y2 = box
     dx = (x2 - x1) * 0.05
     dy = (y2 - y1) * 0.05
-    l, t = max(0, int((x1 - dx) * w)), max(0, int((y1 - dy) * h))
+    l, t = min(w - 1, max(0, int((x1 - dx) * w))), min(h - 1, max(0, int((y1 - dy) * h)))
     r, b = min(w, max(l + 1, int((x2 + dx) * w))), min(
         h, max(t + 1, int((y2 + dy) * h))
     )
