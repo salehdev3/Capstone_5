@@ -1,6 +1,0 @@
-{
-  "best_sha256": "c92521d1b9f32d2a82bfc723ab8f01e0d648fd2e8e6a9212e07403a22d5b7277",
-  "baseline_retained": false,
-  "selection": "best macro-F1 vs recovery baseline on val_select",
-  "fitting_diagnostic": "history contains unaugmented 512-training-crop accuracy and full validation accuracy; gap is diagnostic, not proof of zero overfitting"
-}

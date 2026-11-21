@@ -1,5 +1,0 @@
-split,images,boxes,empty,excluded
-train,3013,2819,319,521
-val_select,1208,1124,91,129
-val_calibrate,467,483,13,60
-test,554,508,53,85

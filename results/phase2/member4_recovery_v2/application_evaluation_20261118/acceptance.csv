@@ -1,8 +1,0 @@
-metric,value,target,direction,met,scope
-animal_recall,0.9760479041916168,0.99,min,False,retained test frames
-empty_removal,0.5283018867924528,0.2,min,True,retained test frames
-mask_iou,0.7398773856441785,0.7,min,True,40-image recovery-v2 development test
-event_count_mae,0.3194444444444444,1.0,max,True,complete-box retained test events
-pipeline_p95_seconds,9.071337911300134,2.0,max,False,"fixed validation functional-case mix, 20 repeats"
-species_macro_f1,0.4825167785271104,0.65,min,False,508 known-class historical test crops
-species_ece,0.05128045379406198,0.1,max,True,508 known-class historical test crops

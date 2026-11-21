@@ -1,6 +1,0 @@
-name,mean_iou,mean_dice,gpu_image_seconds_mean,n,scope
-v2_baseline,0.8239635728113882,0.8889444578144541,0.21181561614999964,40,"Original unchanged validation references. Timing includes all mask-helper operations on GPU, not full CPU species/HTTP pipeline or production benchmark."
-v4_sam2_640_q0.0,0.7736175045783538,0.8581261033437076,0.10802705437498616,40,"Original unchanged validation references. Timing includes all mask-helper operations on GPU, not full CPU species/HTTP pipeline or production benchmark."
-v4_sam2_640_q0.75,0.740693621025035,0.81871725716189,0.11137205552501542,40,"Original unchanged validation references. Timing includes all mask-helper operations on GPU, not full CPU species/HTTP pipeline or production benchmark."
-v4_sam2_1024_q0.0,0.7974500356544761,0.8721457727970272,0.21170074894998833,40,"Original unchanged validation references. Timing includes all mask-helper operations on GPU, not full CPU species/HTTP pipeline or production benchmark."
-v4_sam2_1024_q0.75,0.7631585179001332,0.8314647138784543,0.21587169204999554,40,"Original unchanged validation references. Timing includes all mask-helper operations on GPU, not full CPU species/HTTP pipeline or production benchmark."

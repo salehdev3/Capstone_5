@@ -1,9 +1,0 @@
-{
-  "source": "Exact original test output files supplied by user on 2026-11-18",
-  "checksums": {
-    "per_image.csv": "4a16a5513aa3d666de606a07b12637b144f604ff6b33ae2619aac01d2143f957",
-    "predictions.json": "c8b34a4161d90c64aab26a4ddcd9b1e281e1c2d20086bbec76413360924c0e82"
-  },
-  "policy_sha256": "66290be8a03f45fd6a6c8ff0b47901defd608ff9134648b1166e02a9c84d8b80",
-  "scope": "Preserved evaluation outputs; no new inference or independent-test claim. Original image/reference hash protocol was not supplied."
-}
