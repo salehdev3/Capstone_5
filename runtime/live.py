@@ -31,6 +31,19 @@ def cases(root):
     return [(root / "images" / (ident + ".jpg"), lookup[ident]) for ident in DEMO_IDS]
 
 
+
+def team_test_cases(root):
+    rows = read(root / "phase1_source/data/cct20_team_v2/manifest.json")
+    selected = [r for r in rows if r.get("split") == "test" and r.get("source") == "team_collected"]
+    if not selected:
+        raise ValueError("No team_collected test images found in the manifest.")
+    batch = [(root / "images" / (r["id"] + ".jpg"), r) for r in selected]
+    missing = [str(path) for path, _ in batch if not path.is_file()]
+    if missing:
+        raise FileNotFoundError("Team test images missing from Drive:\n" + "\n".join(missing))
+    return batch
+
+
 def annotate(path, frame):
     with Image.open(path) as source:
         image = source.convert("RGB")
