@@ -26,11 +26,9 @@ The four original acceptance criteria passed on the historical data. The guided 
 
 ## Presentation timing
 
-| Topic | Speaker | Minutes |
-| --- | --- | --- |
-| Problem, users and data | Saud | 4 |
-| Phase 1 comparison and improvement plan | Saud | 2 |
-| Phase 2 detection | Saleh | 3 |
-| Phase 2 segmentation | Yousef | 3 |
-| Live demonstration | Mohannad | 2–3 |
-| Benchmarks and decision | Mohannad | 2–3 |
+| Speaker | Slides | Phase 1 | Phase 2 | Suggested minutes |
+| --- | --- | --- | --- | --- |
+| Saud | 1–3 | Problem, acceptance criteria and dataset split | Box supervision and review | 4 |
+| Saleh | 4–5 | Scratch CNN baseline | YOLO detection and operating point | 4 |
+| Yousef | 6–7 | Transfer learning comparison | Guided segmentation | 4 |
+| Mohannad | 8–12 | Reproducibility | Live service, export parity, timing and verdict | 6 |
